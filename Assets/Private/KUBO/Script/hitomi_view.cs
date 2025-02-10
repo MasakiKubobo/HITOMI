@@ -41,7 +41,15 @@ public class hitomi_view : MonoBehaviour
             {
                 // ヒットした位置まで Ray を描画
                 Debug.DrawRay(transform.position, direction(addAngle) * hit.distance);
-                Debug.Log("Hit: " + hit.collider.gameObject.name);
+                Debug.Log(hit.distance);
+
+                RayHitReceiver hitReceiver = hit.collider.GetComponent<RayHitReceiver>();
+
+                // Invisibleタグのみに、以下の処理を加える
+                if (hit.collider.gameObject.CompareTag("Invisible"))
+                {
+                    hitReceiver.OnRaycastHit();
+                }
             }
             else
             {
