@@ -8,6 +8,8 @@ public class hitomi_view : MonoBehaviour
 {
     private float Radius;
     private float Angle; //光とRayが散らばる角度
+
+    [Range(0, 100)]
     public int RaysAmount; //Rayの数
 
     private Light2D light2d;
