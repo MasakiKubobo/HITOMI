@@ -12,7 +12,8 @@ public class AppearObject : MonoBehaviour, RayHitReceiver
     public float AppearSpeed = 1; // 透明化が解ける速度
     public float HideSpeed = 1; // 透明化する速度
     public GameObject _collider; // 実体化すると現れる物理判定
-    public GameObject light2d; //実体化すると現れるオーラ
+    public GameObject _light; //実体化すると全体を表示させるための光
+    public GameObject Aura_light; //実体化すると現れるオーラ
 
     private bool Materialized = false; //実体化状態か否か
     private bool appearing = false; // 透明化解除の最中か否か 
@@ -26,7 +27,7 @@ public class AppearObject : MonoBehaviour, RayHitReceiver
         _renderer.color = new Color(1, 1, 1, alpha);
 
         _collider.SetActive(false);
-        light2d.SetActive(false);
+        Aura_light.SetActive(false);
     }
 
     // Update is called once per frame
@@ -39,16 +40,18 @@ public class AppearObject : MonoBehaviour, RayHitReceiver
 
         if (Materialized) // 実体化中は不透明になる
         {
-            _renderer.color = new Color(1, 1, 1, 1);
-            _collider.SetActive(true);
-            light2d.SetActive(true);
+            _renderer.color = new Color(1, 1, 1, 1); // 不透明にする
+            _collider.SetActive(true); // 当たり判定をつける
+            _light.SetActive(true); // 全体に光を当てる
+            Aura_light.SetActive(true); // オーラを纏わせる
             alpha = 0;
         }
         else
         {
             _renderer.color = new Color(1, 1, 1, alpha);
             _collider.SetActive(false);
-            light2d.SetActive(false);
+            _light.SetActive(false);
+            Aura_light.SetActive(false);
             if (alpha >= 1) Materialized = true; // アルファ値が1を超えると実体化する
         }
 
