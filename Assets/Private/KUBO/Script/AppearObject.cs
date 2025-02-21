@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public interface RayHitReceiver
 {
@@ -11,13 +12,14 @@ public class AppearObject : MonoBehaviour, RayHitReceiver
 {
     public float AppearSpeed = 1; // 透明化が解ける速度
     public float HideSpeed = 1; // 透明化する速度
+
+    [Space(10)]
     public GameObject _collider; // 実体化すると現れる物理判定
     public GameObject _light; //実体化すると全体を表示させるための光
     public GameObject Aura_light; //実体化すると現れるオーラ
 
     private bool Materialized = false; //実体化状態か否か
     private bool appearing = false; // 透明化解除の最中か否か 
-
     private float alpha = 0;
     private SpriteRenderer _renderer;
     // Start is called before the first frame update
