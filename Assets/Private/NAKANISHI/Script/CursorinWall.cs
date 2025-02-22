@@ -21,9 +21,12 @@ public class CursorinWall : MonoBehaviour
 
 
     }
-    private void CursorHitboxForWall()
+    private void Update() //Wall用ヒットボックス
     {
-
+        Vector3 mousePosition = Input.mousePosition; //カーソルの位置を取得
+        mousePosition.z = 10;
+        Vector3 target = Camera.main.ScreenToWorldPoint(mousePosition);//ワールド座標に変換
+        transform.position = target;
     }
 
 
