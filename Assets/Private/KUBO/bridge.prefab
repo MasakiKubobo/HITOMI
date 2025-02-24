@@ -275,6 +275,7 @@ MonoBehaviour:
   _collider: {fileID: 3063396264206833480}
   _light: {fileID: 4952073385843580227}
   Aura_light: {fileID: 6624556629930554473}
+  Materialized: 0
 --- !u!61 &4591766097362591524
 BoxCollider2D:
   m_ObjectHideFlags: 0

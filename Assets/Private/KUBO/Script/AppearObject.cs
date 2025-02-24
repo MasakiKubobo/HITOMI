@@ -18,8 +18,10 @@ public class AppearObject : MonoBehaviour, RayHitReceiver
     public GameObject _light; //実体化すると全体を表示させるための光
     public GameObject Aura_light; //実体化すると現れるオーラ
 
-    private bool Materialized = false; //実体化状態か否か
+    [HideInInspector]
+    public bool Materialized = false; //実体化状態か否か
     private bool appearing = false; // 透明化解除の最中か否か 
+
     private float alpha = 0;
     private SpriteRenderer _renderer;
     // Start is called before the first frame update
@@ -29,6 +31,7 @@ public class AppearObject : MonoBehaviour, RayHitReceiver
         _renderer.color = new Color(1, 1, 1, alpha);
 
         _collider.SetActive(false);
+        _light.SetActive(false);
         Aura_light.SetActive(false);
     }
 

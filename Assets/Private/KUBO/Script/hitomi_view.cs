@@ -14,6 +14,9 @@ public class hitomi_view : MonoBehaviour
 
     private Light2D light2d;
 
+    [HideInInspector]
+    public Vector2 hitPoint;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -43,7 +46,6 @@ public class hitomi_view : MonoBehaviour
             {
                 // ヒットした位置まで Ray を描画
                 Debug.DrawRay(transform.position, direction(addAngle) * hit.distance);
-                Debug.Log(hit.distance);
 
                 RayHitReceiver hitReceiver = hit.collider.GetComponent<RayHitReceiver>();
 
