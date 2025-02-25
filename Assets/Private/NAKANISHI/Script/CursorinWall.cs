@@ -8,15 +8,18 @@ public class CursorinWall : MonoBehaviour
 {
     public void Cursorwall(Collider other)
     {
-        bool Cinwall;
 
         if (other.gameObject.CompareTag("Wall"))
         {
-            Cinwall = true;
+            Debug.Log("Cinwall is true");
+            Eyecore eyecore = GetComponent<Eyecore>();
+            eyecore.Cinwall = true;
+
         }
         else
         {
-            Cinwall = false;
+            Eyecore eyecore = GetComponent<Eyecore>();
+            eyecore.Cinwall = false;
         }
 
 

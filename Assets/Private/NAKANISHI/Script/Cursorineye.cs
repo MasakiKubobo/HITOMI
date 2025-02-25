@@ -9,10 +9,13 @@ public class Cursoreye : MonoBehaviour
         if (other.gameObject.CompareTag("Eye"))//Eyeタグのオブジェクトに触れたら
         {
             Debug.Log("Cineye is true");
+            Eyecore eyecore = GetComponent<Eyecore>();
+            eyecore.Cineye = true;
         }
         else
         {
-
+            Eyecore eyecore = GetComponent<Eyecore>();
+            eyecore.Cineye = false;
         }
     }
     private void Update()//Eye用Hitbox

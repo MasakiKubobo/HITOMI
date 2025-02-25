@@ -5,15 +5,13 @@ using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.XR;
 
-public class eyecore : MonoBehaviour
+public class Eyecore : MonoBehaviour
 {
     public bool eyeopen = false; //eyeが開いているか
     public bool Cinwall = false; //カーソルがwallの中にいるか
     public bool Cineye = false; //カーソルがeyeの中にいるか
     void Update()
     {
-        Vector3 mousePosition = Input.mousePosition; //カーソルの位置を取得
-        Vector3 target = Camera.main.ScreenToWorldPoint(mousePosition);//ワールド座標に変換
 
         if (eyeopen == false && Cinwall == false) //eyeopen&Cinwallがfalseなら
         {
@@ -35,6 +33,13 @@ public class eyecore : MonoBehaviour
     void SummonEye()
     {
         eyeopen = true; //trueにする
+        Vector3 mousePosition = Input.mousePosition; //カーソルの位置を取得
+        mousePosition.z = 10;
+        Vector3 target = Camera.main.ScreenToWorldPoint(mousePosition);//ワールド座標に変換
+        //EyeプレハブをGameObject型で取得
+        GameObject obj = (GameObject)Resources.Load("Eye");
+        //Eyeプレハブを元に、インスタンスを生成、
+        Instantiate(obj, target, Quaternion.identity);
         Debug.Log("eyeopen");
     }
     void DestroyEye()
