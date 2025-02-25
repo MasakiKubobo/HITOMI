@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 4964810067016145795}
   - component: {fileID: 6086534528502900533}
   - component: {fileID: -1878505780435721593}
-  - component: {fileID: 1505656657487982620}
+  - component: {fileID: 958401152472331424}
   m_Layer: 0
-  m_Name: EyeCursorD
+  m_Name: WallCursorD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -121,7 +121,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &1505656657487982620
+--- !u!114 &958401152472331424
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -130,8 +130,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 7604078107036208144}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4d523b58d3454a6dbd781b295f1736c, type: 3}
+  m_Script: {fileID: 11500000, guid: 8dd58b8c74c5d4b8ea76571672449f53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Cineye: 0
+  Cinwall: 0
   eyecore: {fileID: 7322279995957672395, guid: 8e39584355b0f455da2a29149c7f7f46, type: 3}

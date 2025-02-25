@@ -7,9 +7,14 @@ using UnityEngine.XR;
 
 public class Eyecore : MonoBehaviour
 {
+
+    [Header("目が開いているか")]
     public bool eyeopen = false; //eyeが開いているか
+    [Header("カーソルが壁の中にいるか")]
     public bool Cinwall = false; //カーソルがwallの中にいるか
+    [Header("カーソルが目の中にいるか")]
     public bool Cineye = false; //カーソルがeyeの中にいるか
+
     void Update()
     {
 

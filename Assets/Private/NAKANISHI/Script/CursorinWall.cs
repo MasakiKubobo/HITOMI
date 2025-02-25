@@ -6,23 +6,26 @@ using UnityEngine;
 
 public class CursorinWall : MonoBehaviour
 {
-    public void Cursorwall(Collider other)
+
+    [Header("カーソルが壁の中にあるか")]
+    public bool Cinwall;
+    [SerializeField] Eyecore eyecore;
+
+    public void OnTriggerStay2D(Collider2D other)//判定
     {
-
-        if (other.gameObject.CompareTag("Wall"))
+        if (other.gameObject.tag == "wall")//wallタグのオブジェクトに触れたら
         {
-            Debug.Log("Cinwall is true");
-            Eyecore eyecore = GetComponent<Eyecore>();
             eyecore.Cinwall = true;
-
+            Cinwall = true;
         }
-        else
+    }
+    public void OnTriggerExit2D(Collider2D other)//判定
+    {
+        if (other.gameObject.tag == "wall")//wallタグのオブジェクトに触れたら
         {
-            Eyecore eyecore = GetComponent<Eyecore>();
             eyecore.Cinwall = false;
+            Cinwall = false;
         }
-
-
     }
     private void Update() //Wall用ヒットボックス
     {

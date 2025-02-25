@@ -1,21 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class Cursoreye : MonoBehaviour
+public class Cursorineye : MonoBehaviour
 {
-    public void Cursorineye(Collider other)//判定
+    [Header("カーソルが目の中にあるか")]
+    public bool Cineye;
+    [SerializeField] Eyecore eyecore;
+
+    public void OnTriggerStay2D(Collider2D other)//判定
     {
-        if (other.gameObject.CompareTag("Eye"))//Eyeタグのオブジェクトに触れたら
+        if (other.gameObject.tag == "eye")//Eyeタグのオブジェクトに触れたら
         {
-            Debug.Log("Cineye is true");
-            Eyecore eyecore = GetComponent<Eyecore>();
             eyecore.Cineye = true;
+            Cineye = true;
         }
-        else
+    }
+    public void OnTriggerExit2D(Collider2D other)//判定
+    {
+        if (other.gameObject.tag == "eye")//Eyeタグのオブジェクトに触れたら
         {
-            Eyecore eyecore = GetComponent<Eyecore>();
             eyecore.Cineye = false;
+            Cineye = false;
         }
     }
     private void Update()//Eye用Hitbox
@@ -27,3 +35,8 @@ public class Cursoreye : MonoBehaviour
     }
 
 }
+
+
+
+
+
