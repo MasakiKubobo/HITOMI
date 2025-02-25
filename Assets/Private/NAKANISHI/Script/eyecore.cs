@@ -12,7 +12,6 @@ public class eyecore : MonoBehaviour
     public bool Cineye = false; //カーソルがeyeの中にいるか
     void Update()
     {
-
         Vector3 mousePosition = Input.mousePosition; //カーソルの位置を取得
         Vector3 target = Camera.main.ScreenToWorldPoint(mousePosition);//ワールド座標に変換
 
@@ -31,7 +30,6 @@ public class eyecore : MonoBehaviour
                 Invoke(nameof(DestroyEye), 0f);
             }
         }
-
     }
 
     void SummonEye()
@@ -53,14 +51,4 @@ public class eyecore : MonoBehaviour
         Debug.Log("eyeclose");
 
     }
-    void VariableEyeTrue()
-    {
-        Cineye = true;
-    }
-    void VariableEyeFalse()
-    {
-        Cineye = false;
-    }
-
-
 }
