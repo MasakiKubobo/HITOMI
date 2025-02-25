@@ -4,18 +4,15 @@ using UnityEngine;
 
 public class Cursoreye : MonoBehaviour
 {
-    bool Cineye;
     public void Cursorineye(Collider other)//判定
     {
         if (other.gameObject.CompareTag("Eye"))//Eyeタグのオブジェクトに触れたら
         {
-            Cineye = true;
             Debug.Log("Cineye is true");
-
         }
         else
         {
-            Cineye = false;
+
         }
     }
     private void Update()//Eye用Hitbox

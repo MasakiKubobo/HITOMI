@@ -7,9 +7,9 @@ using UnityEngine.XR;
 
 public class eyecore : MonoBehaviour
 {
-    bool eyeopen = false; //eyeが開いているか
-    bool Cinwall = false; //カーソルがwallの中にいるか
-    bool Cineye = false; //カーソルがeyeの中にいるか
+    public bool eyeopen = false; //eyeが開いているか
+    public bool Cinwall = false; //カーソルがwallの中にいるか
+    public bool Cineye = false; //カーソルがeyeの中にいるか
     void Update()
     {
 
@@ -38,12 +38,29 @@ public class eyecore : MonoBehaviour
     {
         eyeopen = true; //trueにする
         Debug.Log("eyeopen");
-        CancelInvoke(nameof(SummonEye));
     }
     void DestroyEye()
     {
         eyeopen = false; //falseにする
+        //eyeタグがついたすべてのオブジェクトを取得
+        GameObject[] objects = GameObject.FindGameObjectsWithTag("eye");
+        //各オブジェクトを削除
+        foreach (GameObject obj in objects)
+        {
+            Destroy(obj);
+        }
+
         Debug.Log("eyeclose");
-        CancelInvoke(nameof(DestroyEye));
+
     }
+    void VariableEyeTrue()
+    {
+        Cineye = true;
+    }
+    void VariableEyeFalse()
+    {
+        Cineye = false;
+    }
+
+
 }
