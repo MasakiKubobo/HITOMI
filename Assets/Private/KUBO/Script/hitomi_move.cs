@@ -4,27 +4,31 @@ using UnityEngine;
 
 public class hitomi_move : MonoBehaviour
 {
-    public GameObject Hitomi, Eye; // 瞳と子オブジェクトの黒目
+    public GameObject eye; // 瞳オブジェクト
 
     bool Active = false; // 瞳オブジェクトが非表示か否か
     Vector2 hitomiPos;
     // Start is called before the first frame update
     void Start()
     {
-        Hitomi.SetActive(false);
+        eye.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
+        // 瞳オブジェクトの2種類のコライダーを取得
+        CapsuleCollider2D capsuleCollider = eye.GetComponent<CapsuleCollider2D>(); // 瞳全体の当たり判定
+        CircleCollider2D circleCollider = GetComponent<CircleCollider2D>(); // 黒目の当たり判定
+
         if (Input.GetMouseButtonDown(0)) // 画面がクリックされたら
         {
             if (!Active) // 瞳オブジェクトが出現していない場合
             {
                 hitomiPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                Hitomi.transform.position = hitomiPos;
+                transform.position = hitomiPos;
 
-                Hitomi.SetActive(true);
+                eye.SetActive(true);
                 Active = true;
             }
             else
@@ -33,19 +37,35 @@ public class hitomi_move : MonoBehaviour
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit2D touch = Physics2D.Raycast(ray.origin, ray.direction);
 
-                if (touch == Hitomi) // Rayが瞳オブジェクトに当たったら（すなわち、瞳オブジェクトをクリックしたら）
+                if (touch.collider == capsuleCollider || touch.collider == circleCollider) // Rayが瞳オブジェクトに当たったら（すなわち、瞳オブジェクトをクリックしたら）
                 {
-                    Hitomi.SetActive(false);
+                    eye.SetActive(false);
                     Active = false;
                 }
-                else // 別の場所をクリックしていたら、瞳オブジェクトを削除して同時にクリックした場所に出現させる
+                // ↓別の場所をクリックしていたら、瞳オブジェクトを削除して同時にクリックした場所に出現させる
+                else
                 {
                     hitomiPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                    Hitomi.transform.position = hitomiPos;
+                    transform.position = hitomiPos;
+                }
+                if (touch.collider == null)
+                {
+                    hitomiPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    transform.position = hitomiPos;
                 }
             }
 
-            Debug.Log(hitomiPos);
+        }
+    }
+
+    void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("wall"))
+        {
+            // 出現した際、黒目の届く位置に壁オブジェクトがあれば消えてしまう。
+            Debug.Log("当たってはいる");
+            eye.SetActive(false);
+            Active = false;
         }
     }
 
