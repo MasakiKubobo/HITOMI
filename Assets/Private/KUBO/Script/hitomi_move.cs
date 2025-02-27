@@ -25,8 +25,8 @@ public class hitomi_move : MonoBehaviour
         {
             if (!Active) // 瞳オブジェクトが出現していない場合
             {
-                hitomiPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                transform.position = hitomiPos;
+                hitomiPos = Camera.main.ScreenToWorldPoint(Input.mousePosition); // マウス座標を世界座標に変換
+                transform.position = hitomiPos; // マウスの場所に瞳オブジェクトを移動
 
                 eye.SetActive(true);
                 Active = true;
@@ -63,7 +63,6 @@ public class hitomi_move : MonoBehaviour
         if (other.gameObject.CompareTag("wall"))
         {
             // 出現した際、黒目の届く位置に壁オブジェクトがあれば消えてしまう。
-            Debug.Log("当たってはいる");
             eye.SetActive(false);
             Active = false;
         }
