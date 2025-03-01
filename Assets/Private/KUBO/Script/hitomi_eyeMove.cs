@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class hitomi_eyeMove : MonoBehaviour
 {
-    public GameObject eye_black, eye_light;
+    public GameObject eye_black; // 黒目オブジェクト
+    public GameObject eyeLight; // 瞳の視野
     public float eyeShrink = 0.8f; // 黒目の大きさの倍率（この数値は黒目を小さくするのに使う）
     public float Radius = 0.5f; // 黒目が回転する半径
     // Start is called before the first frame update
     void Start()
     {
-        eye_light.SetActive(false);
+        eyeLight.SetActive(false);
     }
 
     // Update is called once per frame
@@ -25,7 +26,7 @@ public class hitomi_eyeMove : MonoBehaviour
         eye_black.transform.localPosition = direction * Radius; // 半径を決めて黒目をカーソルの方向へ回転させる
 
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg; // 角度を計算
-        eye_light.transform.rotation = Quaternion.Euler(0, 0, angle - 90); // カーソルの方向にライトを回転させる
+        eyeLight.transform.rotation = Quaternion.Euler(0, 0, angle - 90); // カーソルの方向にライトを回転させる
 
 
         // マウスからRayを飛ばす
@@ -34,10 +35,14 @@ public class hitomi_eyeMove : MonoBehaviour
 
         if (touch.collider == circleCollider) // 瞳の中央に触れていたら、黒目の位置は中心に戻り、大きさも元に戻る
         {
-            eye_light.SetActive(false);
+            eyeLight.SetActive(false);
             eye_black.transform.localPosition = new Vector2(0, 0);
             eye_black.transform.localScale = new Vector2(1, 1);
         }
-        else eye_light.SetActive(true);
+        else
+        {
+            hitomi_move hitomiMove = GetComponent<hitomi_move>();
+            if (hitomiMove.Active) eyeLight.SetActive(true); // 瞳全体が非表示でなければ視野オブジェクトも表示する
+        }
     }
 }

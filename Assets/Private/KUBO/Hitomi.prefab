@@ -1,102 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &334851176644409561
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2106842472862206484}
-  - component: {fileID: 2427076322175079890}
-  - component: {fileID: 4564814977879993884}
-  m_Layer: 5
-  m_Name: hitomi_light
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2106842472862206484
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 334851176644409561}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 1, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2027671317231880648}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
---- !u!114 &2427076322175079890
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 334851176644409561}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ComponentVersion: 1
-  m_LightType: 3
-  m_BlendStyleIndex: 0
-  m_FalloffIntensity: 0
-  m_Color: {r: 1, g: 1, b: 1, a: 0.3254902}
-  m_Intensity: 3
-  m_LightVolumeIntensity: 1
-  m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 4562d85acdab2f67ebd66e458b86ff08
-  m_LightCookieSprite: {fileID: 0}
-  m_DeprecatedPointLightCookieSprite: {fileID: 0}
-  m_LightOrder: 0
-  m_AlphaBlendOnOverlap: 0
-  m_OverlapOperation: 0
-  m_NormalMapDistance: 3
-  m_NormalMapQuality: 2
-  m_UseNormalMap: 0
-  m_ShadowIntensityEnabled: 1
-  m_ShadowIntensity: 1
-  m_ShadowVolumeIntensityEnabled: 0
-  m_ShadowVolumeIntensity: 0.75
-  m_LocalBounds:
-    m_Center: {x: 0, y: -0.00000011920929, z: 0}
-    m_Extent: {x: 0.9985302, y: 0.99853027, z: 0}
-  m_PointLightInnerAngle: 50.000004
-  m_PointLightOuterAngle: 50.000004
-  m_PointLightInnerRadius: 0
-  m_PointLightOuterRadius: 5
-  m_ShapeLightParametricSides: 5
-  m_ShapeLightParametricAngleOffset: 0
-  m_ShapeLightParametricRadius: 1
-  m_ShapeLightFalloffSize: 0.5
-  m_ShapeLightFalloffOffset: {x: 0, y: 0}
-  m_ShapePath:
-  - {x: -0.5, y: -0.5, z: 0}
-  - {x: 0.5, y: -0.5, z: 0}
-  - {x: 0.5, y: 0.5, z: 0}
-  - {x: -0.5, y: 0.5, z: 0}
---- !u!114 &4564814977879993884
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 334851176644409561}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f04412265e7974da1b0517061daf70d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RaysAmount: 50
-  hitPoint: {x: 0, y: 0}
 --- !u!1 &2394124356441759194
 GameObject:
   m_ObjectHideFlags: 0
@@ -107,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1272252988686263548}
   - component: {fileID: 6006731559012895163}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: UI_light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -211,7 +114,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5590102366170856965}
-  - {fileID: 2106842472862206484}
   m_Father: {fileID: 417183939461836537}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8857721002895452303
@@ -313,7 +215,7 @@ GameObject:
   - component: {fileID: 6057989338529317135}
   - component: {fileID: 2643202951318163550}
   - component: {fileID: 3506272581169863670}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Hitomi
   m_TagString: eye
   m_Icon: {fileID: 0}
@@ -333,6 +235,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 5564040283370985182}
   - {fileID: 2027671317231880648}
   - {fileID: 1272252988686263548}
   m_Father: {fileID: 0}
@@ -350,6 +253,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eye: {fileID: 3923930516960521011}
+  eyeLight: {fileID: 1530642943171148544}
+  Active: 0
 --- !u!114 &2643202951318163550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -363,7 +268,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eye_black: {fileID: 5444946977511555648}
-  eye_light: {fileID: 334851176644409561}
+  eyeLight: {fileID: 1530642943171148544}
   eyeShrink: 0.8
   Radius: 0.25
 --- !u!58 &3506272581169863670
@@ -485,3 +390,70 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1001 &2660889508551120690
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 417183939461836537}
+    m_Modifications:
+    - target: {fileID: 3589526465473702962, guid: f38c46028dddb41adb5052f5f45fff7c, type: 3}
+      propertyPath: m_Name
+      value: hitomi_light
+      objectReference: {fileID: 0}
+    - target: {fileID: 7627428437544288748, guid: f38c46028dddb41adb5052f5f45fff7c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7627428437544288748, guid: f38c46028dddb41adb5052f5f45fff7c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7627428437544288748, guid: f38c46028dddb41adb5052f5f45fff7c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7627428437544288748, guid: f38c46028dddb41adb5052f5f45fff7c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7627428437544288748, guid: f38c46028dddb41adb5052f5f45fff7c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7627428437544288748, guid: f38c46028dddb41adb5052f5f45fff7c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7627428437544288748, guid: f38c46028dddb41adb5052f5f45fff7c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7627428437544288748, guid: f38c46028dddb41adb5052f5f45fff7c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7627428437544288748, guid: f38c46028dddb41adb5052f5f45fff7c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7627428437544288748, guid: f38c46028dddb41adb5052f5f45fff7c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 180
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f38c46028dddb41adb5052f5f45fff7c, type: 3}
+--- !u!1 &1530642943171148544 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3589526465473702962, guid: f38c46028dddb41adb5052f5f45fff7c, type: 3}
+  m_PrefabInstance: {fileID: 2660889508551120690}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5564040283370985182 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7627428437544288748, guid: f38c46028dddb41adb5052f5f45fff7c, type: 3}
+  m_PrefabInstance: {fileID: 2660889508551120690}
+  m_PrefabAsset: {fileID: 0}
