@@ -27,7 +27,23 @@ public class lift_move : MonoBehaviour
         }
         else
         {
-            transform.position = startPos;
+            transform.position = startPos;  // 実体化解除でリセット
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D other) // リフトの動きにプレイヤーを追従させる
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            other.transform.SetParent(transform); // プレイヤーをリフトの子オブジェクト化
+        }
+    }
+
+    void OnCollisionExit2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            other.transform.SetParent(null); // 子オブジェクトから解除
         }
     }
 }

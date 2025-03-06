@@ -6,11 +6,12 @@ using UnityEngine.Experimental.Rendering.Universal;
 
 public class hitomi_view : MonoBehaviour
 {
-    private float Radius;
-    private float Angle; //光とRayが散らばる角度
+    public float Radius = 5; // 光の届く距離
+    public float Angle = 50; // 光とRayが散らばる角度
 
-    [Range(0, 100)]
-    public int RaysAmount; //Rayの数
+    [Space(10)]
+    public float RayRadius = 4; // Rayの届く距離
+    [Range(0, 100)] public int RaysAmount; //Rayの数
 
     private Light2D light2d;
 
@@ -40,7 +41,7 @@ public class hitomi_view : MonoBehaviour
 
         for (int i = 0; i <= RaysAmount; i++) // RaysAmountの数だけRayを放射する
         {
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, direction(addAngle), Radius, ~LayerMask.GetMask("UI", "Hitomi"));
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, direction(addAngle), RayRadius, ~LayerMask.GetMask("UI", "Hitomi"));
 
             if (hit.collider != null)
             {
@@ -50,7 +51,7 @@ public class hitomi_view : MonoBehaviour
                 RayHitReceiver hitReceiver = hit.collider.GetComponent<RayHitReceiver>();
 
                 // Invisibleタグのみに、以下の処理を加える
-                if (hit.collider.gameObject.CompareTag("Invisible"))
+                if (hit.collider.gameObject.CompareTag("Ground") && hitReceiver != null)
                 {
                     hitReceiver.OnRaycastHit();
                 }
@@ -58,7 +59,7 @@ public class hitomi_view : MonoBehaviour
             else
             {
                 // 何もヒットしなかった場合、最大距離まで Ray を描画
-                Debug.DrawRay(transform.position, direction(addAngle) * Radius);
+                Debug.DrawRay(transform.position, direction(addAngle) * RayRadius);
             }
 
             addAngle += Angle / RaysAmount; //端から角度を足していき、順番にRayを放射

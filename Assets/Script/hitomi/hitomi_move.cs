@@ -77,7 +77,7 @@ public class hitomi_move : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("wall"))
+        if (other.gameObject.CompareTag("Wall") || other.gameObject.CompareTag("Ground"))
         {
             // 出現した際、黒目の届く位置に壁オブジェクトがあれば消えてしまう。
             eye.SetActive(false);
