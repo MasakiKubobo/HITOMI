@@ -6,7 +6,10 @@ TagManager:
   tags:
   - Invisible
   - eye
-  - wall
+  - Wall
+  - Ground
+  - DeadZone
+  - Item
   layers:
   - Default
   - TransparentFX
@@ -16,8 +19,8 @@ TagManager:
   - UI
   - Wall
   - Hitomi
-  - 
-  - 
+  - Player
+  - Enemy
   - 
   - 
   - 

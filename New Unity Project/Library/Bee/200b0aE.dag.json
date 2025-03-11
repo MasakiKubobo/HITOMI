@@ -179,6 +179,10 @@
   "SharedResources": [],
   "Scanners": [],
   "Identifier": "Library/Bee/200b0aE.dag.json",
+<<<<<<< HEAD
   "PayloadsFile": "/Users/hw24a144/Desktop/hitomi/New Unity Project/Library/Bee/200b0aE.dag.payloads",
+=======
+  "PayloadsFile": "/Users/hw24a050/Desktop/hitomi/New Unity Project/Library/Bee/200b0aE.dag.payloads",
+>>>>>>> 1618b6089599f1fbf8026aa3194e56e8d80d1dd0
   "RelativePathToRoot": "../.."
 }
