@@ -41,7 +41,7 @@ public class hitomi_view : MonoBehaviour
 
         for (int i = 0; i <= RaysAmount; i++) // RaysAmountの数だけRayを放射する
         {
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, direction(addAngle), RayRadius, ~LayerMask.GetMask("UI", "Hitomi"));
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, direction(addAngle), RayRadius, ~LayerMask.GetMask("UI", "Hitomi", "Player"));
 
             if (hit.collider != null)
             {

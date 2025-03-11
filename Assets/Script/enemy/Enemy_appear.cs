@@ -12,7 +12,7 @@ public class Enemy_appear : MonoBehaviour
     public GameObject Aura_light; //実体化すると現れるオーラ
     private Collider2D col;
 
-    private bool Materialized = false; // 実体化状態か否か
+    [HideInInspector] public bool Materialized = false; // 実体化状態か否か
     private float alpha = 0;
 
     private SpriteRenderer _renderer;

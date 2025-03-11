@@ -10,7 +10,11 @@ public class lift_move : MonoBehaviour
     public float X;
     public float Y;
 
+    public bool turn = false;
+    public float turnTime = 1;
+
     private Vector2 startPos;
+    private float timer = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,14 +25,46 @@ public class lift_move : MonoBehaviour
     void Update()
     {
         AppearObject appearObject = GetComponent<AppearObject>();
-        if (appearObject.Materialized) // もし実体化中なら
+        SwitchAppear switchAppear = GetComponent<SwitchAppear>();
+
+        if (appearObject != null)
         {
-            transform.position += new Vector3(X, Y) * Time.deltaTime;
+            if (appearObject.Materialized) // もし実体化中なら
+            {
+                if (timer >= turnTime)
+                {
+                    X *= -1;
+                    Y *= -1;
+                    timer = 0;
+                }
+                transform.position += new Vector3(X, Y) * Time.deltaTime;
+                if (turn) timer += Time.deltaTime;
+            }
+            else
+            {
+                transform.position = startPos;  // 実体化解除でリセット
+            }
         }
         else
         {
-            transform.position = startPos;  // 実体化解除でリセット
+            if (switchAppear.Materialized) // もし実体化中なら
+            {
+                if (timer >= turnTime)
+                {
+                    X *= -1;
+                    Y *= -1;
+                    timer = 0;
+                }
+                transform.position += new Vector3(X, Y) * Time.deltaTime;
+                if (turn) timer += Time.deltaTime;
+            }
+            else
+            {
+                transform.position = startPos;  // 実体化解除でリセット
+            }
         }
+
+
     }
 
     void OnCollisionEnter2D(Collision2D other) // リフトの動きにプレイヤーを追従させる
