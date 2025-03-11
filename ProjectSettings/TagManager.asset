@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Invisible
+  - eye
+  - Wall
+  - Ground
+  - DeadZone
+  - Item
   layers:
   - Default
   - TransparentFX
@@ -13,9 +18,9 @@ TagManager:
   - Water
   - UI
   - Wall
-  - 
-  - 
-  - 
+  - Hitomi
+  - Player
+  - Enemy
   - 
   - 
   - 
@@ -50,4 +55,10 @@ TagManager:
     locked: 0
   - name: Invisible
     uniqueID: 1731177421
+    locked: 0
+  - name: Enemy
+    uniqueID: 1164891883
+    locked: 0
+  - name: UI
+    uniqueID: 150963851
     locked: 0
