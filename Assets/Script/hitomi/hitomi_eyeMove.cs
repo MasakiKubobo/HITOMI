@@ -29,6 +29,14 @@ public class hitomi_eyeMove : MonoBehaviour
         eyeLight.transform.rotation = Quaternion.Euler(0, 0, angle - 90); // カーソルの方向にライトを回転させる
 
 
+        hitomi_move hitomiMove = GetComponent<hitomi_move>();
+        if (hitomiMove.gameOver)
+        {
+            eye_black.transform.localPosition = new Vector2(0, 0);
+            eye_black.transform.localScale = new Vector2(1.2f, 1.2f);
+        }
+
+
         // マウスからRayを飛ばす
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit2D touch = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity, ~LayerMask.GetMask("UI"));
@@ -41,7 +49,6 @@ public class hitomi_eyeMove : MonoBehaviour
         }
         else
         {
-            hitomi_move hitomiMove = GetComponent<hitomi_move>();
             if (hitomiMove.Active) eyeLight.SetActive(true); // 瞳全体が非表示でなければ視野オブジェクトも表示する
         }
     }

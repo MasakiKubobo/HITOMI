@@ -48,12 +48,11 @@ public class PL_move : MonoBehaviour
         else rb.velocity = new Vector2(x * skySpeed, rb.velocity.y); // 空中のダッシュ出力
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerStay2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("DeadZone"))
         {
-            Debug.Log("ゲームオーバー");
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            camera_mask.GameOver = true;
         }
     }
 

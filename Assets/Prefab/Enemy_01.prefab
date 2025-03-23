@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 8781484392133951327}
   m_Layer: 0
   m_Name: Enemy_01
-  m_TagString: Ground
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -106,6 +106,7 @@ MonoBehaviour:
   AppearSpeed: 1
   _light: {fileID: 3517645063287518034}
   Aura_light: {fileID: 3243620481972995127}
+  Materialized: 0
 --- !u!114 &1521029828570005636
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -6,73 +6,80 @@ public class hitomi_move : MonoBehaviour
 {
     public GameObject eye; // 瞳オブジェクト
     public GameObject eyeLight; // 瞳の視野
+    public GameObject animator; // 瞳のアニメーション
+    private Animator anim;
 
     [HideInInspector] public bool Active = false; // 瞳オブジェクトが非表示か否か
     [HideInInspector] public bool Deactivate = false; // 非活性化した瞬間か否か
-    bool activeFlag = false;
+    [HideInInspector] public bool gameOver = false; // ゲームオーバーが確定したか否か
     Vector2 hitomiPos;
     // Start is called before the first frame update
     void Start()
     {
         eye.SetActive(false);
         eyeLight.SetActive(false);
+        anim = animator.GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        eyeLight.transform.position = transform.position; // 視野オブジェクトを瞳オブジェクトに追従させる
-
         // 瞳オブジェクトの2種類のコライダーを取得
         CapsuleCollider2D capsuleCollider = eye.GetComponent<CapsuleCollider2D>(); // 瞳全体の当たり判定
         CircleCollider2D circleCollider = GetComponent<CircleCollider2D>(); // 黒目の当たり判定
 
-        if (!Active) // 瞳オブジェクトが出現していない場合
+        if (!gameOver)
         {
             if (Input.GetMouseButtonDown(0)) // 画面がクリックされたら
             {
                 hitomiPos = Camera.main.ScreenToWorldPoint(Input.mousePosition); // マウス座標を世界座標に変換
                 transform.position = hitomiPos; // マウスの場所に瞳オブジェクトを移動
-
-                eye.SetActive(true);
-                eyeLight.SetActive(true);
-
-                Active = true;
+                anim.SetBool("eyeOpen", true);
+                Invoke(nameof(Opening), 0.25f);
             }
-        }
-        else
-        {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonUp(0))
             {
-                // マウスからRayを飛ばす
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit2D touch = Physics2D.Raycast(ray.origin, ray.direction);
-
-                // Rayが瞳オブジェクトに当たったら（すなわち、瞳オブジェクトをクリックしたら）
-                if (touch.collider == capsuleCollider || touch.collider == circleCollider)
-                {
-                    eye.SetActive(false);
-                    eyeLight.SetActive(false);
-                    Active = false;
-                    Deactivate = true;
-                }
-                // ↓別の場所をクリックしていたら、瞳オブジェクトを削除して同時にクリックした場所に出現させる(ワープ)
-                else
-                {
-                    hitomiPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                    transform.position = hitomiPos;
-                    Deactivate = true;
-                }
-                if (touch.collider == null)
-                {
-                    hitomiPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                    transform.position = hitomiPos;
-                    Deactivate = true;
-                }
+                anim.SetBool("eyeClose", true);
+                eye.SetActive(false);
+                eyeLight.SetActive(false);
+                Active = false;
+                Deactivate = true;
+                Invoke(nameof(Closeing), 0.25f);
             }
         }
 
-        if (!Input.GetMouseButtonDown(0)) Deactivate = false;
+        if (camera_mask.GameOver)
+        {
+            eye.SetActive(false);
+            eyeLight.SetActive(false);
+        }
+
+    }
+
+    void Opening()
+    {
+        anim.SetBool("eyeOpen", false);
+        eye.SetActive(true);
+        eyeLight.SetActive(true);
+
+        Active = true;
+    }
+    void Closeing()
+    {
+        anim.SetBool("eyeClose", false);
+        Deactivate = false;
+    }
+
+    void Damaging()
+    {
+        eye.SetActive(false);
+        anim.SetBool("eyeDown", true);
+        Invoke(nameof(Crying), 0.45f);
+    }
+    void Crying()
+    {
+        anim.SetBool("eyeDown", false);
+        camera_mask.GameOver = true;
     }
 
     void OnTriggerStay2D(Collider2D other)
@@ -83,6 +90,20 @@ public class hitomi_move : MonoBehaviour
             eye.SetActive(false);
             eyeLight.SetActive(false);
             Active = false;
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            if (Active)
+            {
+                eyeLight.SetActive(false);
+                gameOver = true;
+                Invoke(nameof(Damaging), 0.5f);
+                Active = false;
+            }
         }
     }
 

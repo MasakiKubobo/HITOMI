@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,9 +20,10 @@ public class AppearObject : MonoBehaviour, RayHitReceiver
     public float StartAlpha = 0; // 非実体化状態でどれだけはっきり見えるか
 
     [Space(10)]
-    public Collider2D _collider; // 実体化すると現れる物理判定
     public GameObject _light; //実体化すると全体を表示させるための光
     public GameObject Aura_light; //実体化すると現れるオーラ
+    public Collider2D _collider; // 実体化すると現れる物理判定
+    public Rigidbody2D _rb; // 実体化すると現れるRigidbody
 
     [HideInInspector]
     public bool Materialized = false; //実体化状態か否か
@@ -41,6 +43,7 @@ public class AppearObject : MonoBehaviour, RayHitReceiver
         _renderer.color = new Color(1, 1, 1, alpha);
 
         if (_collider != null) _collider.enabled = false;
+        if (_rb != null) _rb.isKinematic = true;
         if (Appear) _light.SetActive(true);
         else _light.SetActive(false);
         Aura_light.SetActive(false);
@@ -59,6 +62,7 @@ public class AppearObject : MonoBehaviour, RayHitReceiver
         {
             _renderer.color = new Color(1, 1, 1, 1); // 不透明にする
             if (_collider != null) _collider.enabled = true; // 当たり判定をつける
+            if (_rb != null) _rb.isKinematic = false;
             _light.SetActive(true); // 全体に光を当てる
             Aura_light.SetActive(true); // オーラを纏わせる
             alpha = Appear ? StartAlpha : 0; // 実体化が解除された時のアルファ値を設定する
@@ -67,6 +71,8 @@ public class AppearObject : MonoBehaviour, RayHitReceiver
         {
             _renderer.color = new Color(1, 1, 1, alpha);
             if (_collider != null) _collider.enabled = false;
+            if (_rb != null) _rb.isKinematic = true;
+
             if (Appear) _light.SetActive(true);
             else _light.SetActive(false);
             Aura_light.SetActive(false);
@@ -79,7 +85,6 @@ public class AppearObject : MonoBehaviour, RayHitReceiver
         {
             Materialized = false;
         }
-
 
         appearing = false;
     }

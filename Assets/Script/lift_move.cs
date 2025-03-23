@@ -13,6 +13,8 @@ public class lift_move : MonoBehaviour
     public bool turn = false;
     public float turnTime = 1;
 
+    public bool Parent = true; // 実体化中、触れていると主人公キャラの動きが追従するか
+
     private Vector2 startPos;
     private float timer = 0;
     // Start is called before the first frame update
@@ -71,7 +73,7 @@ public class lift_move : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            other.transform.SetParent(transform); // プレイヤーをリフトの子オブジェクト化
+            if (Parent) other.transform.SetParent(transform); // プレイヤーをリフトの子オブジェクト化
         }
     }
 
@@ -79,7 +81,7 @@ public class lift_move : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            other.transform.SetParent(null); // 子オブジェクトから解除
+            if (Parent) other.transform.SetParent(null); // 子オブジェクトから解除
         }
     }
 }
