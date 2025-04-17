@@ -10,6 +10,7 @@ public class PL_move : MonoBehaviour
     public float skySpeed; // 空中時の速度
     public float jumpPower; // ジャンプ力
 
+    [HideInInspector] public bool Onbox = false; // ボックスの上か否か
     private bool canJump = false; // ジャンプ可能か
     private bool hold = false; // 何かを持っているか
     private GameObject Item;
@@ -77,6 +78,11 @@ public class PL_move : MonoBehaviour
         {
             canJump = true;
         }
+        if (other.gameObject.CompareTag("Box"))
+        {
+            canJump = true;
+            Onbox = true;
+        }
 
         if (other.gameObject.CompareTag("Item"))
         {
@@ -95,6 +101,11 @@ public class PL_move : MonoBehaviour
         if (other.gameObject.CompareTag("Ground"))
         {
             canJump = false;
+        }
+        if (other.gameObject.CompareTag("Box"))
+        {
+            canJump = false;
+            Onbox = false;
         }
     }
 }

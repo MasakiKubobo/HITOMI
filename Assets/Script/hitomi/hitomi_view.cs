@@ -28,8 +28,8 @@ public class hitomi_view : MonoBehaviour
     void Update()
     {
         //Light2Dの各数値の割り当て
-        Radius = light2d.pointLightOuterRadius;
-        Angle = light2d.pointLightOuterAngle;
+        light2d.pointLightOuterRadius = Radius;
+        light2d.pointLightOuterAngle = Angle;
 
         RayScatter();
     }
@@ -51,7 +51,7 @@ public class hitomi_view : MonoBehaviour
                 RayHitReceiver hitReceiver = hit.collider.GetComponent<RayHitReceiver>();
 
                 // Invisibleタグのみに、以下の処理を加える
-                if (hit.collider.gameObject.CompareTag("Ground") && hitReceiver != null)
+                if ((hit.collider.gameObject.CompareTag("Ground") || hit.collider.gameObject.CompareTag("Box")) && hitReceiver != null)
                 {
                     hitReceiver.OnRaycastHit();
                 }

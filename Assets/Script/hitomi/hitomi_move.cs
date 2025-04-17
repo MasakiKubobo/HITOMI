@@ -7,6 +7,7 @@ public class hitomi_move : MonoBehaviour
     public GameObject eye; // 瞳オブジェクト
     public GameObject eyeLight; // 瞳の視野
     public GameObject animator; // 瞳のアニメーション
+    public GameObject tear; // 零れ落ちる涙
     private Animator anim;
 
     [HideInInspector] public bool Active = false; // 瞳オブジェクトが非表示か否か
@@ -45,6 +46,9 @@ public class hitomi_move : MonoBehaviour
                 Active = false;
                 Deactivate = true;
                 Invoke(nameof(Closeing), 0.25f);
+
+                CancelInvoke(nameof(Opening)); // 一瞬だけ瞳を出現させた時
+                anim.SetBool("eyeOpen", false);
             }
         }
 
@@ -70,15 +74,22 @@ public class hitomi_move : MonoBehaviour
         Deactivate = false;
     }
 
-    void Damaging()
+    void Crying_1()
     {
         eye.SetActive(false);
         anim.SetBool("eyeDown", true);
-        Invoke(nameof(Crying), 0.45f);
+        Invoke(nameof(Crying_2), 0.75f);
     }
-    void Crying()
+    void Crying_2()
     {
         anim.SetBool("eyeDown", false);
+        Vector2 tearPos = new Vector2(transform.position.x, transform.position.y - 0.4f);
+        Instantiate(tear, tearPos, Quaternion.identity);
+        Invoke(nameof(Crying_3), 0.7f);
+    }
+
+    void Crying_3()
+    {
         camera_mask.GameOver = true;
     }
 
@@ -101,7 +112,7 @@ public class hitomi_move : MonoBehaviour
             {
                 eyeLight.SetActive(false);
                 gameOver = true;
-                Invoke(nameof(Damaging), 0.5f);
+                Invoke(nameof(Crying_1), 0.3f);
                 Active = false;
             }
         }

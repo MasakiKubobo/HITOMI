@@ -9,6 +9,7 @@ public class lift_move : MonoBehaviour
     [Header("Speed and Direction")]
     public float X;
     public float Y;
+    private float x, y;
 
     public bool turn = false;
     public float turnTime = 1;
@@ -17,10 +18,16 @@ public class lift_move : MonoBehaviour
 
     private Vector2 startPos;
     private float timer = 0;
+    private bool boxOn = false;
+
+    private GameObject player, box;
     // Start is called before the first frame update
     void Start()
     {
         startPos = transform.position;
+        x = X;
+        y = Y;
+
     }
 
     // Update is called once per frame
@@ -41,10 +48,25 @@ public class lift_move : MonoBehaviour
                 }
                 transform.position += new Vector3(X, Y) * Time.deltaTime;
                 if (turn) timer += Time.deltaTime;
+
+                PL_move pL_Move = player.GetComponent<PL_move>();
+                if (pL_Move.Onbox)
+                {
+                    if (Parent) player.transform.SetParent(transform); // ボックスをリフトの子オブジェクト化
+                }
             }
             else
             {
+                if (Parent)
+                {
+                    player.transform.SetParent(null); // 子オブジェクトから解除
+                    box.transform.SetParent(null);
+                }
                 transform.position = startPos;  // 実体化解除でリセット
+                timer = 0;
+                X = x;
+                Y = y;
+
             }
         }
         else
@@ -59,28 +81,58 @@ public class lift_move : MonoBehaviour
                 }
                 transform.position += new Vector3(X, Y) * Time.deltaTime;
                 if (turn) timer += Time.deltaTime;
+
+                PL_move pL_Move = player.GetComponent<PL_move>();
+                if (pL_Move.Onbox)
+                {
+                    if (Parent) player.transform.SetParent(transform); // ボックスをリフトの子オブジェクト化
+                }
             }
             else
             {
+                if (Parent)
+                {
+                    player.transform.SetParent(null); // 子オブジェクトから解除
+                    box.transform.SetParent(null);
+                }
                 transform.position = startPos;  // 実体化解除でリセット
+                timer = 0;
+                X = x;
+                Y = y;
+
             }
         }
 
 
     }
 
-    void OnCollisionEnter2D(Collision2D other) // リフトの動きにプレイヤーを追従させる
+    void OnCollisionStay2D(Collision2D other) // リフトの動きにプレイヤーを追従させる
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            player = other.gameObject;
             if (Parent) other.transform.SetParent(transform); // プレイヤーをリフトの子オブジェクト化
         }
+
+        if (other.gameObject.CompareTag("Box"))
+        {
+            box = other.gameObject;
+            boxOn = true;
+            if (Parent) other.transform.SetParent(transform); // ボックスをリフトの子オブジェクト化
+        }
+
     }
 
     void OnCollisionExit2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            if (Parent) other.transform.SetParent(null); // 子オブジェクトから解除
+        }
+
+        if (other.gameObject.CompareTag("Box"))
+        {
+            boxOn = false;
             if (Parent) other.transform.SetParent(null); // 子オブジェクトから解除
         }
     }

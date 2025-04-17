@@ -11,6 +11,7 @@ TagManager:
   - DeadZone
   - Item
   - Enemy
+  - Box
   layers:
   - Default
   - TransparentFX

@@ -106,6 +106,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7933036107089588251}
+  - component: {fileID: 3868502398842677566}
   - component: {fileID: 5634307909771508833}
   m_Layer: 7
   m_Name: collider
@@ -129,6 +130,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 9212560205753883092}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3868502398842677566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6821873570017908862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afa94ce10a13c42b389ad105f4a0b4db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GorlObject: {fileID: 0}
+  gorl: {fileID: 0}
 --- !u!70 &5634307909771508833
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -177,7 +192,6 @@ GameObject:
   - component: {fileID: 760986778933541709}
   - component: {fileID: 1912855130026472241}
   - component: {fileID: 5940506126480864137}
-  - component: {fileID: 5350116674619545545}
   m_Layer: 0
   m_Name: Player_2
   m_TagString: Player
@@ -218,6 +232,7 @@ MonoBehaviour:
   Speed: 5
   skySpeed: 5
   jumpPower: 12
+  Onbox: 0
 --- !u!114 &760986778933541709
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -308,18 +323,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &5350116674619545545
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8245661819662867988}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: afa94ce10a13c42b389ad105f4a0b4db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &33493696088820986
 PrefabInstance:
   m_ObjectHideFlags: 0

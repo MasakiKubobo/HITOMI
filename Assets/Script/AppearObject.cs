@@ -71,7 +71,11 @@ public class AppearObject : MonoBehaviour, RayHitReceiver
         {
             _renderer.color = new Color(1, 1, 1, alpha);
             if (_collider != null) _collider.enabled = false;
-            if (_rb != null) _rb.isKinematic = true;
+            if (_rb != null)
+            {
+                _rb.velocity = Vector3.zero;
+                _rb.isKinematic = true;
+            }
 
             if (Appear) _light.SetActive(true);
             else _light.SetActive(false);
