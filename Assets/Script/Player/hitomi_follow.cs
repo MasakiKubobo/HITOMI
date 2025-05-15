@@ -17,11 +17,18 @@ public class hitomi_follow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if (follow)
         {
             Vector3 vec = player.transform.position - transform.position;
             transform.position += new Vector3(vec.x * speed * Time.deltaTime, vec.y * speed * Time.deltaTime, 0);
         }
+
+
+    }
+
+    void FixedUpdate()
+    {
 
     }
 
