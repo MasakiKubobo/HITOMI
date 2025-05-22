@@ -20,11 +20,11 @@ TagManager:
   - Water
   - UI
   - Wall
-  - Hitomi
+  - Eye
   - Player
   - Enemy
-  - 
-  - 
+  - Ground
+  - playerBody
   - 
   - 
   - 

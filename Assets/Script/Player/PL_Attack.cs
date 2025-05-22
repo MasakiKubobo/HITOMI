@@ -6,15 +6,14 @@ using UnityEngine;
 public class PL_Attack : MonoBehaviour
 {
     [HideInInspector] public bool attack;
-    public float attackLimit = 0.3f;
-
-    public Sprite normalSP, attackSP;
-    private SpriteRenderer spriteRenderer;
+    public float attackLimit = 0.2f;
+    public float coolTime = 0.3f;
+    public GameObject effect;
     private float timer = 0;
     // Start is called before the first frame update
     void Start()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        effect.SetActive(false);
     }
 
     // Update is called once per frame
@@ -22,13 +21,22 @@ public class PL_Attack : MonoBehaviour
     {
         if (attack)
         {
-            spriteRenderer.sprite = attackSP;
+
             timer += Time.deltaTime;
-            if (timer >= attackLimit) attack = false;
+            if (timer < attackLimit)
+            {
+                effect.SetActive(true);
+            }
+            else
+            {
+                effect.SetActive(false);
+
+                if (timer >= attackLimit + coolTime) attack = false;
+            }
         }
         else
         {
-            spriteRenderer.sprite = normalSP;
+            effect.SetActive(false);
             timer = 0;
         }
 

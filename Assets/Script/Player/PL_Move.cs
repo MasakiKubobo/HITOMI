@@ -57,8 +57,12 @@ public class PL_Move : MonoBehaviour
             if (inAir) jumpFlag = true;
         }
 
-        if (left) transform.eulerAngles = new Vector3(0, 180, 0);
-        else transform.eulerAngles = new Vector3(0, 0, 0);
+        PL_Attack pL_Attack = GetComponent<PL_Attack>();
+        if (!pL_Attack.attack) // 主人公の向きを反転（アタック中は除く）
+        {
+            if (left) transform.eulerAngles = new Vector3(0, 180, 0);
+            else transform.eulerAngles = new Vector3(0, 0, 0);
+        }
     }
 
     void FixedUpdate()
@@ -66,10 +70,16 @@ public class PL_Move : MonoBehaviour
         float xSpeed = 0;
         float ySpeed = 0;
 
-        if (dash)
+        if (dash) // ダッシュ入力中に
         {
-            if (left) xSpeed = dashPowor;
-            else xSpeed = -dashPowor;
+            if (left) // 左向きに走る
+            {
+                xSpeed = dashPowor;
+            }
+            else // 右向きに走る
+            {
+                xSpeed = -dashPowor;
+            }
         }
 
         ySpeed = jumpPower;

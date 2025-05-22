@@ -7,6 +7,8 @@ public class hitomi_follow : MonoBehaviour
     public GameObject player;
     public float speed = 1;
 
+    public GameObject kurome;
+
     bool follow = true;
     // Start is called before the first frame update
     void Start()
@@ -17,11 +19,19 @@ public class hitomi_follow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Vector3 kuromeVec = kurome.transform.position;
+        Vector3 followVec = player.transform.position - transform.position;
+        followVec.z = 0;
 
-        if (follow)
+        if (follow) // 主人公について来る
         {
-            Vector3 vec = player.transform.position - transform.position;
-            transform.position += new Vector3(vec.x * speed * Time.deltaTime, vec.y * speed * Time.deltaTime, 0);
+            transform.position += followVec * speed * Time.deltaTime;
+        }
+
+        if (follow) // 追従中、瞳の黒目が主人公の方を向く
+        {
+            followVec.z = -0.1f;
+            kurome.transform.localPosition = followVec.normalized / 5;
         }
 
 
