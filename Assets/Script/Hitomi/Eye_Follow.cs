@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class hitomi_follow : MonoBehaviour
+public class Eye_Follow : MonoBehaviour
 {
     public GameObject player;
     public float speed = 1;
@@ -19,9 +19,7 @@ public class hitomi_follow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 kuromeVec = kurome.transform.position;
         Vector3 followVec = player.transform.position - transform.position;
-        followVec.z = 0;
 
         if (follow) // 主人公について来る
         {
@@ -30,7 +28,6 @@ public class hitomi_follow : MonoBehaviour
 
         if (follow) // 追従中、瞳の黒目が主人公の方を向く
         {
-            followVec.z = -0.1f;
             kurome.transform.localPosition = followVec.normalized / 5;
         }
 

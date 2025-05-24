@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -16,16 +17,17 @@ public class PL_Controller : MonoBehaviour
     [SerializeField] private InputAction eyeOpen;
 
     public GameObject animManager;
-    public GameObject eye, eyeSP;
+    public GameObject eye, eyeSP, pointer;
 
 
     private float timer = 0, timer2 = 0;
 
     bool attackFlag = false, appearFlag = false;
+    Vector2 pointerVec = Vector2.zero;
     // Start is called before the first frame update
     void Start()
     {
-        eyeSP.SetActive(false);
+        pointer.transform.parent = null;
     }
 
     private void OnEnable()
@@ -61,6 +63,9 @@ public class PL_Controller : MonoBehaviour
 
         Eye_Anim eye_Anim = animManager.GetComponent<Eye_Anim>();
         EyeSP_Anim eyeSP_Anim = animManager.GetComponent<EyeSP_Anim>();
+        EyeSP_Move eyeSP_Move = eyeSP.GetComponent<EyeSP_Move>();
+
+        EyeSPpointer eyeSPpointer = pointer.GetComponent<EyeSPpointer>();
 
 
         if (_Dash > 0.3f)
@@ -78,7 +83,7 @@ public class PL_Controller : MonoBehaviour
             pL_Move.dash = false;
         }
 
-        if (_Jump > 0)
+        if (_Jump > 0.1)
         {
             pL_Move.jump = true;
         }
@@ -104,68 +109,77 @@ public class PL_Controller : MonoBehaviour
             pL_Attack.attack = false;
         }
 
+        // 瞳と特殊な瞳を切り替える
         if (_eyeOpen >= 0.5)
         {
-            if (!appearFlag)
+            if (!appearFlag && eyeSPpointer.canSummon)
             {
-                eye_Anim.appearEye = !eye_Anim.appearEye;
-                eyeSP_Anim.appearEye = !eyeSP_Anim.appearEye; // 押すごとに反転する
+                if (!eyeSP_Anim.appearEye) eyeSP.transform.position = pointer.transform.position;
+
+                eye_Anim.appearEye = !eye_Anim.appearEye;       // 押すごとに反転する
+                eyeSP_Anim.appearEye = !eyeSP_Anim.appearEye;   // 押すごとに反転する
+
                 appearFlag = true;
             }
         }
         else if (_eyeOpen == 0) appearFlag = false;
 
+        // 特殊な瞳を開く方向
+        pointer.transform.position = (Vector2)transform.position + pointerVec;
+        if (Math.Sqrt(_Rstick.x * _Rstick.x + _Rstick.y * _Rstick.y) > 0.5) // スティックの傾きが0.5以上で有効に
+        {
+            if (!eyeSP_Anim.appearEye)
+            {
+                pointerVec = _Rstick.normalized * 2;
+                pointer.SetActive(true);
+            }
+        }
+        if (eyeSP_Anim.appearEye) pointer.SetActive(false);
 
-        if (eye_Anim.appearEye)
+        // 特殊な瞳の操作
+        if (eyeSP_Anim.appearEye)
         {
-            eye.SetActive(true);
-            if (timer >= 0.3) eyeSP.SetActive(false); // アニメーションが終わったら非表示にする
-            timer += Time.deltaTime;
-            timer2 = 0;
+            eyeSP_Move.appear = true;
+            eyeSP_Move.kuromePos = _Rstick.normalized;
         }
-        else
-        {
-            if (timer2 >= 0.3) eye.SetActive(false); // アニメーションが終わったら非表示にする
-            eyeSP.SetActive(true);
-            timer = 0;
-            timer2 += Time.deltaTime;
-        }
+        else eyeSP_Move.appear = false;
+
 
         /* キーボード入力用
-            if (Input.GetKey(KeyCode.D))
-            {
-                pL_Move.dash = true;
-                pL_Move.left = true;
-            }
-            else if (Input.GetKey(KeyCode.A))
-            {
-                pL_Move.dash = true;
-                pL_Move.left = false;
-            }
-            else
-            {
-                pL_Move.dash = false;
-            }
-
-            if (Input.GetKey(KeyCode.W))
-            {
-                pL_Move.jump = true;
-            }
-            else
-            {
-                pL_Move.jump = false;
-            }
-
-            if (Input.GetMouseButton(0))
-            {
-                if (!attackFlag)
+                if (Input.GetKey(KeyCode.D))
                 {
-                    pL_Attack.attack = true;
-                    attackFlag = true;
+                    pL_Move.dash = true;
+                    pL_Move.left = true;
                 }
-            }
-            else attackFlag = false;
-            */
+                else if (Input.GetKey(KeyCode.A))
+                {
+                    pL_Move.dash = true;
+                    pL_Move.left = false;
+                }
+                else
+                {
+                    pL_Move.dash = false;
+                }
+
+                if (Input.GetKey(KeyCode.W))
+                {
+                    pL_Move.jump = true;
+                }
+                else
+                {
+                    pL_Move.jump = false;
+                }
+
+                if (Input.GetMouseButton(0))
+                {
+                    if (!attackFlag)
+                    {
+                        pL_Attack.attack = true;
+                        attackFlag = true;
+                    }
+                }
+                else attackFlag = false;
+                */
 
 
 

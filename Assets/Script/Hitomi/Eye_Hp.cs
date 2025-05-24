@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class Eye_Hp : MonoBehaviour
 {
     public GameObject kurome;
+    private SpriteRenderer kuromeSprite;
+
     public Slider HPber;
     public GameObject HpLight;
     public float HP = 100;
@@ -21,6 +23,7 @@ public class Eye_Hp : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        kuromeSprite = kurome.GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -28,12 +31,12 @@ public class Eye_Hp : MonoBehaviour
     {
         if (invincible)
         {
-            kurome.SetActive(false);
+            kuromeSprite.color = Color.clear; // 黒目を見えなくする
 
             timer += Time.deltaTime;
             if (timer >= invincibleTime)
             {
-                kurome.SetActive(true);
+                kuromeSprite.color = Color.black; // 黒目を見えるようにする
                 invincible = false;
                 timer = 0;
             }

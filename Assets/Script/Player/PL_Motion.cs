@@ -22,7 +22,7 @@ public class PL_Motion : MonoBehaviour
         {
             spriteRenderer.sprite = damageSP;
             spriteRenderer.flipX = true;
-            spriteRenderer.size = new Vector2(1.5f, 3f);
+            spriteRenderer.size = new Vector2(1.5f, 1.5f);
         }
         else
         {
@@ -30,13 +30,13 @@ public class PL_Motion : MonoBehaviour
             {
                 spriteRenderer.sprite = attackSP;
                 spriteRenderer.flipX = false;
-                spriteRenderer.size = new Vector2(2f, 3f);
+                spriteRenderer.size = new Vector2(2f, 1.5f);
             }
             else
             {
                 spriteRenderer.sprite = normalSP;
                 spriteRenderer.flipX = true;
-                spriteRenderer.size = new Vector2(1.5f, 2.5f);
+                spriteRenderer.size = new Vector2(1.5f, 1.5f);
             }
         }
     }

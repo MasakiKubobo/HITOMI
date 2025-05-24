@@ -25,7 +25,7 @@ TagManager:
   - Enemy
   - Ground
   - playerBody
-  - 
+  - Materialize
   - 
   - 
   - 
@@ -52,6 +52,9 @@ TagManager:
   - name: Back
     uniqueID: 1524130373
     locked: 0
+  - name: Materialize
+    uniqueID: 3075553259
+    locked: 0
   - name: Wall
     uniqueID: 3852203977
     locked: 0
@@ -63,4 +66,7 @@ TagManager:
     locked: 0
   - name: UI
     uniqueID: 150963851
+    locked: 0
+  - name: Player
+    uniqueID: 159475103
     locked: 0

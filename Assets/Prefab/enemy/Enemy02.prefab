@@ -101,6 +101,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 3
+  HP: 3
+  powor: 10
 --- !u!70 &7939980378119474621
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -116,7 +118,7 @@ CapsuleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -134,7 +136,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -0.09}
-  m_Size: {x: 0.98, y: 1.2}
+  m_Size: {x: 0.9, y: 0.8}
   m_Direction: 1
 --- !u!50 &7237089766626959393
 Rigidbody2D:
