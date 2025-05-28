@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PL_Controller : MonoBehaviour
 {
@@ -180,8 +181,13 @@ public class PL_Controller : MonoBehaviour
                 }
                 else attackFlag = false;
                 */
+    }
 
-
-
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("DeadZone"))
+        {
+            SceneManager.LoadScene("main");
+        }
     }
 }

@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class EN_Manager : MonoBehaviour
 {
-    public GameObject enemy01, enemy02;
-    bool EN1 = true;
+    public GameObject player;
+    public GameObject minBox, maxBox;
+    public GameObject[] enemys;
     public float interval = 1;
-
-    public float maxX, minX, maxY, minY;
 
     private float timer = 0;
     // Start is called before the first frame update
@@ -20,19 +19,16 @@ public class EN_Manager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        transform.position = player.transform.position;
+
         if (timer >= interval)
         {
-            if (EN1)
-            {
-                Instantiate(enemy01, new Vector2(Random.Range(minX, maxX), -3), Quaternion.identity);
-            }
-            else
-            {
-                Instantiate(enemy02, new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY)), Quaternion.identity);
-                EN1 = true;
-            }
+            float minX = minBox.transform.position.x;
+            float maxX = maxBox.transform.position.x;
+            float minY = minBox.transform.position.y;
+            float maxY = maxBox.transform.position.y;
 
-            if (EN1) EN1 = false;
+            Instantiate(enemys[(int)Random.Range(0, 2)], new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY)), Quaternion.identity);
 
             timer = 0;
         }

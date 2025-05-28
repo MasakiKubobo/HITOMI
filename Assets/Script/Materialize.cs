@@ -6,18 +6,19 @@ using UnityEngine.Rendering.Universal;
 public class Materialize : MonoBehaviour
 {
     public float MtrTime = 2;
-    public ParticleSystem charge, mtr;
+    public ParticleSystem charge, mtr, smoke;
     public GameObject collision;
 
     public GameObject eyeSP;
 
     private float timer = 0;
-    private bool Mtr = false;
+    private bool Mtr = false, effectFlag = true;
     // Start is called before the first frame update
     void Start()
     {
         charge.Stop();
         mtr.Stop();
+        smoke.Stop();
         collision.SetActive(false);
     }
 
@@ -35,17 +36,23 @@ public class Materialize : MonoBehaviour
 
         if (!Mtr)
         {
+            if (!effectFlag)
+            {
+                smoke.Play();
+                effectFlag = true;
+                Debug.Log("オラァ");
+            }
             collision.SetActive(false);
             light2D.intensity = 1;
         }
         else
         {
+            effectFlag = false;
             charge.Stop();
             if (light2D.intensity == 1) mtr.Play();
 
             collision.SetActive(true);
             light2D.intensity = 3;
-            Debug.Log("オラァ");
         }
     }
 

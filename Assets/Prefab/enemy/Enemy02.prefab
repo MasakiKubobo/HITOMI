@@ -101,7 +101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 3
-  HP: 3
+  HP: 2
   powor: 10
 --- !u!70 &7939980378119474621
 CapsuleCollider2D:

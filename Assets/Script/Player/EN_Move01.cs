@@ -6,10 +6,16 @@ using UnityEngine;
 public class EN_Move01 : MonoBehaviour
 {
     public float moveSpeed;
+    public int HP = 3;
+    public float powor = 100;
 
     private Rigidbody2D rb;
     private GameObject eye;
-    bool chase = true;
+    private float timer = 0;
+    private float invTime = 1f;
+    private bool invincible = false;
+    private Vector2 knock;
+    bool chase = true, inAir = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,20 +26,34 @@ public class EN_Move01 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (invincible)
+        {
+            timer += Time.deltaTime;
+            if (timer >= invTime)
+            {
+                invincible = false;
+                timer = 0;
+            }
+        }
 
+        if (HP <= 0) Destroy(gameObject);
     }
 
     void FixedUpdate()
     {
-        float xSpeed = 0;
+        Vector2 vec = Vector2.zero;
 
         if (chase)
         {
-            if (eye.transform.position.x > transform.position.x) xSpeed = moveSpeed;
-            else xSpeed = -moveSpeed;
+            vec = eye.transform.position - transform.position;
         }
 
-        rb.velocity = new Vector2(xSpeed, 0);
+        if (!invincible)
+        {
+            if (!inAir) rb.velocity = new Vector2(vec.normalized.x * moveSpeed, 0);
+            else rb.velocity = new Vector2(0, 0);
+        }
+        else rb.velocity = knock;
     }
 
 
@@ -44,9 +64,28 @@ public class EN_Move01 : MonoBehaviour
         {
             if (prefabID.ID == "attack_01")
             {
-                Debug.Log("ヒット");
-                Destroy(gameObject);
+                KnockBack(other.transform.position, powor);
             }
+        }
+
+        if (other.gameObject.CompareTag("Ground")) inAir = false;
+    }
+    void OnCollisionExit2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Ground")) inAir = true;
+    }
+
+    void KnockBack(Vector2 PLvec, float powor)
+    {
+        Vector2 vec = (Vector2)transform.position - PLvec;
+
+        if (!invincible)
+        {
+            knock = vec.normalized * powor;
+
+            Debug.Log(vec.normalized * powor);
+            HP--;
+            invincible = true;
         }
     }
 }
