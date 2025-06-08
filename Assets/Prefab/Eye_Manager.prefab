@@ -9,10 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4390628028536125595}
+  - component: {fileID: 1855308621928602998}
   - component: {fileID: 241745232668893910}
   - component: {fileID: 6259902449852976764}
   m_Layer: 0
-  m_Name: Anim_Manager
+  m_Name: Eye_Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33,6 +34,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1855308621928602998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1373527440304079182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dca82020c9815481c8bb9f6a14c388ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &241745232668893910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45,8 +58,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0051fead7bbb541b69ad827faa84dca1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eye: {fileID: 0}
   kurome: {fileID: 0}
-  anim: {fileID: 0}
   appearEye: 1
 --- !u!114 &6259902449852976764
 MonoBehaviour:
@@ -60,6 +73,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6d657b010048414994aaa8b2d4f7a30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eyeSP: {fileID: 0}
   kurome: {fileID: 0}
-  anim: {fileID: 0}
   appearEye: 0

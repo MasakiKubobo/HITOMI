@@ -3,72 +3,45 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Eye_Hp : MonoBehaviour
+public class Eye_HP : MonoBehaviour
 {
-    public GameObject kurome;
-    private SpriteRenderer kuromeSprite;
-
     public Slider HPber;
     public GameObject HpLight;
-    public float HP = 100;
 
-    public float[] damages;
-    public float[] knockBackPowor;
-    public float invincibleTime = 0.5f;
+    public static float HP = 100;
+    public float StartHP = 100;
+    public float Healing = 5;
+    public float HealTime = 2;
 
-    private Rigidbody2D rb;
-    private bool invincible = false;
-    private float timer = 0;
+    private float beforeHP, healTimer = 0;
+    private bool damage = false;
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        kuromeSprite = kurome.GetComponent<SpriteRenderer>();
+        HP = StartHP;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (invincible)
+        if (HP > 100) HP = 100;
+        if (HP < 0) HP = 0;
+        HPber.value = HP / 100;
+
+        if (HP < beforeHP)
         {
-            kuromeSprite.color = Color.clear; // 黒目を見えなくする
-
-            timer += Time.deltaTime;
-            if (timer >= invincibleTime)
-            {
-                kuromeSprite.color = Color.black; // 黒目を見えるようにする
-                invincible = false;
-                timer = 0;
-            }
+            damage = true;
         }
-    }
-
-    void OnTriggerStay2D(Collider2D other)
-    {
-        PrefabID prefabID = other.GetComponent<PrefabID>();
-        if (prefabID == null) return;
-
-        switch (prefabID.ID)
+        if (damage)
         {
-            case "enemy_01": // enemy_01にぶつかった場合
-                KnockBack(other.transform.position, knockBackPowor[0], damages[0]);
-                break;
-            case "enemy_02": // enemy_02にぶつかった場合
-                KnockBack(other.transform.position, knockBackPowor[1], damages[1]);
-                break;
+            healTimer = HealTime;
+            damage = false;
         }
-    }
 
-    void KnockBack(Vector2 ENvec, float powor, float damage)
-    {
-        Vector2 vec = (Vector2)transform.position - ENvec;
+        // ダメージを受けた一定時間後から回復が始まる。
+        healTimer -= Time.deltaTime;
+        if (healTimer <= 0) HP += Healing * Time.deltaTime;
 
-        if (!invincible)
-        {
-            HP -= damage;
-            HPber.value = HP / 100;
-            rb.AddForce(vec.normalized * powor, ForceMode2D.Impulse);
-            invincible = true;
-        }
+        beforeHP = HP; // 関数の最後に
     }
 }

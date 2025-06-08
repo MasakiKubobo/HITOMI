@@ -13,6 +13,8 @@ public class EyeSP_Move : MonoBehaviour
 
     [HideInInspector] public Vector2 kuromePos;
     [HideInInspector] public bool appear;
+
+    private float coolDownTimer = 0; // Rスティックの不感時間
     // Start is called before the first frame update
     void Start()
     {
@@ -23,15 +25,21 @@ public class EyeSP_Move : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Math.Sqrt(kuromePos.x * kuromePos.x + kuromePos.y * kuromePos.y) > 0.9) // スティックの傾きが0.5以上で有効に
+        if (Math.Sqrt(kuromePos.x * kuromePos.x + kuromePos.y * kuromePos.y) > 0.8) // スティックの傾きが最大で有効に
         {
             eyeLight.enabled = true;
 
+            //if (coolDownTimer >= 0.1)
+            //{
             kurome.transform.localPosition = kuromePos * 0.2f;
 
             // 逆三角関数を用いてVector2から角度の数値を入力
             kurome.transform.eulerAngles = new Vector3(0, 0, Mathf.Atan2(kuromePos.y, kuromePos.x) * Mathf.Rad2Deg - 90);
+            //}
+            coolDownTimer += Time.deltaTime;
         }
+        else coolDownTimer = 0;
+
 
         if (!appear)
         {
@@ -40,6 +48,5 @@ public class EyeSP_Move : MonoBehaviour
             kurome.transform.localPosition = Vector2.zero;
         }
         else HpLight.intensity = 0.4f;
-
     }
 }

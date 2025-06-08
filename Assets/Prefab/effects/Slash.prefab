@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1675839087051173183}
   - component: {fileID: 8578336256682278080}
   - component: {fileID: 7777715758522586916}
-  m_Layer: 5
+  m_Layer: 13
   m_Name: Slash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48,10 +48,10 @@ EdgeCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 15863
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -95,10 +95,10 @@ CapsuleCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 15863
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2

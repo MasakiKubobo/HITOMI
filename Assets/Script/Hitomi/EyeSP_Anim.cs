@@ -6,7 +6,8 @@ using UnityEngine;
 public class EyeSP_Anim : MonoBehaviour
 {
     public GameObject eyeSP, kurome;
-    private SpriteRenderer eyeSprite;
+    private SpriteRenderer eyeSprite, kuromeSprite;
+    private Collider2D eyeTrigger;
     private Animator anim;
 
     [HideInInspector] public bool appearEye = false;
@@ -17,7 +18,11 @@ public class EyeSP_Anim : MonoBehaviour
     void Start()
     {
         eyeSprite = eyeSP.GetComponent<SpriteRenderer>();
-        eyeSprite.color = Color.clear;
+        eyeTrigger = eyeSP.GetComponent<Collider2D>();
+        kuromeSprite = kurome.GetComponent<SpriteRenderer>();
+        eyeSprite.enabled = false;
+        eyeTrigger.enabled = false;
+        kuromeSprite.enabled = false;
         anim = eyeSP.GetComponent<Animator>();
     }
     // Update is called once per frame
@@ -25,7 +30,10 @@ public class EyeSP_Anim : MonoBehaviour
     {
         if (appearEye)
         {
-            eyeSprite.color = Color.white;
+            // オブジェクトを可視化し、当たり判定を有効にする
+            eyeSprite.enabled = true;
+            eyeTrigger.enabled = true;
+            kuromeSprite.enabled = true;
 
             if (!appearFlag)
             {
@@ -60,7 +68,11 @@ public class EyeSP_Anim : MonoBehaviour
                 if (animFlag && anim.GetCurrentAnimatorStateInfo(0).IsName("New State"))
                 {
                     anim.SetBool("eyeClose", false);
-                    eyeSprite.color = Color.clear;
+
+                    // オブジェクトを不可視化し、当たり判定を無効にする
+                    eyeSprite.enabled = false;
+                    eyeTrigger.enabled = false;
+                    kuromeSprite.enabled = false;
 
                     appearFlag = false;
                     animFlag = false;

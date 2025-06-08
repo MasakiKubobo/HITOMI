@@ -60,8 +60,9 @@ public class PL_Move : MonoBehaviour
         PL_Attack pL_Attack = GetComponent<PL_Attack>();
         if (!pL_Attack.attack) // 主人公の向きを反転（アタック中は除く）
         {
-            if (left) transform.eulerAngles = new Vector3(0, 180, 0);
-            else transform.eulerAngles = new Vector3(0, 0, 0);
+            float Z = transform.eulerAngles.z;
+            if (left) transform.eulerAngles = new Vector3(0, 180, Z);
+            else transform.eulerAngles = new Vector3(0, 0, Z);
         }
     }
 
