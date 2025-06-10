@@ -206,7 +206,9 @@ MonoBehaviour:
   damages:
   - 10
   - 10
+  - 10
   attackDamages:
+  - 20
   - 20
   knockBackPowor:
   - 30

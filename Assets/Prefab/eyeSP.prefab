@@ -311,7 +311,9 @@ MonoBehaviour:
   damages:
   - 30
   - 30
+  - 30
   attackDamages:
+  - 50
   - 50
   invincible: 0
   invincibleTime: 0.5

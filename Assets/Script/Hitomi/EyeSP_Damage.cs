@@ -71,8 +71,14 @@ public class EyeSP_Damage : MonoBehaviour
             case "enemy_02": // enemy_02にぶつかった場合
                 Damage(damages[1]);
                 break;
+            case "enemy_03": // enemy_03にぶつかった場合
+                Damage(damages[2]);
+                break;
             case "attack_EN01": // attack_EN01に当たった場合
                 Damage(attackDamages[0]);
+                break;
+            case "attack_EN02": // attack_EN02に当たった場合
+                Damage(attackDamages[1]);
                 break;
         }
     }

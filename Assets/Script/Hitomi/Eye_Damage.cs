@@ -60,8 +60,14 @@ public class Eye_Damage : MonoBehaviour
             case "enemy_02": // enemy_02にぶつかった場合
                 KnockBack(other.transform.position, knockBackPowor[1], damages[1]);
                 break;
+            case "enemy_03": // enemy_03にぶつかった場合
+                KnockBack(other.transform.position, knockBackPowor[2], damages[2]);
+                break;
             case "attack_EN01": // attack_EN01に当たった場合
                 KnockBack(other.transform.position, knockBackPowor[0], attackDamages[0]);
+                break;
+            case "attack_EN02": // attack_EN02に当たった場合
+                KnockBack(other.transform.position, knockBackPowor[1], attackDamages[1]);
                 break;
         }
     }
