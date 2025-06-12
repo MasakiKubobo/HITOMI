@@ -12,8 +12,8 @@ public class PLHPLight : MonoBehaviour
 
     [Header("ライト参照")]
     public Light2D HPLight;      // 暗転ライト（黒）
-    public Light2D RedLight;     // 赤縁ライト（画面端）
     public Light2D GlobalLight;  // 全体の淡い照明
+
 
     void Update()
     {
@@ -38,32 +38,18 @@ public class PLHPLight : MonoBehaviour
         }
 
         UpdateHPLight();
-        UpdateRedLight();
     }
 
     void UpdateHPLight()
     {
-        if (currentHP <= 50f)
+        if (currentHP <= 100f)
         {
-            float t = Mathf.Clamp01((50f - currentHP) / 50f);
-            HPLight.intensity = t;
+            float t = Mathf.Clamp01((100f - currentHP) / 100f);
+            HPLight.falloffIntensity = t;
         }
         else
         {
-            HPLight.intensity = 0f;
-        }
-    }
-
-    void UpdateRedLight()
-    {
-        if (currentHP <= 20f)
-        {
-            float t = Mathf.Clamp01((20f - currentHP) / 20f);
-            RedLight.intensity = t;
-        }
-        else
-        {
-            RedLight.intensity = 0f;
+            HPLight.falloffIntensity = 0f;
         }
     }
 }
