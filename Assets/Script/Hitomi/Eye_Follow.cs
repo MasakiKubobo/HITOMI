@@ -7,7 +7,7 @@ public class Eye_Follow : MonoBehaviour
     public GameObject player;
     public float speed = 1;
 
-    public GameObject kurome;
+    public GameObject kurome, eyeSP;
 
     bool follow = true;
     // Start is called before the first frame update
@@ -31,7 +31,11 @@ public class Eye_Follow : MonoBehaviour
             kurome.transform.localPosition = followVec.normalized / 5;
         }
 
-
+        EyeSP_Move eyeSP_Move = eyeSP.GetComponent<EyeSP_Move>();
+        if (eyeSP_Move.appear)
+        {
+            transform.position = player.transform.position;
+        }
     }
 
     void FixedUpdate()

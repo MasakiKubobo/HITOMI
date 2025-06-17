@@ -5,21 +5,25 @@ using UnityEngine.Rendering.Universal;
 
 public class Materialize : MonoBehaviour
 {
-    public float MtrTime = 2;
+    public float mtrTime = 2;
     public ParticleSystem charge, mtr, smoke;
-    public GameObject collision;
+    public Collider2D collision;
 
-    public GameObject eyeSP;
+    private GameObject eyeSP;
 
-    private float timer = 0;
-    private bool Mtr = false, effectFlag = true;
+    private float mtrTimer = 0;
+    [HideInInspector] public bool Mtr = false;  // 実体化しているか
+    private bool mtring = false; // 実体化の際中か
+    private bool smokeFlag = true;
     // Start is called before the first frame update
     void Start()
     {
+        eyeSP = GameObject.Find("eyeSP");
+
         charge.Stop();
         mtr.Stop();
         smoke.Stop();
-        collision.SetActive(false);
+        collision.enabled = false;
     }
 
     // Update is called once per frame
@@ -28,62 +32,63 @@ public class Materialize : MonoBehaviour
         Light2D light2D = GetComponent<Light2D>();
         EyeSP_Move eyeSP_Move = eyeSP.GetComponent<EyeSP_Move>();
 
+        // 瞳の能力解除
         if (!eyeSP_Move.appear)
         {
             Mtr = false;
-            timer = 0;
+            mtring = false;
+        }
+
+        if (mtring) // 実体化の際中
+        {
+            if (mtrTimer >= mtrTime)
+            {
+                Mtr = true;
+                mtring = false;
+            }
+            mtrTimer += Time.deltaTime;
+        }
+        else
+        {
+            mtrTimer = 0;
+            charge.Stop();
         }
 
         if (!Mtr)
         {
-            if (!effectFlag)
+            if (!smokeFlag)
             {
                 smoke.Play();
-                effectFlag = true;
-                Debug.Log("オラァ");
+                smokeFlag = true;
             }
-            collision.SetActive(false);
+            collision.enabled = false;
             light2D.intensity = 1;
         }
         else
         {
-            effectFlag = false;
+            smokeFlag = false;
             charge.Stop();
             if (light2D.intensity == 1) mtr.Play();
 
-            collision.SetActive(true);
+            collision.enabled = true;
             light2D.intensity = 3;
         }
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("eye"))
+        if (other.CompareTag("vision"))
         {
+            mtring = true;
             charge.Play();
         }
     }
-    void OnTriggerStay2D(Collider2D other)
-    {
-        if (other.CompareTag("eye"))
-        {
-            if (!Mtr)
-            {
-                if (timer >= MtrTime)
-                {
-                    Mtr = true;
-                }
-                timer += Time.deltaTime;
-            }
 
-        }
-    }
     void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("eye"))
+        if (other.CompareTag("vision"))
         {
-            charge.Stop();
-            timer = 0;
+            mtring = false;
         }
     }
 }

@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class EN01_Move : MonoBehaviour
 {
-    public bool autoChase = true;   // 初めからプレイヤーを追従する
     public float moveSpeed;
 
     private Rigidbody2D rb;
@@ -16,6 +15,7 @@ public class EN01_Move : MonoBehaviour
     public float plDistanceX = 10, plDistanceY = 5;
     private GameObject player;
     private bool attackFlag = false;
+    private bool autoChase = true;   // プレイヤーを追従する
 
     EN01_Anim en01_Anim;
     // Start is called before the first frame update

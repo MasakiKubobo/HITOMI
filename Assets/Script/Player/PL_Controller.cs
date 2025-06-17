@@ -19,6 +19,7 @@ public class PL_Controller : MonoBehaviour
 
     public GameObject animManager;
     public GameObject eye, eyeSP, pointer;
+    //public GameObject kuromeSP; // キーマウ操作用
 
 
     private float timer = 0, timer2 = 0;
@@ -67,7 +68,6 @@ public class PL_Controller : MonoBehaviour
         EyeSP_Move eyeSP_Move = eyeSP.GetComponent<EyeSP_Move>();
 
         EyeSPpointer eyeSPpointer = pointer.GetComponent<EyeSPpointer>();
-
 
         if (_Dash > 0.3f)
         {
@@ -219,9 +219,13 @@ public class PL_Controller : MonoBehaviour
             eyeSP_Move.kuromePos = (mousePos - (Vector2)eyeSP.transform.position).normalized;
         }
         else eyeSP_Move.appear = false;
+
+        eyeSP.transform.eulerAngles = Vector3.zero;
+        kuromeSP.transform.localScale = new Vector3(0, 0.8f, kuromeSP.transform.localScale.z);
         */
 
     }
+
 
     void OnTriggerEnter2D(Collider2D other)
     {

@@ -12,6 +12,8 @@ public class PL_Move : MonoBehaviour
 
     private bool isJumping = false; // ジャンプの飛翔中か否か
     private bool inAir = true;  // 空中に居るか否か
+    private bool inWind = false;    // 風を受けているか
+    private float windTimer = 0; // 風の影響を受けるまでのラグ
     private Rigidbody2D rb;
     private float timer = 0;
     private bool jumpFlag = false;
@@ -83,7 +85,10 @@ public class PL_Move : MonoBehaviour
             }
         }
 
-        ySpeed = jumpPower;
+        if (!inWind) ySpeed = jumpPower;
+        else {
+            ySpeed = jumpPower + windTimer * 20;
+        }
 
 
         rb.velocity = new Vector2(xSpeed, ySpeed);
@@ -95,6 +100,13 @@ public class PL_Move : MonoBehaviour
         {
             inAir = false;
         }
+
+        if (other.gameObject.CompareTag("Wind"))
+        {
+            inWind = true;
+            windTimer += Time.deltaTime;
+            if (windTimer > 1) windTimer = 1;
+        }
     }
 
     void OnTriggerExit2D(Collider2D other)
@@ -102,6 +114,12 @@ public class PL_Move : MonoBehaviour
         if (other.gameObject.CompareTag("Ground"))
         {
             inAir = true;
+        }
+
+        if (other.gameObject.CompareTag("Wind"))
+        {
+            inWind = false;
+            windTimer = 0;
         }
     }
 }

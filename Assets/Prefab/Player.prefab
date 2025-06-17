@@ -634,10 +634,10 @@ CapsuleCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 5120
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 15351
+    m_Bits: 11255
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -740,6 +740,14 @@ PrefabInstance:
     - target: {fileID: 5964321071287796900, guid: 4542c397a05b841c18becf51098a762d, type: 3}
       propertyPath: m_Offset.x
       value: 0.47
+      objectReference: {fileID: 0}
+    - target: {fileID: 5964321071287796900, guid: 4542c397a05b841c18becf51098a762d, type: 3}
+      propertyPath: m_ExcludeLayers.m_Bits
+      value: 14839
+      objectReference: {fileID: 0}
+    - target: {fileID: 5964321071287796900, guid: 4542c397a05b841c18becf51098a762d, type: 3}
+      propertyPath: m_IncludeLayers.m_Bits
+      value: 1536
       objectReference: {fileID: 0}
     - target: {fileID: 7216919842092972583, guid: 4542c397a05b841c18becf51098a762d, type: 3}
       propertyPath: m_Layer
