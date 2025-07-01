@@ -25,6 +25,10 @@ public class block : MonoBehaviour
             if (prefabID.ID == "attack_01")
             {
                 rubbleEffect.Play();
+
+                AudioSource audioSource = rubbleEffect.GetComponent<AudioSource>();
+                audioSource.Play();
+
                 Destroy(gameObject);
             }
         }

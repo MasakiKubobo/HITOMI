@@ -113,6 +113,5 @@ public class EyeSP_Damage : MonoBehaviour
                 flashTimer = 0;
             }
         }
-        else spriteRenderer.color = new Color(1, 1, 1, color.a);
     }
 }

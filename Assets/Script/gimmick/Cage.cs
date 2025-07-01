@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Cage : MonoBehaviour
 {
+    public bool isBox = false;
     public Rigidbody2D rb;
     private GameObject eyeSP;
     // Start is called before the first frame update
@@ -21,13 +22,16 @@ public class Cage : MonoBehaviour
         if (materialize.Mtr)
         {
             rb.bodyType = RigidbodyType2D.Dynamic;
-            eyeSP.transform.position = transform.position;
-            eyeSP.transform.rotation = transform.rotation;
+            if (!isBox)
+            {
+                eyeSP.transform.position = transform.position;
+                eyeSP.transform.rotation = transform.rotation;
+            }
         }
         else
         {
             rb.bodyType = RigidbodyType2D.Static;
-            eyeSP.transform.eulerAngles = Vector3.zero;
+            if (!isBox) eyeSP.transform.eulerAngles = Vector3.zero;
         }
     }
 }

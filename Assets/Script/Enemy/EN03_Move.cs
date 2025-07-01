@@ -11,8 +11,6 @@ public class EN03_Move : MonoBehaviour
     private Rigidbody2D rb;
     private GameObject eye, eyeSP;
     bool inAir = true;
-
-    public float plDistanceX = 10, plDistanceY = 5;
     private GameObject player;
     private bool attackFlag = false;
 
@@ -56,7 +54,8 @@ public class EN03_Move : MonoBehaviour
         Vector3 endWall = startWall + transform.right * 0.5f;
 
         if (!Physics2D.Linecast(startGround, endGround, LayerMask.GetMask("Ground")) ||
-            Physics2D.Linecast(startWall, endWall, LayerMask.GetMask("Ground")))
+            Physics2D.Linecast(startWall, endWall, LayerMask.GetMask("Ground")) ||
+            Physics2D.Linecast(startWall, endWall, LayerMask.GetMask("Materialize")))
         {
             if (!en01_Anim.damage)
             {
@@ -68,53 +67,31 @@ public class EN03_Move : MonoBehaviour
         Debug.DrawLine(startWall, endWall, Color.blue);
 
 
-
         // 瞳に近づくと攻撃アニメーションに入る
         float moveDirection = !eyeSP_Move.appear ? eye.transform.position.x - transform.position.x : eyeSP.transform.position.x - transform.position.x;
-        if (!eyeSP_Move.appear)
-        {
-            if (3 >= (transform.position - eye.transform.position).magnitude)
-            {
-                if (!attackFlag)
-                {
-                    // 攻撃前に瞳の方を向く
-                    if (moveDirection >= 0.5)
-                    {
-                        if (!en01_Anim.damage) transform.localScale = new Vector3(-1, 1, 1);
-                    }
-                    else if (moveDirection <= -0.5)
-                    {
-                        if (!en01_Anim.damage) transform.localScale = new Vector3(1, 1, 1);
-                    }
 
-                    en01_Anim.attack = true;
-                    attackFlag = true;
-                }
-            }
-            else attackFlag = false;
-        }
-        else
-        {
-            if (3 >= (transform.position - eyeSP.transform.position).magnitude)
-            {
-                if (!attackFlag)
-                {
-                    // 攻撃前に瞳の方を向く
-                    if (moveDirection >= 0.5)
-                    {
-                        if (!en01_Anim.damage) transform.localScale = new Vector3(-1, 1, 1);
-                    }
-                    else if (moveDirection <= -0.5)
-                    {
-                        if (!en01_Anim.damage) transform.localScale = new Vector3(1, 1, 1);
-                    }
+        Vector3 targetPos = eyeSP_Move.appear ? eyeSP.transform.position : eye.transform.position;
 
-                    en01_Anim.attack = true;
-                    attackFlag = true;
+        if (5 >= (transform.position - targetPos).magnitude)
+        {
+            if (!attackFlag)
+            {
+                // 攻撃前に瞳の方を向く
+                if (moveDirection >= 0.5)
+                {
+                    transform.localScale = new Vector3(-1, 1, 1);
                 }
+                else if (moveDirection <= -0.5)
+                {
+                    transform.localScale = new Vector3(1, 1, 1);
+                }
+
+                en01_Anim.attack = true;
+                attackFlag = true;
             }
-            else attackFlag = false;
         }
+        else attackFlag = false;
+
     }
 
     void OnCollisionEnter2D(Collision2D other)

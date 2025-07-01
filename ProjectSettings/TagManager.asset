@@ -14,11 +14,12 @@ TagManager:
   - Box
   - Wind
   - vision
+  - camera
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Camera
   - Water
   - UI
   - Wall

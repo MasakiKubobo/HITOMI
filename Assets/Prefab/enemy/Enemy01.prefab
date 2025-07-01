@@ -113,7 +113,7 @@ CapsuleCollider2D:
     m_Bits: 384
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -274,10 +274,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 707833c9e96284bae8b72dd95e2da272, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoChase: 1
   moveSpeed: 7
-  plDistanceX: 10
-  plDistanceY: 5
+  plDistanceX: 20
+  plDistanceY: 20
+  targetIsPlayer: 0
 --- !u!114 &8010480414334262298
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -325,7 +325,7 @@ CapsuleCollider2D:
     m_Bits: 9600
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 513
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -360,7 +360,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 1
   m_AngularDrag: 0.05
-  m_GravityScale: 50
+  m_GravityScale: 25
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2

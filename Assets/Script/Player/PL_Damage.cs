@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PL_Damage : MonoBehaviour
 {
+    public float knockBack;
     public float damageTime = 0.3f;
     public float invincibleTime = 0.6f;
     public ParticleSystem damagePar;
@@ -16,12 +17,17 @@ public class PL_Damage : MonoBehaviour
     private float flashTimer = 0;
     private bool flashFlag = false;
     private SpriteRenderer spriteRenderer;
+    private Rigidbody2D rb;
+
+    PL_Motion pL_Motion;
 
     [HideInInspector] public bool damage = false;
     // Start is called before the first frame update
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        rb = GetComponent<Rigidbody2D>();
+        pL_Motion = GetComponent<PL_Motion>();
     }
 
     // Update is called once per frame
@@ -37,8 +43,7 @@ public class PL_Damage : MonoBehaviour
         }
         else
         {
-            transform.position = damagePos;
-            transform.Rotate(0, 0, 360 / damageTime * Time.deltaTime, Space.World);
+            if (transform.position.y <= damagePos.y) transform.position = new Vector2(transform.position.x, damagePos.y);
         }
 
 
@@ -55,6 +60,8 @@ public class PL_Damage : MonoBehaviour
             timer = 0;
         }
 
+
+        pL_Motion.damage = damage;
     }
 
     void OnTriggerStay2D(Collider2D other)
@@ -65,10 +72,13 @@ public class PL_Damage : MonoBehaviour
         switch (prefabID.ID)
         {
             case "enemy_01":
-                KnockBack(other.transform.position, 0);
+                KnockBack(other.transform.position, knockBack);
                 break;
             case "enemy_02":
-                KnockBack(other.transform.position, 0);
+                KnockBack(other.transform.position, knockBack);
+                break;
+            case "enemy_03":
+                KnockBack(other.transform.position, knockBack);
                 break;
         }
     }

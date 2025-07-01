@@ -5,7 +5,8 @@ using UnityEngine.Rendering.Universal;
 
 public class Gate : MonoBehaviour
 {
-    public ParticleSystem charge;
+    public GameObject vCam;
+    public ParticleSystem charge, open;
     private GameObject eyeSP;
 
     public float openSpeed, closeSpeed;
@@ -13,8 +14,10 @@ public class Gate : MonoBehaviour
     private Vector3 openPos, closePos;
 
     private bool bathe = false;
-    [HideInInspector] public bool endOpen = false;
+    private bool endOpen = false, shake = false, shakeFlag = false;
     private float moveTimer = 0;
+
+    public AudioSource gogogoAudio, gateAudio;
     // Start is called before the first frame update
     void Start()
     {
@@ -46,6 +49,9 @@ public class Gate : MonoBehaviour
         }
 
         Move();
+
+        Camera_Move camera_Move = vCam.GetComponent<Camera_Move>();
+        camera_Move.Shakes(ref shake, 0.15f, 3);
     }
 
     void Move()
@@ -101,18 +107,32 @@ public class Gate : MonoBehaviour
             maxY = openPos.y;
         }
 
-        if (objPos.y < openPos.y) endOpen = true;
+        if (objPos.y < openPos.y)
+        {
+            endOpen = true;
+            if (!shakeFlag) // 一度だけ振動のbool値をtrueにする。
+            {
+                open.Play();
+                shake = true;
+                shakeFlag = true;
+                gogogoAudio.Stop();
+                gateAudio.Play();
+            }
+        }
         objPos = new Vector2(Mathf.Clamp(objPos.x, minX, maxX), Mathf.Clamp(objPos.y, minY, maxY));
 
 
         transform.position = objPos + noise;
+
+
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("eye"))
+        if (other.CompareTag("vision"))
         {
             charge.Play();
+            gogogoAudio.Play();
         }
     }
     void OnTriggerStay2D(Collider2D other)
@@ -128,6 +148,7 @@ public class Gate : MonoBehaviour
         {
             bathe = false;
             charge.Stop();
+            gogogoAudio.Stop();
         }
     }
 }

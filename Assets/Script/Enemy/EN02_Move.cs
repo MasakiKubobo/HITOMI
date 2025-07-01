@@ -18,6 +18,8 @@ public class EN02_Move : MonoBehaviour
     private bool knockBack = false;
     private bool chase = true;  // プレイヤーを追従する
 
+    public bool targetIsPlayer = false; // ターゲットをプレイヤーにするか
+
     private GameObject player;
     // Start is called before the first frame update
     void Start()
@@ -26,6 +28,12 @@ public class EN02_Move : MonoBehaviour
         eye = GameObject.Find("eye");
         eyeSP = GameObject.Find("eyeSP");
         player = GameObject.Find("Player");
+
+        if (targetIsPlayer)
+        {
+            eye = GameObject.Find("Player");
+            eyeSP = GameObject.Find("Player");
+        }
     }
 
     // Update is called once per frame
@@ -65,12 +73,16 @@ public class EN02_Move : MonoBehaviour
     void FixedUpdate()
     {
         Vector2 vec = Vector2.zero;
+        EyeSP_Move eyeSP_Move;
 
-        EyeSP_Move eyeSP_Move = eyeSP.GetComponent<EyeSP_Move>();
-
-        if (chase)
+        if (!targetIsPlayer)
         {
-            vec = !eyeSP_Move.appear ? eye.transform.position - transform.position : eyeSP.transform.position - transform.position;
+            eyeSP_Move = eyeSP.GetComponent<EyeSP_Move>();
+            if (chase) vec = !eyeSP_Move.appear ? eye.transform.position - transform.position : eyeSP.transform.position - transform.position;
+        }
+        else
+        {
+            if (chase) vec = player.transform.position - transform.position;
         }
 
         if (!knockBack) rb.velocity = vec.normalized * moveSpeed;

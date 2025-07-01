@@ -11,6 +11,9 @@ public class EyeSP_Move : MonoBehaviour
     public GameObject kurome;
     private Light2D eyeLight;
 
+    public AudioSource openAudio;
+    private bool openFlag;
+
     [HideInInspector] public Vector2 kuromePos;
     [HideInInspector] public bool appear;
 
@@ -40,12 +43,19 @@ public class EyeSP_Move : MonoBehaviour
             collider.enabled = false;
             eyeLight.enabled = false;
             kurome.transform.localPosition = Vector2.zero;
+
+            openFlag = false;
         }
         else
         {
             HpLight.intensity = 0.4f;
             collider.enabled = true;
-        }
 
+            if (!openFlag)
+            {
+                openAudio.Play();
+                openFlag = true;
+            }
+        }
     }
 }

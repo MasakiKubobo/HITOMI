@@ -189,12 +189,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3298e68f9a3c42b391c6dffd87454f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  plDistanceX: 20
+  plDistanceY: 20
   moveSpeed: 3
   HP: 2
   powor: 50
   damagePar: {fileID: 2993555582061678229, guid: af59e83b86b9c48b28caed79607bc260, type: 3}
   destroyPar: {fileID: 7226583673155636403, guid: 55beb137069d74698898caa4489e0957, type: 3}
   knockBackTime: 1
+  targetIsPlayer: 0
 --- !u!70 &7939980378119474621
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -210,7 +213,7 @@ CapsuleCollider2D:
     m_Bits: 9600
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 513
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2

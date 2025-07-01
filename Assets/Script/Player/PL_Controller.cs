@@ -146,6 +146,17 @@ public class PL_Controller : MonoBehaviour
         }
         else eyeSP_Move.appear = false;
 
+        // 特殊な瞳が一定以上離れるとスリップダメージ
+        if (eyeSP_Anim.appearEye)
+        {
+            Vector2 PLvec = transform.position;
+            Vector2 EyeSPvec = eyeSP.transform.position;
+            if ((PLvec - EyeSPvec).magnitude >= 15)
+            {
+                Eye_HP.HP -= Time.deltaTime * 10;
+            }
+        }
+
 
         // キーマウ操作（デバッグ用）
         /*
@@ -224,14 +235,5 @@ public class PL_Controller : MonoBehaviour
         kuromeSP.transform.localScale = new Vector3(0, 0.8f, kuromeSP.transform.localScale.z);
         */
 
-    }
-
-
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("DeadZone"))
-        {
-            SceneManager.LoadScene("main");
-        }
     }
 }

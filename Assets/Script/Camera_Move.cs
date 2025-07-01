@@ -6,7 +6,9 @@ using Cinemachine;
 public class Camera_Move : MonoBehaviour
 {
     public GameObject player;
-    public float Xmax = 50, Xmin = 0, Ymax = 10, Ymin = 0;
+    public float Xmax = 50, Xmin = 0;
+    private float Ymax, Ymin, X, Y;
+    private bool follow = false, center = false;
 
     public GameObject gates;
 
@@ -15,13 +17,17 @@ public class Camera_Move : MonoBehaviour
     public float eyeShakeTimer, eyeSPShakeTimer;
     public float eyeIntensity, eyeSPIntensity;
 
-    private bool eyeShakeFlag = false, eyeSPShakeFlag = false, gateShakeFlag = false;
-    private float eyeTimer = 0, gateTimer = 0;
-    private float X, Y;
+    private bool eyeShakeFlag = false, eyeSPShakeFlag = false, shakeFlag = false, cwFlag = false, cwFlag2 = false;
+    private float eyeTimer = 0, shakeTimer = 0, cwTimer = 0, cwTimer2 = 1;
+    float cwY, cwX;  // カメラワーク移動用
+
+    CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin;
+
     // Start is called before the first frame update
     void Start()
     {
         vCam = GetComponent<CinemachineVirtualCamera>();
+        cinemachineBasicMultiChannelPerlin = vCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
 
         eye = GameObject.Find("eye");
         eyeSP = GameObject.Find("eyeSP");
@@ -35,13 +41,52 @@ public class Camera_Move : MonoBehaviour
 
         if (Xmax <= player.transform.position.x) X = Xmax;
         if (Xmin >= player.transform.position.x) X = Xmin;
-        if (Ymax <= player.transform.position.y) Y = Ymax;
-        if (Ymin >= player.transform.position.y) Y = Ymin;
+
+
+        if (!follow)  // カメラワークの中にいる場合
+        {
+            if (Ymax <= player.transform.position.y) Y = Ymax;
+            if (Ymin >= player.transform.position.y) Y = Ymin;
+
+            if (!cwFlag)
+            {
+                cwY = transform.position.y;
+                cwTimer = 0;
+                cwFlag = true;
+            }
+            cwTimer += Time.deltaTime * 1.3f;
+            Mathf.Clamp01(cwTimer);
+
+            Y = Mathf.Lerp(cwY, Y, cwTimer);
+        }
+        else          // カメラワークから外れた場合
+        {
+            if (cwFlag)
+            {
+                cwY = transform.position.y;
+                cwTimer = 0;
+                cwFlag = false;
+            }
+            cwTimer += Time.deltaTime * 1.3f;
+            Mathf.Clamp01(cwTimer);
+
+            Y = Mathf.Lerp(cwY, player.transform.position.y, cwTimer);
+        }
+
+
+        if (center)
+        {
+            cwTimer2 -= Time.deltaTime;
+            Mathf.Clamp01(cwTimer2);
+
+            X = Mathf.Lerp(cwX, player.transform.position.x, cwTimer2);
+        }
+
 
         transform.position = new Vector3(X, Y, -10);
 
 
-        CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin = vCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+
 
         Eye_Damage eye_Damage = eye.GetComponent<Eye_Damage>();
         EyeSP_Damage eyeSP_Damage = eyeSP.GetComponent<EyeSP_Damage>();
@@ -95,33 +140,62 @@ public class Camera_Move : MonoBehaviour
             }
         }
 
+    }
 
-        // ゲートが開き切った時に振動する
-        if (gates != null)
+    public void Shakes(ref bool shake, float shakeTime, float shakePower)
+    {
+        if (shake)
         {
-            Gate gate = gates.GetComponent<Gate>();
-            if (gate.endOpen)
+            if (shakeTime > shakeTimer)
             {
-
-                if (0.1 > gateTimer)
+                if (!shakeFlag)
                 {
-                    if (!gateShakeFlag)
-                    {
-                        cinemachineBasicMultiChannelPerlin.m_AmplitudeGain += 3;
-                        gateShakeFlag = true;
-                    }
+                    cinemachineBasicMultiChannelPerlin.m_AmplitudeGain += shakePower;
+                    shakeFlag = true;
                 }
-                else
-                {
-                    if (gateShakeFlag)
-                    {
-                        cinemachineBasicMultiChannelPerlin.m_AmplitudeGain -= 3;
-                        gateShakeFlag = false;
-                    }
-                }
-
-                gateTimer += Time.deltaTime;
             }
+            else
+            {
+                if (shakeFlag)
+                {
+                    cinemachineBasicMultiChannelPerlin.m_AmplitudeGain -= shakePower;
+                    shakeFlag = false;
+                    shake = false;
+                    shakeTimer = 0;
+                }
+            }
+
+            shakeTimer += Time.deltaTime;
         }
     }
+
+    void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.CompareTag("camera"))
+        {
+            Camera_Work camera_Work = other.GetComponent<Camera_Work>();
+
+            Ymax = camera_Work.Ymax;
+            Ymin = camera_Work.Ymin;
+
+            if (camera_Work.isCenter)
+            {
+                center = true;
+                cwX = camera_Work.centerPos.x;
+            }
+            else center = false;
+
+            follow = false;
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("camera"))
+        {
+            follow = true;
+            center = false;
+        }
+    }
+
 }

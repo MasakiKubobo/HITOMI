@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Eye_Anim : MonoBehaviour
 {
-    public GameObject eye, kurome;
+    public GameObject eye, kurome, player;
     private SpriteRenderer eyeSprite, kuromeSprite;
     private Collider2D eyeTrigger;
     private Animator anim;
@@ -12,7 +12,9 @@ public class Eye_Anim : MonoBehaviour
     [HideInInspector] public bool appearEye = true;
 
     private bool appearFlag = true, animFlag = false;
-    private float timer = 0;
+
+    public bool tutorial = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,60 +22,87 @@ public class Eye_Anim : MonoBehaviour
         eyeTrigger = eye.GetComponent<Collider2D>();
         kuromeSprite = kurome.GetComponent<SpriteRenderer>();
         anim = eye.GetComponent<Animator>();
+
+        if (GameManager.pointer >= 2) tutorial = false;
+        if (tutorial)
+        {
+            appearEye = false;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (appearEye)
+
+        if (tutorial)
         {
-            // オブジェクトを可視化し、当たり判定を有効にする
-            eyeSprite.enabled = true;
-            eyeTrigger.enabled = true;
-            kuromeSprite.enabled = true;
+            float distance = Mathf.Abs(eye.transform.position.x - player.transform.position.x);
 
-            if (!appearFlag)
+            if (distance <= 10)
             {
-                anim.SetBool("eyeOpen", true);
-
-                if (anim.GetCurrentAnimatorStateInfo(0).IsName("eye_open"))
-                {
-                    animFlag = true;
-                }
-                if (animFlag && anim.GetCurrentAnimatorStateInfo(0).IsName("New State"))
-                {
-                    anim.SetBool("eyeOpen", false);
-                    kurome.SetActive(true);
-
-                    appearFlag = true;
-                    animFlag = false;
-                }
+                appearEye = true;
+                tutorial = false;
             }
         }
-        else
+
+
+        if (!tutorial)
         {
-            if (appearFlag)
+
+
+            if (appearEye)
             {
-                anim.SetBool("eyeClose", true);
+                // オブジェクトを可視化し、当たり判定を有効にする
+                eyeSprite.enabled = true;
+                eyeTrigger.enabled = true;
+                kuromeSprite.enabled = true;
 
-                if (anim.GetCurrentAnimatorStateInfo(0).IsName("eye_close"))
+                if (!appearFlag)
                 {
-                    animFlag = true;
-                }
-                if (animFlag && anim.GetCurrentAnimatorStateInfo(0).IsName("New State"))
-                {
-                    anim.SetBool("eyeClose", false);
+                    anim.SetBool("eyeOpen", true);
 
-                    // オブジェクトを不可視化し、当たり判定を無効にする
-                    eyeSprite.enabled = false;
-                    eyeTrigger.enabled = false;
-                    kuromeSprite.enabled = false;
+                    if (anim.GetCurrentAnimatorStateInfo(0).IsName("eye_open"))
+                    {
+                        animFlag = true;
+                    }
+                    if (animFlag && anim.GetCurrentAnimatorStateInfo(0).IsName("New State"))
+                    {
+                        anim.SetBool("eyeOpen", false);
+                        kurome.SetActive(true);
 
-                    appearFlag = false;
-                    animFlag = false;
+                        appearFlag = true;
+                        animFlag = false;
+                    }
                 }
             }
-            kurome.SetActive(false);
+            else
+            {
+                if (appearFlag)
+                {
+                    anim.SetBool("eyeClose", true);
+
+                    if (anim.GetCurrentAnimatorStateInfo(0).IsName("eye_close"))
+                    {
+                        animFlag = true;
+                    }
+                    if (animFlag && anim.GetCurrentAnimatorStateInfo(0).IsName("New State"))
+                    {
+                        anim.SetBool("eyeClose", false);
+
+                        // オブジェクトを不可視化し、当たり判定を無効にする
+                        eyeSprite.enabled = false;
+                        eyeTrigger.enabled = false;
+                        kuromeSprite.enabled = false;
+
+                        appearFlag = false;
+                        animFlag = false;
+                    }
+                }
+                kurome.SetActive(false);
+            }
+
+
         }
+
     }
 }

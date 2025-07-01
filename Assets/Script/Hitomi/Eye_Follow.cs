@@ -4,21 +4,25 @@ using UnityEngine;
 
 public class Eye_Follow : MonoBehaviour
 {
-    public GameObject player;
+    public GameObject player, attention;
     public float speed = 1;
 
     public GameObject kurome, eyeSP;
 
     bool follow = true;
+
+    public bool tutorial = false;
     // Start is called before the first frame update
     void Start()
     {
-
+        if (GameManager.pointer >= 2) tutorial = false;
+        if (tutorial) follow = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+
         Vector3 followVec = player.transform.position - transform.position;
 
         if (follow) // 主人公について来る
@@ -29,6 +33,11 @@ public class Eye_Follow : MonoBehaviour
         if (follow) // 追従中、瞳の黒目が主人公の方を向く
         {
             kurome.transform.localPosition = followVec.normalized / 5;
+        }
+        else
+        {
+            Attentions attentions = attention.GetComponent<Attentions>();
+            kurome.transform.localPosition = attentions.kuromePos.normalized / 5;
         }
 
         EyeSP_Move eyeSP_Move = eyeSP.GetComponent<EyeSP_Move>();

@@ -15,6 +15,8 @@ public class Materialize : MonoBehaviour
     [HideInInspector] public bool Mtr = false;  // 実体化しているか
     private bool mtring = false; // 実体化の際中か
     private bool smokeFlag = true;
+
+    private AudioSource chargeAudio, mtrAudio, smokeAudio;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,12 +26,18 @@ public class Materialize : MonoBehaviour
         mtr.Stop();
         smoke.Stop();
         collision.enabled = false;
+
+        chargeAudio = charge.GetComponent<AudioSource>();
+        mtrAudio = mtr.GetComponent<AudioSource>();
+        smokeAudio = smoke.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
         Light2D light2D = GetComponent<Light2D>();
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        Color srColor = sr.color;
         EyeSP_Move eyeSP_Move = eyeSP.GetComponent<EyeSP_Move>();
 
         // 瞳の能力解除
@@ -59,19 +67,26 @@ public class Materialize : MonoBehaviour
             if (!smokeFlag)
             {
                 smoke.Play();
+                smokeAudio.Play();
                 smokeFlag = true;
             }
             collision.enabled = false;
-            light2D.intensity = 1;
+            light2D.intensity = 1f;
+
+            srColor.a = 0.3f;
+            sr.color = srColor;
         }
         else
         {
             smokeFlag = false;
             charge.Stop();
-            if (light2D.intensity == 1) mtr.Play();
+            if (light2D.intensity == 1) { mtr.Play(); mtrAudio.Play(); }
 
             collision.enabled = true;
             light2D.intensity = 3;
+
+            srColor.a = 1;
+            sr.color = srColor;
         }
     }
 
@@ -80,7 +95,11 @@ public class Materialize : MonoBehaviour
         if (other.CompareTag("vision"))
         {
             mtring = true;
-            charge.Play();
+            if (!Mtr)
+            {
+                charge.Play();
+                chargeAudio.Play();
+            }
         }
     }
 
