@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 public class PL_Controller : MonoBehaviour
 {
-    [SerializeField] private InputAction Dash;
+    [SerializeField] private InputAction Dash, Up;
     [SerializeField] private InputAction Jump;
     [SerializeField] private InputAction Attack;
 
@@ -16,9 +16,14 @@ public class PL_Controller : MonoBehaviour
 
     [SerializeField] private InputAction Rstick;
     [SerializeField] private InputAction eyeOpen;
+    [SerializeField] private InputAction eyeItem;
+    [SerializeField] private InputAction death;
 
     public GameObject animManager;
     public GameObject eye, eyeSP, pointer;
+
+    public static bool haveItem, usingItem;
+    public GameObject itemMark;
     //public GameObject kuromeSP; // キーマウ操作用
 
 
@@ -26,38 +31,52 @@ public class PL_Controller : MonoBehaviour
 
     bool attackFlag = false, appearFlag = false;
     Vector2 pointerVec = Vector2.zero;
+    private float pointerTimer;
+    private SpriteRenderer pSR;
+
+    public AudioSource itemAudio;
     // Start is called before the first frame update
     void Start()
     {
         pointer.transform.parent = null;
+        pSR = pointer.GetComponent<SpriteRenderer>();
     }
 
     private void OnEnable()
     {
         Dash?.Enable();
+        Up?.Enable();
         Jump?.Enable();
         Attack?.Enable();
         Rstick?.Enable();
         eyeOpen?.Enable();
+        eyeItem?.Enable();
+        death?.Enable();
     }
 
     private void OnDisable()
     {
         Dash?.Disable();
+        Up?.Disable();
         Jump?.Disable();
         Attack?.Disable();
         Rstick?.Disable();
         eyeOpen?.Disable();
+        eyeItem?.Disable();
+        death?.Disable();
     }
 
     // Update is called once per frame
     void Update()
     {
         var _Dash = Dash.ReadValue<float>();
+        var _Up = Up.ReadValue<float>();
         var _Jump = Jump.ReadValue<float>();
         var _Attack = Attack.ReadValue<float>();
         var _Rstick = Rstick.ReadValue<Vector2>();
         var _eyeOpen = eyeOpen.ReadValue<float>();
+        var _eyeItem = eyeItem.ReadValue<float>();
+        var _death = death.ReadValue<float>();
 
         PL_Move pL_Move = GetComponent<PL_Move>();
         PL_Attack pL_Attack = GetComponent<PL_Attack>();
@@ -98,6 +117,8 @@ public class PL_Controller : MonoBehaviour
             if (!attackFlag)
             {
                 pL_Attack.attack = true;
+                //if (_Up > 0.5f) pL_Attack.attackUp = true;
+                //else pL_Attack.attackFront = true;
                 attackFlag = true;
             }
         }
@@ -135,6 +156,17 @@ public class PL_Controller : MonoBehaviour
                 pointerVec = _Rstick.normalized * 2;
                 pointer.SetActive(true);
             }
+            pSR.color = new Color(pSR.color.r, pSR.color.g, pSR.color.b, 0.5f);
+            pointerTimer = 0;
+        }
+        else
+        {
+            pointerTimer += Time.deltaTime;
+            if (pointerTimer >= 1)
+            {
+                pointerVec = Vector2.zero;
+                pSR.color = new Color(pSR.color.r, pSR.color.g, pSR.color.b, 0);
+            }
         }
         if (eyeSP_Anim.appearEye) pointer.SetActive(false);
 
@@ -156,6 +188,25 @@ public class PL_Controller : MonoBehaviour
                 Eye_HP.HP -= Time.deltaTime * 10;
             }
         }
+
+        itemMark.SetActive(haveItem);
+
+        if (haveItem && _eyeItem >= 1)
+        {
+            if (!eyeSP_Anim.appearEye)
+            {
+                if (!eyeSP_Anim.appearEye)
+                {
+                    eyeSP.transform.position = pointer.transform.position;
+                    eye_Anim.appearEye = !eye_Anim.appearEye;       // 押すごとに反転する
+                    eyeSP_Anim.appearEye = !eyeSP_Anim.appearEye;   // 押すごとに反転する
+                }
+            }
+            usingItem = true;
+            haveItem = false;
+        }
+
+        if (_death >= 1) Eye_HP.HP = 0;
 
 
         // キーマウ操作（デバッグ用）
@@ -235,5 +286,19 @@ public class PL_Controller : MonoBehaviour
         kuromeSP.transform.localScale = new Vector3(0, 0.8f, kuromeSP.transform.localScale.z);
         */
 
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        PrefabID prefabID = other.gameObject.GetComponent<PrefabID>();
+        if (prefabID != null)
+        {
+            if (prefabID.ID == "item_01")
+            {
+                itemAudio.Play();
+                haveItem = true;
+                Destroy(other.gameObject);
+            }
+        }
     }
 }

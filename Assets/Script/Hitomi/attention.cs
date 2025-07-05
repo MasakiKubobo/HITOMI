@@ -8,6 +8,7 @@ public class Attentions : MonoBehaviour
     public Eye_Anim eyeManager;
 
     [HideInInspector] public Vector2 kuromePos;
+    [HideInInspector] public bool attention;
     public List<GameObject> objects = new List<GameObject>();
 
     private SpriteRenderer spriteRenderer;
@@ -31,16 +32,25 @@ public class Attentions : MonoBehaviour
                 kuromePos = objPos - (Vector2)eye.transform.position;
 
                 attentionTimer += Time.deltaTime;
+                attention = true;
             }
             else
             {
                 kuromePos = Vector2.zero;
+                attention = false;
             }
 
-            if (attentionTimer <= 1) spriteRenderer.enabled = true;
+            if (attentionTimer <= 2) spriteRenderer.enabled = true;
             else spriteRenderer.enabled = false;
         }
-        else spriteRenderer.enabled = false;
+        else
+        {
+            spriteRenderer.enabled = false;
+            attention = false;
+        }
+
+        float alpha = Mathf.PingPong(Time.time, 0.5f);
+        spriteRenderer.color = new Color(1, 1, 1, alpha);
 
     }
 
@@ -52,6 +62,7 @@ public class Attentions : MonoBehaviour
     void OnTriggerExit2D(Collider2D other)
     {
         objects.Remove(other.gameObject);
+        Debug.Log(objects.Count);
     }
 
     void OnTriggerStay2D(Collider2D other)

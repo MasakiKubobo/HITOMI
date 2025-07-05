@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class EN_Manager : MonoBehaviour
 {
+    public float time;
+    private float timer;
     public GameObject[] enemys;
     public GameObject[] enemys2;
     public bool isTime = false;
@@ -42,45 +44,50 @@ public class EN_Manager : MonoBehaviour
     {
         if (enSwitch)
         {
-            if (!enFlag)
+            timer += Time.deltaTime;
+            if (time <= timer)
             {
-                int index = 0;
-                foreach (GameObject enemy in enemys) // 敵を出現させる
-                {
-                    Instantiate(effect, enemy.transform.position, Quaternion.identity);
-                    enemy.SetActive(true);
 
-                    enPoses[index] = enemy.transform.position;
-                    index++;
-                }
-                enFlag = true;
-            }
-
-            if (moveTimer < 0.5) // 出現後一定時間硬直
-            {
-                int index = 0;
-                foreach (GameObject enemy in enemys)
+                if (!enFlag)
                 {
-                    enemy.transform.position = enPoses[index];
-                    index++;
+                    int index = 0;
+                    foreach (GameObject enemy in enemys) // 敵を出現させる
+                    {
+                        Instantiate(effect, enemy.transform.position, Quaternion.identity);
+                        enemy.SetActive(true);
+
+                        enPoses[index] = enemy.transform.position;
+                        index++;
+                    }
+                    enFlag = true;
                 }
 
-                // 注意！enemy01の重力の値は下げること
-            }
-            moveTimer += Time.deltaTime;
+                if (moveTimer < 0.5) // 出現後一定時間硬直
+                {
+                    int index = 0;
+                    foreach (GameObject enemy in enemys)
+                    {
+                        enemy.transform.position = enPoses[index];
+                        index++;
+                    }
+
+                    // 注意！enemy01の重力の値は下げること
+                }
+                moveTimer += Time.deltaTime;
 
 
-            if (enemys2 != null)
-            {
-                if (!isTime) // 生き残った数で第二波を始める
+                if (enemys2 != null)
                 {
-                    if (twoCount >= EnCount(enemys)) en2Switch = true;
+                    if (!isTime) // 生き残った数で第二波を始める
+                    {
+                        if (twoCount >= EnCount(enemys)) en2Switch = true;
+                    }
+                    else    // 時間で第二波を始める
+                    {
+                        if (twoTimer >= twoTime) en2Switch = true;
+                    }
+                    twoTimer += Time.deltaTime;
                 }
-                else    // 時間で第二波を始める
-                {
-                    if (twoTimer >= twoTime) en2Switch = true;
-                }
-                twoTimer += Time.deltaTime;
             }
         }
 

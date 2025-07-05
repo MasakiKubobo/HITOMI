@@ -5,7 +5,7 @@ using UnityEngine;
 public class EyeSPpointer : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;
-    private Color defaultColor = new Color(0.3f, 0.3f, 0.3f, 0.5f);
+    private Color defaultColor = new Color(1, 1, 1, 0.5f);
     private Color redColor = new Color(1, 0, 0, 0.5f);
 
     [HideInInspector] public bool canSummon = true;

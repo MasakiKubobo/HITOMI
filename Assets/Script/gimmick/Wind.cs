@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Wind : MonoBehaviour
 {
-    public float windPower = 100;
+    public float windPower = 20, groundWind = 200;
     private float windTimer = 0;
     private bool inWind = false;
     // Start is called before the first frame update
@@ -21,9 +21,15 @@ public class Wind : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Ground"))
         {
             Rigidbody2D rb = other.GetComponent<Rigidbody2D>();
+            rb.AddForce(Vector2.up * groundWind);
+        }
+        else
+        {
+            Rigidbody2D rb = other.GetComponent<Rigidbody2D>();
+            rb.AddForce(Vector2.up * windPower);
         }
 
     }

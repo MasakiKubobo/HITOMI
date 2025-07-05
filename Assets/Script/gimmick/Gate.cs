@@ -65,7 +65,7 @@ public class Gate : MonoBehaviour
             if (bathe)
             {
                 // ゆっくりと開けていく
-                if (moveTimer >= 0.8)
+                if (moveTimer >= 0.4)
                 {
                     objPos += Vector2.down * openSpeed * Time.deltaTime;
                 }

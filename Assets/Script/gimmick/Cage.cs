@@ -7,6 +7,8 @@ public class Cage : MonoBehaviour
     public bool isBox = false;
     public Rigidbody2D rb;
     private GameObject eyeSP;
+    public float powor;
+    public AudioSource ironAudio;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,5 +35,31 @@ public class Cage : MonoBehaviour
             rb.bodyType = RigidbodyType2D.Static;
             if (!isBox) eyeSP.transform.eulerAngles = Vector3.zero;
         }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        Debug.Log("当ててんのよ3");
+        PrefabID prefabID = other.gameObject.GetComponent<PrefabID>();
+        if (prefabID != null)
+        {
+            Debug.Log("当ててんのよ2");
+            if (prefabID.ID == "attack_01")
+            {
+                Debug.Log("当ててんのよ");
+                Materialize materialize = GetComponent<Materialize>();
+                if (materialize.Mtr)
+                {
+                    KnockBack(other.transform.position, other.bounds.ClosestPoint(transform.position), powor);
+                    ironAudio.Play();
+                }
+            }
+        }
+    }
+
+    void KnockBack(Vector2 PLvec, Vector2 ConPos, float powor)
+    {
+        Vector2 vec = (Vector2)transform.position - PLvec;
+        rb.AddForce(vec.normalized * powor, ForceMode2D.Impulse);
     }
 }

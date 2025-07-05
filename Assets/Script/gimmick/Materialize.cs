@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -17,6 +18,11 @@ public class Materialize : MonoBehaviour
     private bool smokeFlag = true;
 
     private AudioSource chargeAudio, mtrAudio, smokeAudio;
+    private Rigidbody2D rb;
+
+    public SpriteRenderer sr, addSprite;
+    public GameObject hideObject;
+    public bool dynamic;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,13 +36,14 @@ public class Materialize : MonoBehaviour
         chargeAudio = charge.GetComponent<AudioSource>();
         mtrAudio = mtr.GetComponent<AudioSource>();
         smokeAudio = smoke.GetComponent<AudioSource>();
+
+        rb = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
         Light2D light2D = GetComponent<Light2D>();
-        SpriteRenderer sr = GetComponent<SpriteRenderer>();
         Color srColor = sr.color;
         EyeSP_Move eyeSP_Move = eyeSP.GetComponent<EyeSP_Move>();
 
@@ -64,6 +71,9 @@ public class Materialize : MonoBehaviour
 
         if (!Mtr)
         {
+            rb.isKinematic = true;
+            if (hideObject != null) hideObject.SetActive(false);
+
             if (!smokeFlag)
             {
                 smoke.Play();
@@ -73,11 +83,16 @@ public class Materialize : MonoBehaviour
             collision.enabled = false;
             light2D.intensity = 1f;
 
-            srColor.a = 0.3f;
+            srColor = Color.black;
+            srColor.a = Mathf.PingPong(Time.time * 0.5f, 0.5f);
             sr.color = srColor;
+            if (addSprite != null) addSprite.color = srColor;
         }
         else
         {
+            if (hideObject != null) hideObject.SetActive(true);
+            if (dynamic) rb.isKinematic = false;
+
             smokeFlag = false;
             charge.Stop();
             if (light2D.intensity == 1) { mtr.Play(); mtrAudio.Play(); }
@@ -85,8 +100,10 @@ public class Materialize : MonoBehaviour
             collision.enabled = true;
             light2D.intensity = 3;
 
+            srColor = Color.white;
             srColor.a = 1;
             sr.color = srColor;
+            if (addSprite != null) addSprite.color = srColor;
         }
     }
 

@@ -34,7 +34,7 @@ public class startGame : MonoBehaviour
 
         if (_button >= 1)
         {
-            SceneManager.LoadScene("main0");
+            SceneManager.LoadScene("main1");
         }
 
         if (!up)

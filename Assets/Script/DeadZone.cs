@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using Microsoft.Unity.VisualStudio.Editor;
 using UnityEngine;
 
 public class DeadZone : MonoBehaviour
 {
     public GameObject black, rePosition;
+    public AudioSource audioSource;
 
     private GameObject player;
     // Start is called before the first frame update
@@ -24,6 +24,7 @@ public class DeadZone : MonoBehaviour
     {
         black.SetActive(true);
         Time.timeScale = 0;
+        audioSource.Play();
 
         yield return new WaitForSecondsRealtime(0.5f);
 

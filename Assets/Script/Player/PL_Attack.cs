@@ -6,8 +6,7 @@ using UnityEngine;
 
 public class PL_Attack : MonoBehaviour
 {
-    [HideInInspector] public bool attack;
-    public float attackLimit = 0.2f;
+    [HideInInspector] public bool attack, attackFront, attackUp;
     public float coolTime = 0.3f;
     private float timer = 0;
     private bool attackFlag;
@@ -25,23 +24,17 @@ public class PL_Attack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (attack)
+        if (attack || attackFront || attackUp)
         {
-
             timer += Time.deltaTime;
-            if (timer < attackLimit)
-            {
-            }
-            else
-            {
-
-                if (timer >= attackLimit + coolTime) attack = false;
-            }
+            if (timer >= coolTime) { attack = false; attackFront = false; attackUp = false; }
 
             if (!attackFlag)
             {
                 Instantiate(effect, slush.transform.position, Quaternion.identity);
-                pL_Motion.attack = true;
+                if (attack) pL_Motion.attack = true;
+                if (attackFront) pL_Motion.attackFront = true;
+                if (attackUp) pL_Motion.attackUp = true;
                 attackFlag = true;
             }
         }

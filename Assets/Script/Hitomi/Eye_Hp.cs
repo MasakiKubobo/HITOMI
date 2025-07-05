@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
-using UnityEditor.SceneManagement;
 
 public class Eye_HP : MonoBehaviour
 {

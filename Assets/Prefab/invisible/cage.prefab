@@ -79,8 +79,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 150963851
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: ae94b41ef48814a0bb8a675a0582ed7f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -105,12 +105,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9167626cd038f408da8f185ed2f93090, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mtrTime: 2
+  mtrTime: 0.5
   charge: {fileID: 4648479775814557218}
   mtr: {fileID: 4290704800059424153}
   smoke: {fileID: 5739560432313652551}
   collision: {fileID: 3005268198238346071}
   Mtr: 0
+  sr: {fileID: 8036877481549397368}
+  addSprite: {fileID: 0}
+  hideObject: {fileID: 0}
+  dynamic: 1
 --- !u!114 &2268599547410159796
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,7 +127,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fcadf6b5c2df404dbeab6f99267d14d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isBox: 0
   rb: {fileID: 6177978976576554640}
+  powor: 10
+  ironAudio: {fileID: 0}
 --- !u!114 &9129429198867138922
 MonoBehaviour:
   m_ObjectHideFlags: 0

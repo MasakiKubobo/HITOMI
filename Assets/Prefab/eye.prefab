@@ -314,7 +314,7 @@ GameObject:
   - component: {fileID: 950184165286642343}
   - component: {fileID: 5514363138522596506}
   - component: {fileID: 5094234298119627795}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: bikkuri
   m_TagString: eye
   m_Icon: {fileID: 0}
@@ -401,7 +401,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eye: {fileID: 3604144279711376781}
+  eyeManager: {fileID: 0}
   kuromePos: {x: 0, y: 0}
+  attention: 0
   objects: []
 --- !u!58 &5094234298119627795
 CircleCollider2D:
