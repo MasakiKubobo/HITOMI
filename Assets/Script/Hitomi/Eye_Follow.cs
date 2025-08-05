@@ -7,16 +7,13 @@ public class Eye_Follow : MonoBehaviour
     public GameObject player, attention;
     public float speed = 1;
 
-    public GameObject kurome, eyeSP;
+    public GameObject kurome;
 
     bool follow = true;
-
-    public bool tutorial = false;
     // Start is called before the first frame update
     void Start()
     {
-        if (GameManager.pointer >= 2) tutorial = false;
-        if (tutorial) follow = false;
+
     }
 
     // Update is called once per frame
@@ -44,12 +41,6 @@ public class Eye_Follow : MonoBehaviour
         else
         {
             kurome.transform.localPosition = attentions.kuromePos.normalized / 5;
-        }
-
-        EyeSP_Move eyeSP_Move = eyeSP.GetComponent<EyeSP_Move>();
-        if (eyeSP_Move.appear)
-        {
-            transform.position = player.transform.position;
         }
     }
 

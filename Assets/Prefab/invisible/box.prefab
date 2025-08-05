@@ -108,7 +108,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9167626cd038f408da8f185ed2f93090, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mtrTime: 0.5
+  repeat: 1
+  mtrTime: 0.3
   charge: {fileID: 4648479775814557218}
   mtr: {fileID: 4290704800059424153}
   smoke: {fileID: 5739560432313652551}
@@ -566,6 +567,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1873290168750658174}
     m_Modifications:
+    - target: {fileID: 201762720049240968, guid: 2b31eea406c444f33b6a1e605dee631c, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3070532149924551657, guid: 2b31eea406c444f33b6a1e605dee631c, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6315672695823576869, guid: 2b31eea406c444f33b6a1e605dee631c, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.5
@@ -622,9 +631,25 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7945812904127311739, guid: 2b31eea406c444f33b6a1e605dee631c, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8099127990594074027, guid: 2b31eea406c444f33b6a1e605dee631c, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8208707601033345760, guid: 2b31eea406c444f33b6a1e605dee631c, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8593464584776411535, guid: 2b31eea406c444f33b6a1e605dee631c, type: 3}
       propertyPath: m_Name
       value: vfx_Heal_02 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8700035473269227422, guid: 2b31eea406c444f33b6a1e605dee631c, type: 3}
+      propertyPath: playOnAwake
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -709,6 +734,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 265766274217486953, guid: 3ab108f52682a485c8ed48ce0097dba0, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -732,6 +761,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1873290168750658174}
     m_Modifications:
+    - target: {fileID: 2423806116100273067, guid: f28ccd803893a4179a577df2f6e41109, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3473529909581181512, guid: f28ccd803893a4179a577df2f6e41109, type: 3}
       propertyPath: m_Name
       value: vfx_Projectile_01 1
@@ -786,6 +819,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4559080999636468818, guid: f28ccd803893a4179a577df2f6e41109, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5830850444779986723, guid: f28ccd803893a4179a577df2f6e41109, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8240415215158998338, guid: f28ccd803893a4179a577df2f6e41109, type: 3}
+      propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

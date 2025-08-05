@@ -7,7 +7,7 @@ public class Gate : MonoBehaviour
 {
     public GameObject vCam;
     public ParticleSystem charge, open;
-    private GameObject eyeSP;
+    private GameObject eye;
 
     public float openSpeed, closeSpeed;
     public float openMax;
@@ -21,7 +21,7 @@ public class Gate : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        eyeSP = GameObject.Find("eyeSP");
+        eye = GameObject.Find("eye");
         charge.Stop();
 
         closePos = transform.position;
@@ -32,9 +32,9 @@ public class Gate : MonoBehaviour
     void Update()
     {
         Light2D light2D = GetComponent<Light2D>();
-        EyeSP_Move eyeSP_Move = eyeSP.GetComponent<EyeSP_Move>();
+        Eye_Anim eye_Anim = eye.GetComponent<Eye_Anim>();
 
-        if (!eyeSP_Move.appear)
+        if (!eye_Anim.eyeAbility)
         {
             bathe = false;
         }

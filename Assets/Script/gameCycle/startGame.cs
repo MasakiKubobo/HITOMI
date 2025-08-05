@@ -12,6 +12,7 @@ public class startGame : MonoBehaviour
     public TextMeshProUGUI text;
     private float alpha = 0.5f, textTimer;
     private bool up = false;
+    private bool buttonFlag;
 
     private void OnEnable()
     {
@@ -32,9 +33,13 @@ public class startGame : MonoBehaviour
     {
         var _button = button.ReadValue<float>();
 
+        if (_button <= 0)
+        {
+            buttonFlag = true;
+        }
         if (_button >= 1)
         {
-            SceneManager.LoadScene("main1");
+            if (buttonFlag) SceneManager.LoadScene("main1");
         }
 
         if (!up)

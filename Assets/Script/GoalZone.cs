@@ -45,7 +45,11 @@ public class GoalZone : MonoBehaviour
         }
 
         yield return new WaitForSecondsRealtime(3);
-        SceneManager.LoadScene("start");
+        if (SceneManager.GetActiveScene().name == "main1")
+        {
+            GameManager.pointer = 0;
+            SceneManager.LoadScene("start");
+        }
 
     }
 
@@ -53,10 +57,7 @@ public class GoalZone : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (SceneManager.GetActiveScene().name == "main1")
-            {
-                StartCoroutine(Goals());
-            }
+            StartCoroutine(Goals());
         }
     }
 }

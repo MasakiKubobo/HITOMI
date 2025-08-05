@@ -6,11 +6,12 @@ using UnityEngine.Rendering.Universal;
 
 public class Materialize : MonoBehaviour
 {
+    public bool repeat = true; // 能力解除で元に戻るか否か
     public float mtrTime = 2;
     public ParticleSystem charge, mtr, smoke;
     public Collider2D collision;
 
-    private GameObject eyeSP;
+    private GameObject eye;
 
     private float mtrTimer = 0;
     [HideInInspector] public bool Mtr = false;  // 実体化しているか
@@ -26,7 +27,7 @@ public class Materialize : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        eyeSP = GameObject.Find("eyeSP");
+        eye = GameObject.Find("eye");
 
         charge.Stop();
         mtr.Stop();
@@ -45,13 +46,12 @@ public class Materialize : MonoBehaviour
     {
         Light2D light2D = GetComponent<Light2D>();
         Color srColor = sr.color;
-        EyeSP_Move eyeSP_Move = eyeSP.GetComponent<EyeSP_Move>();
+        Eye_Anim eye_Anim = eye.GetComponent<Eye_Anim>();
 
         // 瞳の能力解除
-        if (!eyeSP_Move.appear)
+        if (!eye_Anim.eyeAbility)
         {
-            Mtr = false;
-            mtring = false;
+            if (repeat) Mtr = false; mtring = false;
         }
 
         if (mtring) // 実体化の際中

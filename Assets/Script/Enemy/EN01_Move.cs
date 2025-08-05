@@ -9,7 +9,7 @@ public class EN01_Move : MonoBehaviour
     public float moveSpeed;
 
     private Rigidbody2D rb;
-    private GameObject eye, eyeSP;
+    private GameObject eye;
     bool inAir = true;
 
     public float plDistanceX = 10, plDistanceY = 5;
@@ -25,13 +25,11 @@ public class EN01_Move : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         eye = GameObject.Find("eye");
-        eyeSP = GameObject.Find("eyeSP");
         player = GameObject.Find("Player");
 
         if (targetIsPlayer)
         {
             eye = GameObject.Find("Player");
-            eyeSP = GameObject.Find("Player");
         }
 
         en01_Anim = GetComponent<EN01_Anim>();
@@ -40,7 +38,6 @@ public class EN01_Move : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        EyeSP_Move eyeSP_Move = eyeSP.GetComponent<EyeSP_Move>();
         EN01_Damage en01_Damage = GetComponent<EN01_Damage>();
 
         // 範囲内にプレイヤーが入ると近づいてくる
@@ -59,7 +56,7 @@ public class EN01_Move : MonoBehaviour
         float moveDirection;
         if (!targetIsPlayer)
         {
-            moveDirection = !eyeSP_Move.appear ? eye.transform.position.x - transform.position.x : eyeSP.transform.position.x - transform.position.x;
+            moveDirection = eye.transform.position.x - transform.position.x;
         }
         else
         {
@@ -102,7 +99,7 @@ public class EN01_Move : MonoBehaviour
         // 瞳に近づくと攻撃アニメーションに入る
         if (!targetIsPlayer)
         {
-            Vector3 targetPos = eyeSP_Move.appear ? eyeSP.transform.position : eye.transform.position;
+            Vector3 targetPos = eye.transform.position;
 
             if (3 >= (transform.position - targetPos).magnitude)
             {

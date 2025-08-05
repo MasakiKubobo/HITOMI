@@ -105,7 +105,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9167626cd038f408da8f185ed2f93090, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mtrTime: 0.5
+  repeat: 0
+  mtrTime: 0.2
   charge: {fileID: 4648479775814557218}
   mtr: {fileID: 4290704800059424153}
   smoke: {fileID: 5739560432313652551}
@@ -588,6 +589,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5830850444779986723, guid: f28ccd803893a4179a577df2f6e41109, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0.27058828
+      objectReference: {fileID: 0}
+    - target: {fileID: 5830850444779986723, guid: f28ccd803893a4179a577df2f6e41109, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5830850444779986723, guid: f28ccd803893a4179a577df2f6e41109, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.96726763
+      objectReference: {fileID: 0}
     - target: {fileID: 6112131472184271677, guid: f28ccd803893a4179a577df2f6e41109, type: 3}
       propertyPath: m_Volume
       value: 0.521
@@ -596,6 +609,18 @@ PrefabInstance:
       propertyPath: m_audioClip
       value: 
       objectReference: {fileID: 8300000, guid: c6bbcb24b73fa40fdae3f30aa5ce7a4d, type: 3}
+    - target: {fileID: 8240415215158998338, guid: f28ccd803893a4179a577df2f6e41109, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0.13333331
+      objectReference: {fileID: 0}
+    - target: {fileID: 8240415215158998338, guid: f28ccd803893a4179a577df2f6e41109, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.5294118
+      objectReference: {fileID: 0}
+    - target: {fileID: 8240415215158998338, guid: f28ccd803893a4179a577df2f6e41109, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.5265815
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

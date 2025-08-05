@@ -6,13 +6,13 @@ public class Cage : MonoBehaviour
 {
     public bool isBox = false;
     public Rigidbody2D rb;
-    private GameObject eyeSP;
+    private GameObject eye;
     public float powor;
     public AudioSource ironAudio;
     // Start is called before the first frame update
     void Start()
     {
-        eyeSP = GameObject.Find("eyeSP");
+        eye = GameObject.Find("eye");
         rb.bodyType = RigidbodyType2D.Static;
     }
 
@@ -26,27 +26,24 @@ public class Cage : MonoBehaviour
             rb.bodyType = RigidbodyType2D.Dynamic;
             if (!isBox)
             {
-                eyeSP.transform.position = transform.position;
-                eyeSP.transform.rotation = transform.rotation;
+                eye.transform.position = transform.position;
+                eye.transform.rotation = transform.rotation;
             }
         }
         else
         {
             rb.bodyType = RigidbodyType2D.Static;
-            if (!isBox) eyeSP.transform.eulerAngles = Vector3.zero;
+            if (!isBox) eye.transform.eulerAngles = Vector3.zero;
         }
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("当ててんのよ3");
         PrefabID prefabID = other.gameObject.GetComponent<PrefabID>();
         if (prefabID != null)
         {
-            Debug.Log("当ててんのよ2");
             if (prefabID.ID == "attack_01")
             {
-                Debug.Log("当ててんのよ");
                 Materialize materialize = GetComponent<Materialize>();
                 if (materialize.Mtr)
                 {

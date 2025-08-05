@@ -17,29 +17,26 @@ public class PL_Controller : MonoBehaviour
     [SerializeField] private InputAction Rstick;
     [SerializeField] private InputAction eyeOpen;
     [SerializeField] private InputAction eyeItem;
+    [SerializeField] private InputAction back;
     [SerializeField] private InputAction death;
 
-    public GameObject animManager;
-    public GameObject eye, eyeSP, pointer;
+    //public GameObject animManager;
+    public GameObject eye;
 
     public static bool haveItem, usingItem;
     public GameObject itemMark;
     //public GameObject kuromeSP; // キーマウ操作用
 
 
-    private float timer = 0, timer2 = 0;
+    private float backTimer = 0, deathTimer = 0;
 
     bool attackFlag = false, appearFlag = false;
-    Vector2 pointerVec = Vector2.zero;
-    private float pointerTimer;
-    private SpriteRenderer pSR;
 
     public AudioSource itemAudio;
     // Start is called before the first frame update
     void Start()
     {
-        pointer.transform.parent = null;
-        pSR = pointer.GetComponent<SpriteRenderer>();
+
     }
 
     private void OnEnable()
@@ -51,6 +48,7 @@ public class PL_Controller : MonoBehaviour
         Rstick?.Enable();
         eyeOpen?.Enable();
         eyeItem?.Enable();
+        back?.Enable();
         death?.Enable();
     }
 
@@ -63,6 +61,7 @@ public class PL_Controller : MonoBehaviour
         Rstick?.Disable();
         eyeOpen?.Disable();
         eyeItem?.Disable();
+        back?.Disable();
         death?.Disable();
     }
 
@@ -76,24 +75,27 @@ public class PL_Controller : MonoBehaviour
         var _Rstick = Rstick.ReadValue<Vector2>();
         var _eyeOpen = eyeOpen.ReadValue<float>();
         var _eyeItem = eyeItem.ReadValue<float>();
+        var _back = back.ReadValue<float>();
         var _death = death.ReadValue<float>();
 
         PL_Move pL_Move = GetComponent<PL_Move>();
         PL_Attack pL_Attack = GetComponent<PL_Attack>();
         PL_Damage pL_Damage = GetComponent<PL_Damage>();
 
-        Eye_Anim eye_Anim = animManager.GetComponent<Eye_Anim>();
-        EyeSP_Anim eyeSP_Anim = animManager.GetComponent<EyeSP_Anim>();
-        EyeSP_Move eyeSP_Move = eyeSP.GetComponent<EyeSP_Move>();
+        Eye_Anim eye_Anim = eye.GetComponent<Eye_Anim>();
+        Eye_Move eye_Move = eye.GetComponent<Eye_Move>();
+        //Eye_Anim eye_Anim = animManager.GetComponent<Eye_Anim>();
+        //EyeSP_Anim eyeSP_Anim = animManager.GetComponent<EyeSP_Anim>();
+        //EyeSP_Move eyeSP_Move = eyeSP.GetComponent<EyeSP_Move>();
 
-        EyeSPpointer eyeSPpointer = pointer.GetComponent<EyeSPpointer>();
+        //EyeSPpointer eyeSPpointer = pointer.GetComponent<EyeSPpointer>();
 
-        if (_Dash > 0.3f)
+        if (_Dash > 0.5f)
         {
             pL_Move.dash = true;
             pL_Move.left = true;
         }
-        else if (_Dash < -0.3f)
+        else if (_Dash < -0.5f)
         {
             pL_Move.dash = true;
             pL_Move.left = false;
@@ -131,82 +133,58 @@ public class PL_Controller : MonoBehaviour
             pL_Attack.attack = false;
         }
 
-        // 瞳と特殊な瞳を切り替える
+        // 能力使用と解除
+        if (Math.Sqrt(_Rstick.x * _Rstick.x + _Rstick.y * _Rstick.y) > 0.7) // スティックの傾きが0.5以上で有効に
+        {
+            eye_Anim.eyeAbility = true;
+            eye_Move.kuromePos = _Rstick;
+        }
         if (_eyeOpen >= 0.5)
         {
-            if (!appearFlag && eyeSPpointer.canSummon)
-            {
-                if (!eyeSP_Anim.appearEye) eyeSP.transform.position = pointer.transform.position;
-
-                eye_Anim.appearEye = !eye_Anim.appearEye;       // 押すごとに反転する
-                eyeSP_Anim.appearEye = !eyeSP_Anim.appearEye;   // 押すごとに反転する
-
-                appearFlag = true;
-            }
+            eye_Anim.eyeAbility = false;
         }
-        else if (_eyeOpen == 0) appearFlag = false;
 
-        // 特殊な瞳を開く方向
-        pointer.transform.position = (Vector2)transform.position + pointerVec;
-        if (Math.Sqrt(_Rstick.x * _Rstick.x + _Rstick.y * _Rstick.y) > 0.5) // スティックの傾きが0.5以上で有効に
-        {
-            if (!eyeSP_Anim.appearEye)
-            {
-                // ポインターの方向を操作
-                pointerVec = _Rstick.normalized * 2;
-                pointer.SetActive(true);
-            }
-            pSR.color = new Color(pSR.color.r, pSR.color.g, pSR.color.b, 0.5f);
-            pointerTimer = 0;
-        }
-        else
-        {
-            pointerTimer += Time.deltaTime;
-            if (pointerTimer >= 1)
-            {
-                pointerVec = Vector2.zero;
-                pSR.color = new Color(pSR.color.r, pSR.color.g, pSR.color.b, 0);
-            }
-        }
-        if (eyeSP_Anim.appearEye) pointer.SetActive(false);
-
-        // 特殊な瞳の操作
-        if (eyeSP_Anim.appearEye)
-        {
-            eyeSP_Move.appear = true;
-            eyeSP_Move.kuromePos = _Rstick;
-        }
-        else eyeSP_Move.appear = false;
-
+        /*
         // 特殊な瞳が一定以上離れるとスリップダメージ
-        if (eyeSP_Anim.appearEye)
+        if (eye_Anim.eyeAbility)
         {
             Vector2 PLvec = transform.position;
-            Vector2 EyeSPvec = eyeSP.transform.position;
-            if ((PLvec - EyeSPvec).magnitude >= 15)
+            Vector2 EyeVec = eye.transform.position;
+            if ((PLvec - EyeVec).magnitude >= 15)
             {
                 Eye_HP.HP -= Time.deltaTime * 10;
             }
         }
+        */
 
         itemMark.SetActive(haveItem);
 
         if (haveItem && _eyeItem >= 1)
         {
-            if (!eyeSP_Anim.appearEye)
+            if (!eye_Anim.eyeAbility)
             {
-                if (!eyeSP_Anim.appearEye)
+                if (!eye_Anim.eyeAbility)
                 {
-                    eyeSP.transform.position = pointer.transform.position;
-                    eye_Anim.appearEye = !eye_Anim.appearEye;       // 押すごとに反転する
-                    eyeSP_Anim.appearEye = !eyeSP_Anim.appearEye;   // 押すごとに反転する
+                    eye_Anim.eyeAbility = true; // 能力を使用
                 }
             }
             usingItem = true;
             haveItem = false;
         }
 
-        if (_death >= 1) Eye_HP.HP = 0;
+        if (_back >= 1)
+        {
+            backTimer += Time.deltaTime;
+            if (backTimer >= 2) { GameManager.pointer = 0; SceneManager.LoadScene("start"); }
+        }
+        else backTimer = 0;
+
+        if (_death >= 1)
+        {
+            deathTimer += Time.deltaTime;
+            if (deathTimer >= 2) Eye_HP.HP = 0;
+        }
+        else deathTimer = 0;
 
 
         // キーマウ操作（デバッグ用）
@@ -288,6 +266,7 @@ public class PL_Controller : MonoBehaviour
 
     }
 
+    /* アイテム取る用
     void OnTriggerEnter2D(Collider2D other)
     {
         PrefabID prefabID = other.gameObject.GetComponent<PrefabID>();
@@ -301,4 +280,5 @@ public class PL_Controller : MonoBehaviour
             }
         }
     }
+    */
 }

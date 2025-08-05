@@ -13,11 +13,11 @@ public class Camera_Move : MonoBehaviour
     public GameObject gates;
 
     private CinemachineVirtualCamera vCam;
-    private GameObject eye, eyeSP;
-    public float eyeShakeTimer, eyeSPShakeTimer;
-    public float eyeIntensity, eyeSPIntensity;
+    private GameObject eye;
+    public float eyeShakeTimer;
+    public float eyeIntensity;
 
-    private bool eyeShakeFlag = false, eyeSPShakeFlag = false, shakeFlag = false, cwFlag = false, cwFlag2 = false;
+    private bool eyeShakeFlag = false, shakeFlag = false, cwFlag = false;
     private float eyeTimer = 0, shakeTimer = 0, cwTimer = 0, cwTimer2 = 1;
     float cwY, cwX;  // カメラワーク移動用
 
@@ -30,7 +30,6 @@ public class Camera_Move : MonoBehaviour
         cinemachineBasicMultiChannelPerlin = vCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
 
         eye = GameObject.Find("eye");
-        eyeSP = GameObject.Find("eyeSP");
     }
 
     // Update is called once per frame
@@ -89,7 +88,6 @@ public class Camera_Move : MonoBehaviour
 
 
         Eye_Damage eye_Damage = eye.GetComponent<Eye_Damage>();
-        EyeSP_Damage eyeSP_Damage = eyeSP.GetComponent<EyeSP_Damage>();
 
         // 瞳が攻撃を受けた場合、それぞれの振動値を加える
         if (eye_Damage.invincible)
@@ -100,14 +98,6 @@ public class Camera_Move : MonoBehaviour
                 eyeShakeFlag = true;
             }
 
-        }
-        if (eyeSP_Damage.invincible)
-        {
-            if (!eyeSPShakeFlag)
-            {
-                cinemachineBasicMultiChannelPerlin.m_AmplitudeGain += eyeSPIntensity;
-                eyeSPShakeFlag = true;
-            }
         }
 
         // 瞳の振動時間が経つと元の振動値に戻る（ダメージ演出が続いている限り振動は続く）
@@ -122,20 +112,6 @@ public class Camera_Move : MonoBehaviour
                     cinemachineBasicMultiChannelPerlin.m_AmplitudeGain -= eyeIntensity;
                     eyeTimer = 0;
                     eyeShakeFlag = false;
-                }
-            }
-        }
-        if (eyeSPShakeFlag)
-        {
-            eyeTimer += Time.deltaTime;
-
-            if (eyeTimer >= eyeSPShakeTimer)
-            {
-                if (!eyeSP_Damage.invincible)
-                {
-                    cinemachineBasicMultiChannelPerlin.m_AmplitudeGain -= eyeSPIntensity;
-                    eyeTimer = 0;
-                    eyeSPShakeFlag = false;
                 }
             }
         }

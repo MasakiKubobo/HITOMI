@@ -5,13 +5,14 @@ using UnityEngine;
 
 public class textAppear : MonoBehaviour
 {
+    public float appearSpeed = 1;
     public float playerX, playerY = -100, secondX;
     public bool secondIsX;
     public string second;
     private TextMeshPro text;
     private SpriteRenderer spriteRenderer;
 
-    private GameObject player, eyeManager;
+    private GameObject player, eye;
     private float alphaTimer;
 
     private bool _switch, switchFlag;
@@ -24,7 +25,7 @@ public class textAppear : MonoBehaviour
         if (spriteRenderer != null) spriteRenderer.color = new Color(1, 1, 1, 0);
 
         player = GameObject.Find("Player");
-        eyeManager = GameObject.Find("Eye_Manager");
+        eye = GameObject.Find("eye");
     }
 
     // Update is called once per frame
@@ -32,7 +33,7 @@ public class textAppear : MonoBehaviour
     {
         if (!_switch && player.transform.position.x >= playerX && player.transform.position.y >= playerY)
         {
-            alphaTimer += Time.deltaTime;
+            alphaTimer += Time.deltaTime * appearSpeed;
             if (text != null) text.color = new Color(1, 1, 1, alphaTimer);
             if (spriteRenderer != null) spriteRenderer.color = new Color(1, 1, 1, alphaTimer);
 
@@ -41,8 +42,8 @@ public class textAppear : MonoBehaviour
             {
                 if (!secondIsX)
                 {
-                    EyeSP_Anim eyeSP_Anim = eyeManager.GetComponent<EyeSP_Anim>();
-                    if (eyeSP_Anim.appearEye)
+                    Eye_Anim eye_Anim = eye.GetComponent<Eye_Anim>();
+                    if (eye_Anim.eyeAbility)
                     {
                         _switch = true;
                         switchFlag = true;
@@ -62,7 +63,7 @@ public class textAppear : MonoBehaviour
 
         if (_switch)
         {
-            alphaTimer -= Time.deltaTime;
+            alphaTimer -= Time.deltaTime * appearSpeed;
             if (text != null) text.color = new Color(1, 1, 1, alphaTimer);
 
             if (alphaTimer <= 0)

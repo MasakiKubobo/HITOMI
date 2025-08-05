@@ -9,7 +9,7 @@ public class EN03_Move : MonoBehaviour
     public float moveSpeed;
 
     private Rigidbody2D rb;
-    private GameObject eye, eyeSP;
+    private GameObject eye;
     bool inAir = true;
     private GameObject player;
     private bool attackFlag = false;
@@ -20,7 +20,6 @@ public class EN03_Move : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         eye = GameObject.Find("eye");
-        eyeSP = GameObject.Find("eyeSP");
         player = GameObject.Find("Player");
 
         en01_Anim = GetComponent<EN01_Anim>();
@@ -29,7 +28,7 @@ public class EN03_Move : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        EyeSP_Move eyeSP_Move = eyeSP.GetComponent<EyeSP_Move>();
+        Eye_Anim eye_Anim = eye.GetComponent<Eye_Anim>();
         EN01_Damage en01_Damage = GetComponent<EN01_Damage>();
 
 
@@ -44,8 +43,6 @@ public class EN03_Move : MonoBehaviour
             else en01_Anim.move = false;
         }
         else en01_Anim.move = false;
-
-        Debug.Log(inAir);
 
 
         // 前方に穴や壁を検知すると反転する
@@ -69,9 +66,9 @@ public class EN03_Move : MonoBehaviour
 
 
         // 瞳に近づくと攻撃アニメーションに入る
-        Vector2 moveDirection = !eyeSP_Move.appear ? eye.transform.position - transform.position : eyeSP.transform.position - transform.position;
+        Vector2 moveDirection = eye.transform.position - transform.position;
 
-        Vector3 targetPos = eyeSP_Move.appear ? eyeSP.transform.position : eye.transform.position;
+        Vector3 targetPos = eye.transform.position;
 
 
 

@@ -5,7 +5,6 @@ using UnityEngine;
 public class Attentions : MonoBehaviour
 {
     public GameObject eye;
-    public Eye_Anim eyeManager;
 
     [HideInInspector] public Vector2 kuromePos;
     [HideInInspector] public bool attention;
@@ -24,7 +23,9 @@ public class Attentions : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (eyeManager.appearEye)
+        Eye_Anim eye_Anim = eye.GetComponent<Eye_Anim>();
+
+        if (!eye_Anim.eyeAbility)
         {
             if (objects.Count != 0)
             {

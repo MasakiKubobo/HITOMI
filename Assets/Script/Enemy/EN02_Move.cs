@@ -12,7 +12,7 @@ public class EN02_Move : MonoBehaviour
     public ParticleSystem damagePar, destroyPar;
 
     private Rigidbody2D rb;
-    private GameObject eye, eyeSP;
+    private GameObject eye;
     private float timer = 0, timer2 = 0;
     public float knockBackTime = 1f;
     private bool knockBack = false;
@@ -26,13 +26,11 @@ public class EN02_Move : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         eye = GameObject.Find("eye");
-        eyeSP = GameObject.Find("eyeSP");
         player = GameObject.Find("Player");
 
         if (targetIsPlayer)
         {
             eye = GameObject.Find("Player");
-            eyeSP = GameObject.Find("Player");
         }
     }
 
@@ -73,12 +71,10 @@ public class EN02_Move : MonoBehaviour
     void FixedUpdate()
     {
         Vector2 vec = Vector2.zero;
-        EyeSP_Move eyeSP_Move;
 
         if (!targetIsPlayer)
         {
-            eyeSP_Move = eyeSP.GetComponent<EyeSP_Move>();
-            if (chase) vec = !eyeSP_Move.appear ? eye.transform.position - transform.position : eyeSP.transform.position - transform.position;
+            if (chase) vec = eye.transform.position - transform.position;
         }
         else
         {

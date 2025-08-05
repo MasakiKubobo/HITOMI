@@ -7,11 +7,11 @@ public class PL_Move : MonoBehaviour
     public float moveSpeed = 7;
     public float airMoveSpeed = 5;
 
-    public float startJumpPower, loopJumpPower; // 最初に加える力と、継続して加える力 
+    public float jumpPower;
     public float disJumpPower; // ジャンプ終わり加える重力補正
 
     private float dashPowor = 0;
-    private float _loopJumpPower = 0; // 調整して入力する用の変数
+    private float _jumpPower = 0; // 調整して入力する用の変数
     public float maxJumpTime = 0.5f;  // ジャンプできる時間
 
     private bool isJumping = false; // ジャンプの飛翔中か否か
@@ -75,6 +75,7 @@ public class PL_Move : MonoBehaviour
     void FixedUpdate()
     {
         float xSpeed = 0;
+        float ySpeed = 0;
 
         if (dash) // ダッシュ入力中に
         {
@@ -88,39 +89,37 @@ public class PL_Move : MonoBehaviour
             }
         }
 
-        rb.velocity = new Vector2(xSpeed, rb.velocity.y);
-
 
         // 可変ジャンプの力の制御
         if (isGrounded && jump) // 接地状態のみジャンプを受け付ける
         {
-            if (!isJumping)
-            {
-                rb.AddForce(Vector2.up * startJumpPower, ForceMode2D.Impulse);
-                isJumping = true;
-            }
+            _jumpPower = jumpPower;
+            ySpeed = _jumpPower;
+
+            isJumping = true;
         }
-        else if (isGrounded && !jump) isJumping = false;
+        else if (isGrounded && !jump) isJumping = false; // 接地状態でジャンプ入力なし
 
         if (isJumping) // ジャンプ長押し中
         {
-            if (jump && jumpTimer <= maxJumpTime)
-            {
-                _loopJumpPower = loopJumpPower;
-            }
+            if (jump && jumpTimer <= maxJumpTime) ySpeed = _jumpPower; // ジャンプ入力中、かつ時間内の場合
             else if (!jump || jumpTimer > maxJumpTime) // ジャンプ入力が途切れた、あるいは制限時間が来た場合
             {
-                _loopJumpPower -= disJumpPower;
-                if (_loopJumpPower <= 0)
+                _jumpPower -= disJumpPower;
+                ySpeed = _jumpPower;
+
+                if (_jumpPower <= -jumpPower)
                 {
-                    _loopJumpPower = 0;
+                    _jumpPower = -jumpPower;
                 }
             }
-
-            rb.AddForce(Vector2.up * _loopJumpPower, ForceMode2D.Force);
             jumpTimer += Time.deltaTime;
         }
         else jumpTimer = 0;
+
+        if (!isGrounded && !isJumping) ySpeed = -jumpPower;
+
+        rb.velocity = new Vector2(xSpeed, ySpeed);
     }
 
     void OnTriggerEnter2D(Collider2D other)

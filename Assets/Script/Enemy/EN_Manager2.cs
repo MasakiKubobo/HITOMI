@@ -22,6 +22,7 @@ public class EN_Manager2 : MonoBehaviour
     public int EnemysCount;
 
     public GameObject effect;
+    public ParticleSystem mtrEffect;
 
     GameObject[] ENs;
     Vector2[] ENpos;
@@ -105,6 +106,14 @@ public class EN_Manager2 : MonoBehaviour
 
     }
 
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("vision"))
+        {
+            mtrEffect.Play();
+        }
+    }
+
     void OnTriggerStay2D(Collider2D other)
     {
         if (other.CompareTag("vision"))
@@ -123,6 +132,7 @@ public class EN_Manager2 : MonoBehaviour
     {
         if (other.CompareTag("vision"))
         {
+            mtrEffect.Stop();
             enSwitch = false;
             enFlag = false;
             moveTimer = 0;
