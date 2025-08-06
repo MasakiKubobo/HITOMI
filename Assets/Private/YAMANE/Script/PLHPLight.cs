@@ -1,55 +1,64 @@
-using System.Collections;
-using System.Collections.Generic;
+
+
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
+using UnityEngine.Rendering.Universal; // Universal Render Pipeline (URP) の Light 2D を使用する場合に必要
 
-public class PLHPLight : MonoBehaviour
+public class LightControl : MonoBehaviour
 {
+    public Light2D hpLight; // インスペクターからHpLightオブジェクトにアタッチされているLight2Dコンポーネントを割り当てる
+    public float changeAmount = 100f; // Falloffを変更する量 (ここを100に設定)
+    public float minRadius = 0f; // Outer Radiusの最小値
+    public float maxRadius = 3000f; // Outer Radiusの最大値 (必要に応じて調整 - 1136よりも十分大きく)
 
-    [Header("プレイヤーHP設定")]
-    [Range(0f, 100f)]
-    public float currentHP = 100f;
 
-    [Header("ライト参照")]
-    public Light2D HPLight;      // 暗転ライト（黒）
-    public Light2D GlobalLight;  // 全体の淡い照明
-
+    void Start()
+    {
+        // もしhpLightが設定されていなければ、このゲームオブジェクト自身からLight2Dコンポーネントを取得しようとする
+        if (hpLight == null)
+        {
+            hpLight = GetComponent<Light2D>();
+            if (hpLight == null)
+            {
+                Debug.LogError("Light2Dコンポーネントが見つかりません。HpLightオブジェクトにこのスクリプトをアタッチするか、手動でhpLight変数を設定してください。", this);
+                enabled = false; // スクリプトを無効にする
+                return;
+            }
+        }
+    }
 
     void Update()
     {
-        Debug.Log($"Current HP:{currentHP}");
 
-        // デバッグ入力：Aキーで5ダメージ
+
+        // Aキーが押されたらFalloffを小さくする
         if (Input.GetKeyDown(KeyCode.A))
         {
-            currentHP -= 5f;
-            currentHP = Mathf.Clamp(currentHP, 0f, 100f);
-            Debug.Log($"Damage: HP = {currentHP}");
-            Debug.Log("ダメージ");
-        }
+            hpLight.shapeLightFalloffSize -= changeAmount;
+            /*
+            if (hpLight != null)
+            {
 
-        // デバッグ入力：Dキーで10回復
+            
+                // ここを hpLight.pointLightOuterRadius に変更
+                hpLight.pointLightOuterRadius = Mathf.Max(hpLight.pointLightOuterRadius - changeAmount, minRadius);
+                Debug.Log("Outer Radius (Aキー): " + hpLight.pointLightOuterRadius);
+        } */
+        }
+        ;
+
+        // Dキーが押されたらFalloffを大きくする
         if (Input.GetKeyDown(KeyCode.D))
         {
-            currentHP += 10f;
-            currentHP = Mathf.Clamp(currentHP, 0f, 100f);
-            Debug.Log($"Heal: HP = {currentHP}");
-            Debug.Log("回復");
-        }
 
-        UpdateHPLight();
-    }
-
-    void UpdateHPLight()
-    {
-        if (currentHP <= 100f)
-        {
-            float t = Mathf.Clamp01((100f - currentHP) / 100f);
-            HPLight.falloffIntensity = t;
+            hpLight.shapeLightFalloffSize += changeAmount;
+            /*
+            if (hpLight != null)
+            {
+                // ここを hpLight.pointLightOuterRadius に変更
+                hpLight.pointLightOuterRadius = Mathf.Min(hpLight.pointLightOuterRadius + changeAmount, maxRadius);
+                Debug.Log("Outer Radius (Dキー): " + hpLight.pointLightOuterRadius);
+            }*/
         }
-        else
-        {
-            HPLight.falloffIntensity = 0f;
-        }
+        ;
     }
 }
