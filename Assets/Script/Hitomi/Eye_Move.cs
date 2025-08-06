@@ -7,9 +7,11 @@ using UnityEngine.UI;
 
 public class Eye_Move : MonoBehaviour
 {
+    public bool tutorial = false;
     public float speed = 1;
+    private float _speed;
     public Light2D HpLight;
-    public GameObject player, kurome, attention;
+    public GameObject player, hitomiZone, kurome, attention;
     private Light2D eyeLight;
     public GameObject effect;
     public GameObject ber;
@@ -35,6 +37,9 @@ public class Eye_Move : MonoBehaviour
         Eye_Anim eye_Anim = GetComponent<Eye_Anim>();
         Collider2D collider = effect.GetComponent<Collider2D>();
 
+        if (!tutorial) _speed = speed;
+        else _speed = 0;
+
         if (!eye_Anim.eyeAbility)
         {
             Vector3 followVec = player.transform.position - transform.position;
@@ -42,7 +47,7 @@ public class Eye_Move : MonoBehaviour
 
             if (follow) // 主人公について来る
             {
-                transform.position += followVec * speed * Time.deltaTime;
+                transform.position += followVec * _speed * Time.deltaTime;
             }
             if (follow) // 追従中、瞳の黒目が主人公の方を向く
             {
@@ -130,15 +135,16 @@ public class Eye_Move : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D other)
     {
-        if (other.gameObject == player)
+        if (other.gameObject == hitomiZone)
         {
             follow = false;
+            tutorial = false;
         }
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject == player)
+        if (other.gameObject == hitomiZone)
         {
             follow = true;
         }

@@ -460,6 +460,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3437e590b0a8e4f7498ec8bdf309fb0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Control: 1
+  down: 0
   Dash:
     m_Name: Dash
     m_Type: 0
@@ -1276,7 +1278,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7009210763999523453, guid: 5201c4e1c0330443aa9c1b69be35548c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.5005689
+      value: 0.97884214
       objectReference: {fileID: 0}
     - target: {fileID: -7009210763999523453, guid: 5201c4e1c0330443aa9c1b69be35548c, type: 3}
       propertyPath: m_LocalRotation.w

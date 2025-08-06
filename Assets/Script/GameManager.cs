@@ -21,9 +21,11 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+        Eye_Move eye_Move = eye.GetComponent<Eye_Move>();
+
         if (point != 0) pointer = point;
         transform.position = startPoints[pointer].transform.position;
-        eye.transform.position = startPoints[pointer].transform.position;
+        if (!eye_Move.tutorial) eye.transform.position = startPoints[pointer].transform.position;
 
         cam.transform.position = startPoints[pointer].transform.position;
         cam.transform.position = new Vector3(cam.transform.position.x, cam.transform.position.y, -10);

@@ -8,8 +8,9 @@ public class PL_Motion : MonoBehaviour
     public bool srAppear;
     private SpriteRenderer spriteRenderer;
 
-    [HideInInspector] public bool dash, jumpUp, jumpDown, damage, attack, attackFront, attackUp;
+    [HideInInspector] public bool dash, jumpUp, jumpDown, damage, attack, attackFront, attackUp, down;
 
+    private bool standFlag = false;
     private Animator anim;
     // Start is called before the first frame update
     void Start()
@@ -30,6 +31,7 @@ public class PL_Motion : MonoBehaviour
         anim.SetBool("JumpDown", jumpDown);
         anim.SetBool("Damage", damage);
 
+
         if (attack)
         {
             anim.Play("PL_Attack");
@@ -46,6 +48,20 @@ public class PL_Motion : MonoBehaviour
         {
             anim.Play("PL_AttackUp");
             attackUp = false;
+        }
+
+        if (down)
+        {
+            anim.Play("PL_Down");
+            standFlag = true;
+        }
+        else
+        {
+            if (standFlag)
+            {
+                anim.SetTrigger("StandUp");
+                standFlag = false;
+            }
         }
 
         spriteRenderer.enabled = srAppear;

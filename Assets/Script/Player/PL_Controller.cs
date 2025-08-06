@@ -8,6 +8,8 @@ using UnityEngine.SceneManagement;
 
 public class PL_Controller : MonoBehaviour
 {
+    public bool Control = true;
+    public bool down = false;
     [SerializeField] private InputAction Dash, Up;
     [SerializeField] private InputAction Jump;
     [SerializeField] private InputAction Attack;
@@ -81,6 +83,7 @@ public class PL_Controller : MonoBehaviour
         PL_Move pL_Move = GetComponent<PL_Move>();
         PL_Attack pL_Attack = GetComponent<PL_Attack>();
         PL_Damage pL_Damage = GetComponent<PL_Damage>();
+        PL_Motion pL_Motion = GetComponent<PL_Motion>();
 
         Eye_Anim eye_Anim = eye.GetComponent<Eye_Anim>();
         Eye_Move eye_Move = eye.GetComponent<Eye_Move>();
@@ -89,6 +92,17 @@ public class PL_Controller : MonoBehaviour
         //EyeSP_Move eyeSP_Move = eyeSP.GetComponent<EyeSP_Move>();
 
         //EyeSPpointer eyeSPpointer = pointer.GetComponent<EyeSPpointer>();
+
+        if (!Control)
+        {
+            _Dash = 0;
+            _Jump = 0;
+            _Attack = 0;
+            _Rstick = Vector2.zero;
+            _eyeOpen = 0;
+        }
+
+        pL_Motion.down = down;
 
         if (_Dash > 0.5f)
         {

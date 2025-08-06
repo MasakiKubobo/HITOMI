@@ -5551,6 +5551,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 198506374}
   m_SourcePrefab: {fileID: 100100000, guid: cf1d48ecc3b6241dfb1c6140a2e640f5, type: 3}
+--- !u!1 &417482813 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7330283402155077044, guid: cf1d48ecc3b6241dfb1c6140a2e640f5, type: 3}
+  m_PrefabInstance: {fileID: 417482812}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &421515470
 GameObject:
   m_ObjectHideFlags: 0
@@ -11295,6 +11300,10 @@ PrefabInstance:
       propertyPath: HpLight
       value: 
       objectReference: {fileID: 2080838108}
+    - target: {fileID: 8234844662226790925, guid: bd1e4a3dc7e9c43de88e544abc5095bb, type: 3}
+      propertyPath: hitomiZone
+      value: 
+      objectReference: {fileID: 417482813}
     - target: {fileID: 8797555448725875882, guid: bd1e4a3dc7e9c43de88e544abc5095bb, type: 3}
       propertyPath: m_AnchorMax.x
       value: 1
