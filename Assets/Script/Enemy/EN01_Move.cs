@@ -6,16 +6,18 @@ using UnityEngine;
 
 public class EN01_Move : MonoBehaviour
 {
-    public bool autoChase = true;   // 初めからプレイヤーを追従する
     public float moveSpeed;
 
     private Rigidbody2D rb;
-    private GameObject eye, eyeSP;
+    private GameObject eye;
     bool inAir = true;
 
     public float plDistanceX = 10, plDistanceY = 5;
     private GameObject player;
     private bool attackFlag = false;
+    private bool autoChase = true;   // プレイヤーを追従する
+
+    public bool targetIsPlayer = false; // ターゲットをプレイヤーにするか
 
     EN01_Anim en01_Anim;
     // Start is called before the first frame update
@@ -23,8 +25,12 @@ public class EN01_Move : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         eye = GameObject.Find("eye");
-        eyeSP = GameObject.Find("eyeSP");
         player = GameObject.Find("Player");
+
+        if (targetIsPlayer)
+        {
+            eye = GameObject.Find("Player");
+        }
 
         en01_Anim = GetComponent<EN01_Anim>();
     }
@@ -32,7 +38,6 @@ public class EN01_Move : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        EyeSP_Move eyeSP_Move = eyeSP.GetComponent<EyeSP_Move>();
         EN01_Damage en01_Damage = GetComponent<EN01_Damage>();
 
         // 範囲内にプレイヤーが入ると近づいてくる
@@ -48,16 +53,23 @@ public class EN01_Move : MonoBehaviour
             en01_Anim.move = false;
         }
 
-
-        float moveDirection = !eyeSP_Move.appear ? eye.transform.position.x - transform.position.x : eyeSP.transform.position.x - transform.position.x;
+        float moveDirection;
+        if (!targetIsPlayer)
+        {
+            moveDirection = eye.transform.position.x - transform.position.x;
+        }
+        else
+        {
+            moveDirection = player.transform.position.x - transform.position.x;
+        }
 
         if (moveDirection >= 0.5)
         {
-            if (!en01_Anim.damage) transform.localScale = new Vector3(-1, 1, 1);
+            transform.localScale = new Vector3(-1, 1, 1);
         }
         else if (moveDirection <= -0.5)
         {
-            if (!en01_Anim.damage) transform.localScale = new Vector3(1, 1, 1);
+            transform.localScale = new Vector3(1, 1, 1);
         }
 
         // eyeとeyeSPのどちらかの座標を反映し、左右どちらかに正規化する
@@ -85,9 +97,11 @@ public class EN01_Move : MonoBehaviour
 
 
         // 瞳に近づくと攻撃アニメーションに入る
-        if (!eyeSP_Move.appear)
+        if (!targetIsPlayer)
         {
-            if (3 >= (transform.position - eye.transform.position).magnitude)
+            Vector3 targetPos = eye.transform.position;
+
+            if (3 >= (transform.position - targetPos).magnitude)
             {
                 if (!attackFlag)
                 {
@@ -97,21 +111,10 @@ public class EN01_Move : MonoBehaviour
             }
             else attackFlag = false;
         }
-        else
-        {
-            if (3 >= (transform.position - eyeSP.transform.position).magnitude)
-            {
-                if (!attackFlag)
-                {
-                    en01_Anim.attack = true;
-                    attackFlag = true;
-                }
-            }
-            else attackFlag = false;
-        }
+
     }
 
-    void OnCollisionEnter2D(Collision2D other)
+    void OnCollisionStay2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("Ground")) inAir = false;
     }

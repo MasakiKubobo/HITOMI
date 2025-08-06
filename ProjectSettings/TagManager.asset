@@ -12,11 +12,14 @@ TagManager:
   - Item
   - Enemy
   - Box
+  - Wind
+  - vision
+  - camera
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Camera
   - Water
   - UI
   - Wall
@@ -64,9 +67,9 @@ TagManager:
   - name: Enemy
     uniqueID: 1164891883
     locked: 0
-  - name: UI
-    uniqueID: 150963851
-    locked: 0
   - name: Player
     uniqueID: 159475103
+    locked: 0
+  - name: UI
+    uniqueID: 150963851
     locked: 0

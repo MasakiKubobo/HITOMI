@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 public class Eye_HP : MonoBehaviour
 {
     public Slider HPber;
-    public GameObject HpLight;
+    public Light2D HpLight;
+    public SpriteRenderer blood;
 
     public static float HP = 100;
     public float StartHP = 100;
@@ -19,6 +21,7 @@ public class Eye_HP : MonoBehaviour
     void Start()
     {
         HP = StartHP;
+        blood.color = new Color(1, 0, 0, 0);
     }
 
     // Update is called once per frame
@@ -43,5 +46,18 @@ public class Eye_HP : MonoBehaviour
         if (healTimer <= 0) HP += Healing * Time.deltaTime;
 
         beforeHP = HP; // 関数の最後に
+
+        BlackOut();
+    }
+
+    void BlackOut()
+    {
+        HpLight.shapeLightFalloffSize = HP / 100 * 10000;
+
+        if (HP <= 20)
+        {
+            float alpha = (20 - HP) / 20;
+            blood.color = new Color(1, 0, 0, alpha / 2);
+        }
     }
 }

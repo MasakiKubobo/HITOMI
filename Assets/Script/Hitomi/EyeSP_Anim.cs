@@ -28,6 +28,8 @@ public class EyeSP_Anim : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        eyeSprite.color = new Color(1, 0.5f, 0.5f, 1);
+
         if (appearEye)
         {
             // オブジェクトを可視化し、当たり判定を有効にする

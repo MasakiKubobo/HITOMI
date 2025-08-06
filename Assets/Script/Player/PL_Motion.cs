@@ -1,15 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Scripting.APIUpdating;
 
 public class PL_Motion : MonoBehaviour
 {
-    public Sprite normalSP, attackSP, damageSP;
+    public bool srAppear;
     private SpriteRenderer spriteRenderer;
+
+    [HideInInspector] public bool dash, jumpUp, jumpDown, damage, attack, attackFront, attackUp, down;
+
+    private bool standFlag = false;
+    private Animator anim;
     // Start is called before the first frame update
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.enabled = srAppear;
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -18,26 +26,47 @@ public class PL_Motion : MonoBehaviour
         PL_Attack pL_Attack = GetComponent<PL_Attack>();
         PL_Damage pL_Damage = GetComponent<PL_Damage>();
 
-        if (pL_Damage.damage)
+        anim.SetBool("Run", dash);
+        anim.SetBool("JumpUp", jumpUp);
+        anim.SetBool("JumpDown", jumpDown);
+        anim.SetBool("Damage", damage);
+
+
+        if (attack)
         {
-            spriteRenderer.sprite = damageSP;
-            spriteRenderer.flipX = true;
-            spriteRenderer.size = new Vector2(1.5f, 1.5f);
+            anim.Play("PL_Attack");
+            attack = false;
+        }
+
+        if (attackFront)
+        {
+            anim.Play("PL_AttackFront");
+            attackFront = false;
+        }
+
+        if (attackUp)
+        {
+            anim.Play("PL_AttackUp");
+            attackUp = false;
+        }
+
+        if (down)
+        {
+            anim.Play("PL_Down");
+            standFlag = true;
         }
         else
         {
-            if (pL_Attack.attack)
+            if (standFlag)
             {
-                spriteRenderer.sprite = attackSP;
-                spriteRenderer.flipX = false;
-                spriteRenderer.size = new Vector2(2f, 1.5f);
-            }
-            else
-            {
-                spriteRenderer.sprite = normalSP;
-                spriteRenderer.flipX = true;
-                spriteRenderer.size = new Vector2(1.5f, 1.5f);
+                anim.SetTrigger("StandUp");
+                standFlag = false;
             }
         }
+
+        spriteRenderer.enabled = srAppear;
+
+
+
     }
 }

@@ -9,10 +9,8 @@ public class EN03_Move : MonoBehaviour
     public float moveSpeed;
 
     private Rigidbody2D rb;
-    private GameObject eye, eyeSP;
+    private GameObject eye;
     bool inAir = true;
-
-    public float plDistanceX = 10, plDistanceY = 5;
     private GameObject player;
     private bool attackFlag = false;
 
@@ -22,7 +20,6 @@ public class EN03_Move : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         eye = GameObject.Find("eye");
-        eyeSP = GameObject.Find("eyeSP");
         player = GameObject.Find("Player");
 
         en01_Anim = GetComponent<EN01_Anim>();
@@ -31,7 +28,7 @@ public class EN03_Move : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        EyeSP_Move eyeSP_Move = eyeSP.GetComponent<EyeSP_Move>();
+        Eye_Anim eye_Anim = eye.GetComponent<Eye_Anim>();
         EN01_Damage en01_Damage = GetComponent<EN01_Damage>();
 
 
@@ -68,53 +65,33 @@ public class EN03_Move : MonoBehaviour
         Debug.DrawLine(startWall, endWall, Color.blue);
 
 
-
         // 瞳に近づくと攻撃アニメーションに入る
-        float moveDirection = !eyeSP_Move.appear ? eye.transform.position.x - transform.position.x : eyeSP.transform.position.x - transform.position.x;
-        if (!eyeSP_Move.appear)
-        {
-            if (3 >= (transform.position - eye.transform.position).magnitude)
-            {
-                if (!attackFlag)
-                {
-                    // 攻撃前に瞳の方を向く
-                    if (moveDirection >= 0.5)
-                    {
-                        if (!en01_Anim.damage) transform.localScale = new Vector3(-1, 1, 1);
-                    }
-                    else if (moveDirection <= -0.5)
-                    {
-                        if (!en01_Anim.damage) transform.localScale = new Vector3(1, 1, 1);
-                    }
+        Vector2 moveDirection = eye.transform.position - transform.position;
 
-                    en01_Anim.attack = true;
-                    attackFlag = true;
-                }
-            }
-            else attackFlag = false;
-        }
-        else
-        {
-            if (3 >= (transform.position - eyeSP.transform.position).magnitude)
-            {
-                if (!attackFlag)
-                {
-                    // 攻撃前に瞳の方を向く
-                    if (moveDirection >= 0.5)
-                    {
-                        if (!en01_Anim.damage) transform.localScale = new Vector3(-1, 1, 1);
-                    }
-                    else if (moveDirection <= -0.5)
-                    {
-                        if (!en01_Anim.damage) transform.localScale = new Vector3(1, 1, 1);
-                    }
+        Vector3 targetPos = eye.transform.position;
 
-                    en01_Anim.attack = true;
-                    attackFlag = true;
+
+
+        if (0.8 >= Mathf.Abs(moveDirection.x) && 3 >= Mathf.Abs(moveDirection.y))
+        {
+            if (!attackFlag)
+            {
+                // 攻撃前に瞳の方を向く
+                if (moveDirection.x >= 0.5)
+                {
+                    transform.localScale = new Vector3(-1, 1, 1);
                 }
+                else if (moveDirection.x <= -0.5)
+                {
+                    transform.localScale = new Vector3(1, 1, 1);
+                }
+
+                en01_Anim.attack = true;
+                attackFlag = true;
             }
-            else attackFlag = false;
         }
+        else attackFlag = false;
+
     }
 
     void OnCollisionEnter2D(Collision2D other)
@@ -123,6 +100,6 @@ public class EN03_Move : MonoBehaviour
     }
     void OnCollisionExit2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Ground")) inAir = true;
+        //if (other.gameObject.CompareTag("Ground")) inAir = true;
     }
 }

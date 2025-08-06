@@ -5,28 +5,50 @@ using UnityEngine;
 
 public class EN02_Move : MonoBehaviour
 {
+    public float plDistanceX = 5, plDistanceY = 5;
     public float moveSpeed;
     public int HP = 3;
     public float powor = 100;
     public ParticleSystem damagePar, destroyPar;
 
     private Rigidbody2D rb;
-    private GameObject eye, eyeSP;
+    private GameObject eye;
     private float timer = 0, timer2 = 0;
     public float knockBackTime = 1f;
     private bool knockBack = false;
-    bool chase = true;
+    private bool chase = true;  // プレイヤーを追従する
+
+    public bool targetIsPlayer = false; // ターゲットをプレイヤーにするか
+
+    private GameObject player;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         eye = GameObject.Find("eye");
-        eyeSP = GameObject.Find("eyeSP");
+        player = GameObject.Find("Player");
+
+        if (targetIsPlayer)
+        {
+            eye = GameObject.Find("Player");
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        // 範囲内にプレイヤーが入ると近づいてくる
+        if (plDistanceX >= Mathf.Abs(transform.position.x - player.transform.position.x) &&
+            plDistanceY >= Mathf.Abs(transform.position.y - player.transform.position.y))
+        {
+            chase = true;
+        }
+        else
+        {
+            chase = false;
+        }
+
+
         if (knockBack)
         {
             timer += Time.deltaTime;
@@ -50,11 +72,13 @@ public class EN02_Move : MonoBehaviour
     {
         Vector2 vec = Vector2.zero;
 
-        EyeSP_Move eyeSP_Move = eyeSP.GetComponent<EyeSP_Move>();
-
-        if (chase)
+        if (!targetIsPlayer)
         {
-            vec = !eyeSP_Move.appear ? eye.transform.position - transform.position : eyeSP.transform.position - transform.position;
+            if (chase) vec = eye.transform.position - transform.position;
+        }
+        else
+        {
+            if (chase) vec = player.transform.position - transform.position;
         }
 
         if (!knockBack) rb.velocity = vec.normalized * moveSpeed;
