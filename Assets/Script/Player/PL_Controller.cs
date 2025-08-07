@@ -10,6 +10,7 @@ public class PL_Controller : MonoBehaviour
 {
     public bool Control = true;
     public bool down = false;
+    public bool Debug = true; // デバッグモードの場合キーマウ操作に
     [SerializeField] private InputAction Dash, Up;
     [SerializeField] private InputAction Jump;
     [SerializeField] private InputAction Attack;
@@ -202,44 +203,46 @@ public class PL_Controller : MonoBehaviour
 
 
         // キーマウ操作（デバッグ用）
-
-        if (Input.GetKey(KeyCode.D))
+        if (Debug)
         {
-            pL_Move.dash = true;
-            pL_Move.left = true;
-        }
-        else if (Input.GetKey(KeyCode.A))
-        {
-            pL_Move.dash = true;
-            pL_Move.left = false;
-        }
-        else
-        {
-            pL_Move.dash = false;
-        }
-
-        if (Input.GetKey(KeyCode.W))
-        {
-            pL_Move.jump = true;
-        }
-        else
-        {
-            pL_Move.jump = false;
-        }
-
-        if (Input.GetMouseButton(0))
-        {
-            if (!pL_Damage.damage)
+            if (Input.GetKey(KeyCode.D))
             {
-                if (!attackFlag)
-                {
-                    pL_Attack.attack = true;
-                    attackFlag = true;
-                }
+                pL_Move.dash = true;
+                pL_Move.left = true;
+            }
+            else if (Input.GetKey(KeyCode.A))
+            {
+                pL_Move.dash = true;
+                pL_Move.left = false;
+            }
+            else
+            {
+                pL_Move.dash = false;
             }
 
+            if (Input.GetKey(KeyCode.W))
+            {
+                pL_Move.jump = true;
+            }
+            else
+            {
+                pL_Move.jump = false;
+            }
+
+            if (Input.GetMouseButton(0))
+            {
+                if (!pL_Damage.damage)
+                {
+                    if (!attackFlag)
+                    {
+                        pL_Attack.attack = true;
+                        attackFlag = true;
+                    }
+                }
+
+            }
+            else attackFlag = false;
         }
-        else attackFlag = false;
     }
 
     /* アイテム取る用

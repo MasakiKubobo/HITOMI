@@ -15,6 +15,7 @@ public class PL_Move : MonoBehaviour
     public float maxJumpTime = 0.5f;  // ジャンプできる時間
 
     private bool isJumping = false; // ジャンプの飛翔中か否か
+    private bool jumpFlag = false; // ジャンプボタン長押しで何回もジャンプしてしまうのを防ぐ
     private bool isGrounded = false;  // 空中に居るか否か
     private float jumpTimer = 0;
 
@@ -93,12 +94,25 @@ public class PL_Move : MonoBehaviour
         // 可変ジャンプの力の制御
         if (isGrounded && jump) // 接地状態のみジャンプを受け付ける
         {
-            _jumpPower = jumpPower;
-            ySpeed = _jumpPower;
-
-            isJumping = true;
+            if (!jumpFlag)
+            {
+                jumpTimer = 0;
+                _jumpPower = jumpPower;
+                ySpeed = _jumpPower;
+                isJumping = true;
+                jumpFlag = true;
+            }
+            else isJumping = false;
         }
-        else if (isGrounded && !jump) isJumping = false; // 接地状態でジャンプ入力なし
+        else if (isGrounded && !jump)
+        {
+            isJumping = false; // 接地状態でジャンプ入力なし
+            jumpFlag = false;
+        }
+        else if (!isGrounded && !jump)
+        {
+            jumpFlag = false;
+        }
 
         if (isJumping) // ジャンプ長押し中
         {

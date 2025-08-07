@@ -22,7 +22,7 @@ public class textAppear : MonoBehaviour
         text = GetComponent<TextMeshPro>();
         if (text != null) text.color = new Color(1, 1, 1, 0);
         spriteRenderer = GetComponent<SpriteRenderer>();
-        if (spriteRenderer != null) spriteRenderer.color = new Color(1, 1, 1, 0);
+        if (spriteRenderer != null) spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 0);
 
         player = GameObject.Find("Player");
         eye = GameObject.Find("eye");
@@ -35,7 +35,7 @@ public class textAppear : MonoBehaviour
         {
             alphaTimer += Time.deltaTime * appearSpeed;
             if (text != null) text.color = new Color(1, 1, 1, alphaTimer);
-            if (spriteRenderer != null) spriteRenderer.color = new Color(1, 1, 1, alphaTimer);
+            if (spriteRenderer != null) spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, alphaTimer);
 
 
             if (!switchFlag)
