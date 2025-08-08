@@ -10,6 +10,7 @@ public class PL_Controller : MonoBehaviour
 {
     public bool Control = true;
     public bool down = false;
+    public bool Debug = true; // デバッグモードの場合キーマウ操作に
     [SerializeField] private InputAction Dash, Up;
     [SerializeField] private InputAction Jump;
     [SerializeField] private InputAction Attack;
@@ -202,82 +203,46 @@ public class PL_Controller : MonoBehaviour
 
 
         // キーマウ操作（デバッグ用）
-        /*
-        if (Input.GetKey(KeyCode.D))
+        if (Debug)
         {
-            pL_Move.dash = true;
-            pL_Move.left = true;
-        }
-        else if (Input.GetKey(KeyCode.A))
-        {
-            pL_Move.dash = true;
-            pL_Move.left = false;
-        }
-        else
-        {
-            pL_Move.dash = false;
-        }
-
-        if (Input.GetKey(KeyCode.W))
-        {
-            pL_Move.jump = true;
-        }
-        else
-        {
-            pL_Move.jump = false;
-        }
-
-        if (Input.GetMouseButton(0))
-        {
-            if (!pL_Damage.damage)
+            if (Input.GetKey(KeyCode.D))
             {
-                if (!attackFlag)
+                pL_Move.dash = true;
+                pL_Move.left = true;
+            }
+            else if (Input.GetKey(KeyCode.A))
+            {
+                pL_Move.dash = true;
+                pL_Move.left = false;
+            }
+            else
+            {
+                pL_Move.dash = false;
+            }
+
+            if (Input.GetKey(KeyCode.W))
+            {
+                pL_Move.jump = true;
+            }
+            else
+            {
+                pL_Move.jump = false;
+            }
+
+            if (Input.GetMouseButton(0))
+            {
+                if (!pL_Damage.damage)
                 {
-                    pL_Attack.attack = true;
-                    attackFlag = true;
+                    if (!attackFlag)
+                    {
+                        pL_Attack.attack = true;
+                        attackFlag = true;
+                    }
                 }
+
             }
-
+            else attackFlag = false;
         }
-        else attackFlag = false;
-
-        if (Input.GetMouseButton(1))
-        {
-            if (!appearFlag && eyeSPpointer.canSummon)
-            {
-                if (!eyeSP_Anim.appearEye) eyeSP.transform.position = pointer.transform.position;
-
-                eye_Anim.appearEye = !eye_Anim.appearEye;       // 押すごとに反転する
-                eyeSP_Anim.appearEye = !eyeSP_Anim.appearEye;   // 押すごとに反転する
-
-                appearFlag = true;
-            }
-        }
-        else if (_eyeOpen == 0) appearFlag = false;
-
-        // 特殊な瞳を開く方向
-        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        pointer.transform.position = (Vector2)transform.position + pointerVec;
-        if (!eyeSP_Anim.appearEye)
-        {
-            pointerVec = (mousePos - (Vector2)transform.position).normalized * 2;
-            pointer.SetActive(true);
-
-        }
-        if (eyeSP_Anim.appearEye) pointer.SetActive(false);
-
-        // 特殊な瞳の操作
-        if (eyeSP_Anim.appearEye)
-        {
-            eyeSP_Move.appear = true;
-            eyeSP_Move.kuromePos = (mousePos - (Vector2)eyeSP.transform.position).normalized;
-        }
-        else eyeSP_Move.appear = false;
-
-        eyeSP.transform.eulerAngles = Vector3.zero;
-        kuromeSP.transform.localScale = new Vector3(0, 0.8f, kuromeSP.transform.localScale.z);
-        */
-
     }
 
     /* アイテム取る用
