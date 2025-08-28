@@ -80,6 +80,15 @@ public class PL_Damage : MonoBehaviour
             case "enemy_03":
                 KnockBack(other.transform.position, knockBack);
                 break;
+            case "enemy_04":
+                KnockBack(other.transform.position, knockBack);
+                break;
+            case "enemy_05":
+                KnockBack(other.transform.position, knockBack);
+                break;
+            case "bullet_01":
+                KnockBack(other.transform.position, knockBack);
+                break;
         }
     }
 

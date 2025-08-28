@@ -14,10 +14,15 @@ public class PL_Move : MonoBehaviour
     private float _jumpPower = 0; // 調整して入力する用の変数
     public float maxJumpTime = 0.5f;  // ジャンプできる時間
 
+    public float throwPower = 1; // アイテムを投げる力
+
     private bool isJumping = false; // ジャンプの飛翔中か否か
     private bool jumpFlag = false; // ジャンプボタン長押しで何回もジャンプしてしまうのを防ぐ
     private bool isGrounded = false;  // 空中に居るか否か
-    private float jumpTimer = 0;
+    private bool isHanding = false; // アイテムを掴んでいるか
+    private GameObject handObject;
+    private bool isStart = true;
+    private float jumpTimer, throwTimer;
 
     private Rigidbody2D rb;
 
@@ -25,14 +30,17 @@ public class PL_Move : MonoBehaviour
 
     public ParticleSystem landing;
     public AudioSource runAudio, landingAudio;
-    private bool runFlag;
+    private bool runFlag, handFlag, throwFlag;
 
-    [HideInInspector] public bool dash, left, jump;
+    [HideInInspector] public bool dash, left, jump, hand;
+    [HideInInspector] public Vector2 throwPos;
+    public GameObject scope;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         pL_Motion = GetComponent<PL_Motion>();
+        scope.SetActive(false);
     }
 
     // Update is called once per frame
@@ -49,7 +57,8 @@ public class PL_Move : MonoBehaviour
             if (left) transform.eulerAngles = new Vector3(0, 0, Z);
             else transform.eulerAngles = new Vector3(0, 180, Z);
         }
-
+        if (isStart) transform.eulerAngles = new Vector3(0, 0, 0);
+        if (dash) isStart = false;
 
         if (isGrounded && dash)
         {
@@ -69,6 +78,72 @@ public class PL_Move : MonoBehaviour
 
         if (!isGrounded) pL_Motion.jumpDown = true;
         else pL_Motion.jumpDown = false;
+
+        // アイテムを持ち上げる/投げる
+        if (handObject != null)
+        {
+            if (isHanding)
+            {
+                if (!hand && !handFlag)
+                {
+                    handFlag = true;
+                }
+
+                if (handFlag)
+                {
+                    pL_Attack.attack = false;
+
+                    Rigidbody2D handRb = handObject.GetComponent<Rigidbody2D>();
+                    handRb.simulated = false;
+                    handObject.transform.localPosition = new Vector2(0, 1);
+
+                    if (hand)
+                    {
+                        dashPowor = 0;
+                        throwFlag = true;
+
+                        scope.transform.position = (Vector2)transform.position + throwPos * 1.8f;
+
+                        if (throwTimer < 0.3f)
+                        {
+                            throwTimer += Time.deltaTime;
+                        }
+                        else scope.SetActive(true);
+                    }
+
+                    if (!hand && throwFlag)
+                    {
+                        handObject.transform.SetParent(null);
+                        handRb.simulated = true;
+
+                        if (throwPos != Vector2.zero && throwTimer >= 0.3f)
+                        {
+                            handObject.transform.position = scope.transform.position;
+                            handRb.AddForce(throwPos * throwPower, ForceMode2D.Impulse);
+                        }
+                        else
+                        {
+                            if (left)
+                            {
+                                handObject.transform.position = (Vector2)transform.position + new Vector2(1, 0);
+                            }
+                            else
+                            {
+                                handObject.transform.position = (Vector2)transform.position + new Vector2(-1, 0);
+                            }
+                        }
+
+                        handObject = null;
+
+                        isHanding = false;
+                        handFlag = false;
+                        throwFlag = false;
+                        throwTimer = 0;
+                        scope.SetActive(false);
+                    }
+                }
+            }
+        }
 
     }
 
@@ -138,7 +213,7 @@ public class PL_Move : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Ground"))
+        if (other.gameObject.CompareTag("Ground") || other.gameObject.CompareTag("Item"))
         {
             landing.Play();
             landingAudio.Play();
@@ -147,17 +222,33 @@ public class PL_Move : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Ground"))
+        if (other.gameObject.CompareTag("Ground") || other.gameObject.CompareTag("Item"))
         {
             isGrounded = true;
         }
+
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Ground"))
+        if (other.gameObject.CompareTag("Ground") || other.gameObject.CompareTag("Item"))
         {
             isGrounded = false;
+        }
+    }
+
+    void OnCollisionStay2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Item"))
+        {
+            if (hand && !isHanding)
+            {
+                handObject = other.gameObject;
+                handObject.transform.SetParent(transform);
+
+                isHanding = true;
+                handFlag = false;
+            }
         }
     }
 }

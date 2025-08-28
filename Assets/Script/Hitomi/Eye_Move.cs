@@ -8,22 +8,23 @@ using UnityEngine.UI;
 public class Eye_Move : MonoBehaviour
 {
     public bool tutorial = false;
+    public bool Control = false;
     public float speed = 1;
     private float _speed;
     public Light2D HpLight;
     public GameObject player, hitomiZone, kurome, attention;
     private Light2D eyeLight;
     public GameObject effect;
-    public GameObject ber;
+    public GameObject sparkBer;
     public float attackTime = 3;
-    private float attackTimer;
+    public static float attackTimer;
 
     public AudioSource openAudio, attackAudio;
     private bool openFlag, attackFlag;
 
-    [HideInInspector] public Vector2 kuromePos;
-    [HideInInspector] public bool appear;
-    bool follow = true, eyeAttack = false;
+    [HideInInspector] public Vector2 movePos, kuromePos;
+    [HideInInspector] public bool appear, attack;
+    bool eyeAttack = false;
 
     // Start is called before the first frame update
     void Start()
@@ -42,9 +43,12 @@ public class Eye_Move : MonoBehaviour
 
         if (!eye_Anim.eyeAbility)
         {
+            transform.position += (Vector3)movePos * _speed * Time.deltaTime;
+            kurome.transform.localPosition = movePos.normalized / 5;
+
+            /*
             Vector3 followVec = player.transform.position - transform.position;
             Attentions attentions = attention.GetComponent<Attentions>();
-
             if (follow) // 主人公について来る
             {
                 transform.position += followVec * _speed * Time.deltaTime;
@@ -61,20 +65,10 @@ public class Eye_Move : MonoBehaviour
             {
                 kurome.transform.localPosition = attentions.kuromePos.normalized / 5;
             }
+            */
 
 
-            HpLight.intensity = 1;
-
-            if (attackTimer > 0) // 回復するやんけ
-            {
-                attackTimer -= Time.deltaTime * 0.5f;
-                ber.SetActive(true);
-            }
-            else
-            {
-                attackTimer = 0;
-                ber.SetActive(false);
-            }
+            //HpLight.intensity = 1;
 
             openFlag = false;
 
@@ -91,21 +85,24 @@ public class Eye_Move : MonoBehaviour
                 kurome.transform.eulerAngles = new Vector3(0, 0, Mathf.Atan2(kuromePos.y, kuromePos.x) * Mathf.Rad2Deg - 90);
             }
 
-            HpLight.intensity = 0.4f;
+            //HpLight.intensity = 0.4f;
 
             if (!openFlag)
             {
                 //openAudio.Play();
-                eyeAttack = true;
                 openFlag = true;
             }
+
+
+            if (attack && attackTimer < attackTime) eyeAttack = true;
+            else if (attackTimer >= attackTime) eyeAttack = false;
+            if (!attack) eyeAttack = false;
 
             if (eyeAttack) // ゲージが尽きるまで攻撃が続く
             {
                 collider.enabled = true;
                 eyeLight.color = new Color(0, 0, 1, 1);
                 effect.SetActive(true);
-                ber.SetActive(true);
 
                 if (!attackFlag)
                 {
@@ -114,9 +111,6 @@ public class Eye_Move : MonoBehaviour
                 }
 
                 attackTimer += Time.deltaTime * 0.7f;
-
-                if (attackTimer >= attackTime) eyeAttack = false;
-
             }
             else
             {
@@ -125,11 +119,10 @@ public class Eye_Move : MonoBehaviour
                 attackFlag = false;
                 eyeLight.color = new Color(1, 0, 0, 1);
                 effect.SetActive(false);
-                ber.SetActive(false);
             }
         }
 
-        Slider slider = ber.GetComponent<Slider>();
+        Slider slider = sparkBer.GetComponent<Slider>();
         slider.value = (attackTime - attackTimer) / attackTime;
     }
 
@@ -137,8 +130,8 @@ public class Eye_Move : MonoBehaviour
     {
         if (other.gameObject == hitomiZone)
         {
-            follow = false;
-            tutorial = false;
+            //follow = false;
+            //tutorial = false;
         }
     }
 
@@ -146,7 +139,7 @@ public class Eye_Move : MonoBehaviour
     {
         if (other.gameObject == hitomiZone)
         {
-            follow = true;
+            //follow = true;
         }
     }
 }

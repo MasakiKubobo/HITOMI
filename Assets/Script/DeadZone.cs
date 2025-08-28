@@ -30,7 +30,7 @@ public class DeadZone : MonoBehaviour
 
         player.transform.position = rePosition.transform.position;
         black.SetActive(false);
-        Eye_HP.HP = 15;
+        Eye_HP.HP -= 15;
         Time.timeScale = 1;
     }
 

@@ -5,7 +5,6 @@ using UnityEngine;
 public class EN04_Damage : MonoBehaviour
 {
     public int HP = 3;
-    public float knockBackPowor = 100;
 
     [Space(5)]
     public ParticleSystem damagePar;
@@ -15,13 +14,14 @@ public class EN04_Damage : MonoBehaviour
     private Rigidbody2D rb;
 
     [HideInInspector] public bool knockBack = false; // ノックバック中か否か
+    [HideInInspector] public bool damageAnim = false;
 
-    EN01_Anim en01_Anim;
+    public bool isEnemy05 = false;
+    public bool weakIsEye = false;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        en01_Anim = GetComponent<EN01_Anim>();
     }
 
     // Update is called once per frame
@@ -30,13 +30,11 @@ public class EN04_Damage : MonoBehaviour
         // ノックバック後、0.2秒で無敵状態を解除
         if (knockBack)
         {
-            en01_Anim.damage = true;
             invincibleTimer += Time.deltaTime;
 
             if (invincibleTimer > 0.2)
             {
                 knockBack = false;
-                en01_Anim.damage = false;
             }
         }
     }
@@ -49,25 +47,62 @@ public class EN04_Damage : MonoBehaviour
             // 攻撃を受けた場合
             if (prefabID.ID == "attack_01")
             {
-                Vector3 vector = transform.position;
-                vector.y += 0.5f;
-                KnockBack(other.transform.position, other.bounds.ClosestPoint(vector), knockBackPowor);
+                if (!isEnemy05)
+                {
+                    Vector3 vector = transform.position;
+                    vector.y += 0.5f;
+                    KnockBack(other.transform.position, other.bounds.ClosestPoint(vector));
+                }
+                else damageAnim = true;
+            }
+            else if (prefabID.ID == "attack_02")
+            {
+                if (!isEnemy05 || weakIsEye)
+                {
+                    Vector3 vector = transform.position;
+                    vector.y += 0.5f;
+                    KnockBack(other.transform.position, other.bounds.ClosestPoint(vector));
+                }
+                else damageAnim = true;
+            }
+            else if (prefabID.ID == "attack_03")
+            {
+                Materialize materialize = other.GetComponent<Materialize>();
+                if (materialize.Mtr)
+                {
+                    Vector3 vector = transform.position;
+                    vector.y += 0.5f;
+                    KnockBack(other.transform.position, other.bounds.ClosestPoint(vector));
+                }
+            }
+        }
+    }
+
+    void OnTriggerStay2D(Collider2D other)
+    {
+        PrefabID prefabID = other.gameObject.GetComponent<PrefabID>();
+        if (prefabID != null)
+        {
+            if (prefabID.ID == "attack_03")
+            {
+                Materialize materialize = other.GetComponent<Materialize>();
+                if (materialize.Mtr)
+                {
+                    Vector3 vector = transform.position;
+                    vector.y += 0.5f;
+                    KnockBack(other.transform.position, other.bounds.ClosestPoint(vector));
+                }
             }
         }
     }
 
     // ノックバック処理
-    void KnockBack(Vector2 PLvec, Vector2 ConPos, float powor)
+    void KnockBack(Vector2 PLvec, Vector2 ConPos)
     {
-        float moveDirection = transform.position.x - PLvec.x;
-        if (moveDirection >= 0) moveDirection = 1;
-        else moveDirection = -1;
 
         if (invincibleTimer > 0.2)
         {
             knockBack = true;
-
-            rb.AddForce(Vector2.right * moveDirection * powor, ForceMode2D.Impulse);
             Instantiate(damagePar, ConPos, Quaternion.identity);
 
             HP--;

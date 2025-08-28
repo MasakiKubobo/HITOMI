@@ -51,13 +51,29 @@ public class EN01_Damage : MonoBehaviour
             {
                 Vector3 vector = transform.position;
                 vector.y += 0.5f;
-                KnockBack(other.transform.position, other.bounds.ClosestPoint(vector), knockBackPowor);
+                KnockBack(other.transform.position, other.bounds.ClosestPoint(vector), knockBackPowor, 1);
+            }
+            else if (prefabID.ID == "attack_02")
+            {
+                Vector3 vector = transform.position;
+                vector.y += 0.5f;
+                KnockBack(other.transform.position, other.bounds.ClosestPoint(vector), knockBackPowor, 0);
+            }
+            else if (prefabID.ID == "attack_03")
+            {
+                Materialize materialize = other.GetComponent<Materialize>();
+                if (materialize.Mtr)
+                {
+                    Vector3 vector = transform.position;
+                    vector.y += 0.5f;
+                    KnockBack(other.transform.position, other.bounds.ClosestPoint(vector), knockBackPowor, 1);
+                }
             }
         }
     }
 
     // ノックバック処理
-    void KnockBack(Vector2 PLvec, Vector2 ConPos, float powor)
+    void KnockBack(Vector2 PLvec, Vector2 ConPos, float powor, int damage)
     {
         float moveDirection = transform.position.x - PLvec.x;
         if (moveDirection >= 0) moveDirection = 1;
@@ -70,7 +86,7 @@ public class EN01_Damage : MonoBehaviour
             rb.AddForce(Vector2.right * moveDirection * powor, ForceMode2D.Impulse);
             Instantiate(damagePar, ConPos, Quaternion.identity);
 
-            HP--;
+            HP -= damage;
             if (HP <= 0) // HPが0になると撃破
             {
                 Vector3 vector = transform.position;

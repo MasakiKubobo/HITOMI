@@ -8,7 +8,8 @@ public class Materialize : MonoBehaviour
 {
     public bool repeat = true; // 能力解除で元に戻るか否か
     public float mtrTime = 2;
-    public ParticleSystem charge, mtr, smoke;
+    public Sprite beforeSp, afterSp;
+    public ParticleSystem charge, mtr;
     public Collider2D collision;
 
     private GameObject eye;
@@ -16,14 +17,16 @@ public class Materialize : MonoBehaviour
     private float mtrTimer = 0;
     [HideInInspector] public bool Mtr = false;  // 実体化しているか
     private bool mtring = false; // 実体化の際中か
-    private bool smokeFlag = true;
 
-    private AudioSource chargeAudio, mtrAudio, smokeAudio;
+    private AudioSource chargeAudio, mtrAudio;
     private Rigidbody2D rb;
 
     public SpriteRenderer sr, addSprite;
     public GameObject hideObject;
     public bool dynamic;
+
+    private bool mtrFlag;
+    private Vector2 startPos;
     // Start is called before the first frame update
     void Start()
     {
@@ -31,28 +34,20 @@ public class Materialize : MonoBehaviour
 
         charge.Stop();
         mtr.Stop();
-        smoke.Stop();
         collision.enabled = false;
 
         chargeAudio = charge.GetComponent<AudioSource>();
         mtrAudio = mtr.GetComponent<AudioSource>();
-        smokeAudio = smoke.GetComponent<AudioSource>();
 
         rb = GetComponent<Rigidbody2D>();
+
+        startPos = transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Light2D light2D = GetComponent<Light2D>();
         Color srColor = sr.color;
-        Eye_Anim eye_Anim = eye.GetComponent<Eye_Anim>();
-
-        // 瞳の能力解除
-        if (!eye_Anim.eyeAbility)
-        {
-            if (repeat) Mtr = false; mtring = false;
-        }
 
         if (mtring) // 実体化の際中
         {
@@ -71,36 +66,37 @@ public class Materialize : MonoBehaviour
 
         if (!Mtr)
         {
+            sr.sprite = beforeSp;
+
             rb.isKinematic = true;
             if (hideObject != null) hideObject.SetActive(false);
 
-            if (!smokeFlag)
-            {
-                smoke.Play();
-                smokeAudio.Play();
-                smokeFlag = true;
-            }
-            collision.enabled = false;
-            light2D.intensity = 1f;
+            mtrFlag = false;
 
-            srColor = Color.black;
-            srColor.a = Mathf.PingPong(Time.time * 0.5f, 0.5f);
+            collision.enabled = false;
+
+            srColor.a = Mathf.PingPong(Time.time * 2f, 1f);
             sr.color = srColor;
             if (addSprite != null) addSprite.color = srColor;
         }
         else
         {
+            sr.sprite = afterSp;
+
             if (hideObject != null) hideObject.SetActive(true);
             if (dynamic) rb.isKinematic = false;
 
-            smokeFlag = false;
             charge.Stop();
-            if (light2D.intensity == 1) { mtr.Play(); mtrAudio.Play(); }
+
+            if (!mtrFlag)
+            {
+                mtr.Play();
+                mtrAudio.Play();
+                mtrFlag = true;
+            }
 
             collision.enabled = true;
-            light2D.intensity = 3;
 
-            srColor = Color.white;
             srColor.a = 1;
             sr.color = srColor;
             if (addSprite != null) addSprite.color = srColor;

@@ -55,6 +55,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9167626cd038f408da8f185ed2f93090, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  repeat: 1
   mtrTime: 0.5
   charge: {fileID: 4648479775814557218}
   mtr: {fileID: 4290704800059424153}
@@ -114,8 +115,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -0.049673796, y: -0.038700014, z: 0}
-    m_Extent: {x: 0.81995606, y: 0.8418, z: 0}
+    m_Center: {x: -0.09504938, y: -0.0352, z: 0}
+    m_Extent: {x: 1.0398526, y: 1.0826, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -126,11 +127,11 @@ MonoBehaviour:
   m_ShapeLightFalloffSize: 0
   m_ShapeLightFalloffOffset: {x: 0, y: 0}
   m_ShapePath:
-  - {x: -0.29525518, y: -0.8795247, z: 0}
-  - {x: 0.7392032, y: -0.6110486, z: 0}
-  - {x: 0.77028227, y: 0.47943136, z: 0}
-  - {x: -0.28179026, y: 0.8027568, z: 0}
-  - {x: -0.86962986, y: -0.03896201, z: 0}
+  - {x: -0.46279526, y: -1.1168733, z: 0}
+  - {x: 0.927686, y: -0.77858883, z: 0}
+  - {x: 0.94480324, y: 0.5771632, z: 0}
+  - {x: -0.30273247, y: 1.0470862, z: 0}
+  - {x: -1.134902, y: 0.01688474, z: 0}
 --- !u!58 &6563525879356481755
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -277,7 +278,7 @@ PolygonCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2

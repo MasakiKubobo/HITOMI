@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3283394068663097940}
   - component: {fileID: 9129429198867138922}
   - component: {fileID: 2022430118752334372}
-  - component: {fileID: 8609237091858229895}
+  - component: {fileID: 4171723704804159976}
   - component: {fileID: 3571674825744443153}
   m_Layer: 12
   m_Name: rock01
@@ -110,7 +110,7 @@ MonoBehaviour:
   charge: {fileID: 4648479775814557218}
   mtr: {fileID: 4290704800059424153}
   smoke: {fileID: 5739560432313652551}
-  collision: {fileID: 8609237091858229895}
+  collision: {fileID: 4171723704804159976}
   Mtr: 0
   sr: {fileID: 6683167184976908613}
   addSprite: {fileID: 0}
@@ -212,8 +212,8 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.65518075, y: 0.5883946}
   m_EdgeRadius: 0
---- !u!70 &8609237091858229895
-CapsuleCollider2D:
+--- !u!60 &4171723704804159976
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -244,9 +244,25 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.010298293, y: 0.0020597568}
-  m_Size: {x: 0.6828263, y: 0.56749594}
-  m_Direction: 1
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -0.038046204, y: 0.30755866}
+      - {x: -0.3118798, y: 0.03508413}
+      - {x: -0.37853092, y: -0.29158837}
+      - {x: 0.35189867, y: -0.29158825}
+      - {x: 0.37132403, y: 0.109965704}
+      - {x: 0.27383366, y: 0.30140787}
+  m_UseDelaunayMesh: 0
 --- !u!50 &3571674825744443153
 Rigidbody2D:
   serializedVersion: 4

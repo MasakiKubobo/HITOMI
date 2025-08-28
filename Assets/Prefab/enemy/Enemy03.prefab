@@ -288,7 +288,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HP: 3
-  knockBackPowor: 40
+  knockBackPowor: 35
   damagePar: {fileID: 2993555582061678229, guid: af59e83b86b9c48b28caed79607bc260, type: 3}
   destroyPar: {fileID: 7226583673155636403, guid: 55beb137069d74698898caa4489e0957, type: 3}
   knockBack: 0

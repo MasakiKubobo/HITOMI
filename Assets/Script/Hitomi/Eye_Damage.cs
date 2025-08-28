@@ -18,6 +18,7 @@ public class Eye_Damage : MonoBehaviour
     private float flashTimer = 0;
     private bool flashFlag = false;
     private SpriteRenderer spriteRenderer;
+    private Eye_Move eye_Move;
 
     private Rigidbody2D rb;
     private float timer = 0;
@@ -27,6 +28,8 @@ public class Eye_Damage : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         kuromeSprite = kurome.GetComponent<SpriteRenderer>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        eye_Move = GetComponent<Eye_Move>();
     }
 
     // Update is called once per frame
@@ -50,7 +53,7 @@ public class Eye_Damage : MonoBehaviour
     void OnTriggerStay2D(Collider2D other)
     {
         PrefabID prefabID = other.GetComponent<PrefabID>();
-        if (prefabID == null) return;
+        if (prefabID == null || eye_Move.attack) return;
 
         switch (prefabID.ID)
         {
@@ -63,11 +66,20 @@ public class Eye_Damage : MonoBehaviour
             case "enemy_03": // enemy_03にぶつかった場合
                 KnockBack(other.transform.position, knockBackPowor[2], damages[2]);
                 break;
+            case "enemy_04": // enemy_04にぶつかった場合
+                KnockBack(other.transform.position, knockBackPowor[3], damages[3]);
+                break;
+            case "enemy_05": // enemy_05にぶつかった場合
+                KnockBack(other.transform.position, knockBackPowor[3], damages[3]);
+                break;
             case "attack_EN01": // attack_EN01に当たった場合
                 KnockBack(other.transform.position, knockBackPowor[0], attackDamages[0]);
                 break;
             case "attack_EN02": // attack_EN02に当たった場合
                 KnockBack(other.transform.position, knockBackPowor[1], attackDamages[1]);
+                break;
+            case "bullet_01": // attack_EN02に当たった場合
+                KnockBack(other.transform.position, knockBackPowor[3], attackDamages[2]);
                 break;
         }
     }

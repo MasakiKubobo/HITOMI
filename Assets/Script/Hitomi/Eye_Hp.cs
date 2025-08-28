@@ -42,8 +42,8 @@ public class Eye_HP : MonoBehaviour
         }
 
         // ダメージを受けた一定時間後から回復が始まる。
-        healTimer -= Time.deltaTime;
-        if (healTimer <= 0) HP += Healing * Time.deltaTime;
+        //healTimer -= Time.deltaTime;
+        //if (healTimer <= 0) HP += Healing * Time.deltaTime;
 
         beforeHP = HP; // 関数の最後に
 

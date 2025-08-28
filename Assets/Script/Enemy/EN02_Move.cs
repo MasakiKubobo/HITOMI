@@ -90,9 +90,17 @@ public class EN02_Move : MonoBehaviour
         PrefabID prefabID = other.gameObject.GetComponent<PrefabID>();
         if (prefabID != null)
         {
-            if (prefabID.ID == "attack_01")
+            if (prefabID.ID == "attack_01" || prefabID.ID == "attack_02")
             {
                 KnockBack(other.transform.position, other.bounds.ClosestPoint(transform.position), powor);
+            }
+            else if (prefabID.ID == "attack_03")
+            {
+                Materialize materialize = other.GetComponent<Materialize>();
+                if (materialize.Mtr)
+                {
+                    KnockBack(other.transform.position, other.bounds.ClosestPoint(transform.position), powor);
+                }
             }
         }
     }

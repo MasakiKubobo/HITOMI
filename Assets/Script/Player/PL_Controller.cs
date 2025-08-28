@@ -10,7 +10,9 @@ public class PL_Controller : MonoBehaviour
 {
     public bool Control = true;
     public bool down = false;
-    public bool Debug = true; // デバッグモードの場合キーマウ操作に
+    public bool _Debug = true; // デバッグモードの場合キーマウ操作に
+
+    private Gamepad[] pads;
     [SerializeField] private InputAction Dash, Up;
     [SerializeField] private InputAction Jump;
     [SerializeField] private InputAction Attack;
@@ -19,9 +21,8 @@ public class PL_Controller : MonoBehaviour
 
     [SerializeField] private InputAction Rstick;
     [SerializeField] private InputAction eyeOpen;
-    [SerializeField] private InputAction eyeItem;
     [SerializeField] private InputAction back;
-    [SerializeField] private InputAction death;
+    [SerializeField] private InputAction reset;
 
     //public GameObject animManager;
     public GameObject eye;
@@ -33,13 +34,13 @@ public class PL_Controller : MonoBehaviour
 
     private float backTimer = 0, deathTimer = 0;
 
-    bool attackFlag = false, appearFlag = false;
+    bool attackFlag = false, PLcon = true, PLconFlag;
 
     public AudioSource itemAudio;
     // Start is called before the first frame update
     void Start()
     {
-
+        pads = Gamepad.all.ToArray();
     }
 
     private void OnEnable()
@@ -50,9 +51,8 @@ public class PL_Controller : MonoBehaviour
         Attack?.Enable();
         Rstick?.Enable();
         eyeOpen?.Enable();
-        eyeItem?.Enable();
         back?.Enable();
-        death?.Enable();
+        reset?.Enable();
     }
 
     private void OnDisable()
@@ -63,23 +63,59 @@ public class PL_Controller : MonoBehaviour
         Attack?.Disable();
         Rstick?.Disable();
         eyeOpen?.Disable();
-        eyeItem?.Disable();
         back?.Disable();
-        death?.Disable();
+        reset?.Disable();
     }
 
     // Update is called once per frame
     void Update()
     {
+        /*
         var _Dash = Dash.ReadValue<float>();
-        var _Up = Up.ReadValue<float>();
         var _Jump = Jump.ReadValue<float>();
         var _Attack = Attack.ReadValue<float>();
+
         var _Rstick = Rstick.ReadValue<Vector2>();
-        var _eyeOpen = eyeOpen.ReadValue<float>();
-        var _eyeItem = eyeItem.ReadValue<float>();
+        */
+
+        var change = pads[0].leftTrigger.ReadValue();
+        if (change == 1)
+        {
+            if (!PLconFlag)
+            {
+                PLcon = !PLcon;
+                PLconFlag = true;
+            }
+        }
+        else PLconFlag = false;
+
+        var _Dash = pads[0].leftStick.x.ReadValue();
+        var _Jump = pads[0].buttonSouth.ReadValue();
+        var _Attack = pads[0].buttonWest.ReadValue();
+        var _Hand = pads[0].buttonNorth.ReadValue();
+        var _Throw = pads[0].leftStick.ReadValue();
+
+        var EyeLstick = pads[0].leftStick.ReadValue();
+        var EyeRstick = pads[0].rightStick.ReadValue();
+        var EyeRtrigger = pads[0].rightTrigger.ReadValue();
         var _back = back.ReadValue<float>();
-        var _death = death.ReadValue<float>();
+        var _reset = reset.ReadValue<float>();
+
+        if (PLcon)
+        {
+            EyeLstick = Vector2.zero;
+            EyeRstick = Vector2.zero;
+            EyeRtrigger = 0;
+        }
+        else
+        {
+            _Dash = 0;
+            _Jump = 0;
+            _Attack = 0;
+            _Hand = 0;
+            _Throw = Vector2.zero;
+        }
+
 
         PL_Move pL_Move = GetComponent<PL_Move>();
         PL_Attack pL_Attack = GetComponent<PL_Attack>();
@@ -94,13 +130,19 @@ public class PL_Controller : MonoBehaviour
 
         //EyeSPpointer eyeSPpointer = pointer.GetComponent<EyeSPpointer>();
 
+        if (eye_Move.tutorial)
+        {
+            EyeLstick = Vector2.zero;
+            EyeRstick = Vector2.zero;
+            EyeRtrigger = 0;
+        }
+
         if (!Control)
         {
             _Dash = 0;
             _Jump = 0;
             _Attack = 0;
-            _Rstick = Vector2.zero;
-            _eyeOpen = 0;
+            EyeRstick = Vector2.zero;
         }
 
         pL_Motion.down = down;
@@ -120,7 +162,7 @@ public class PL_Controller : MonoBehaviour
             pL_Move.dash = false;
         }
 
-        if (_Jump > 0.1)
+        if (_Jump > 0)
         {
             pL_Move.jump = true;
         }
@@ -141,6 +183,16 @@ public class PL_Controller : MonoBehaviour
         }
         else attackFlag = false;
 
+        // アイテムを掴む/投げる
+        if (_Hand > 0)
+        {
+            pL_Move.hand = true;
+        }
+        else pL_Move.hand = false;
+
+        if (_Throw.magnitude >= 0.6) pL_Move.throwPos = _Throw;
+        else pL_Move.throwPos = Vector2.zero;
+
         if (pL_Damage.damage)
         {
             pL_Move.dash = false;
@@ -148,16 +200,31 @@ public class PL_Controller : MonoBehaviour
             pL_Attack.attack = false;
         }
 
-        // 能力使用と解除
-        if (Math.Sqrt(_Rstick.x * _Rstick.x + _Rstick.y * _Rstick.y) > 0.7) // スティックの傾きが0.5以上で有効に
+        // 瞳の移動
+        if (EyeLstick.magnitude > 0.4) // スティックの傾きが0.4以上で有効に
         {
-            eye_Anim.eyeAbility = true;
-            eye_Move.kuromePos = _Rstick;
+            eye_Move.movePos = EyeLstick;
         }
-        if (_eyeOpen >= 0.5)
+        else eye_Move.movePos = Vector2.zero;
+
+        // 能力使用と解除
+        if (EyeRstick.magnitude > 0.8) // スティックの傾きが0.8以上で有効に
+        {
+            Debug.Log(EyeRstick.magnitude);
+            eye_Anim.eyeAbility = true;
+            eye_Move.kuromePos = EyeRstick;
+        }
+        else
         {
             eye_Anim.eyeAbility = false;
         }
+
+        // 瞳の攻撃
+        if (EyeRtrigger > 0)
+        {
+            eye_Move.attack = true;
+        }
+        else eye_Move.attack = false;
 
         /*
         // 特殊な瞳が一定以上離れるとスリップダメージ
@@ -172,21 +239,6 @@ public class PL_Controller : MonoBehaviour
         }
         */
 
-        itemMark.SetActive(haveItem);
-
-        if (haveItem && _eyeItem >= 1)
-        {
-            if (!eye_Anim.eyeAbility)
-            {
-                if (!eye_Anim.eyeAbility)
-                {
-                    eye_Anim.eyeAbility = true; // 能力を使用
-                }
-            }
-            usingItem = true;
-            haveItem = false;
-        }
-
         if (_back >= 1)
         {
             backTimer += Time.deltaTime;
@@ -194,16 +246,15 @@ public class PL_Controller : MonoBehaviour
         }
         else backTimer = 0;
 
-        if (_death >= 1)
+        // 積んだ時用のリセット処理
+        if (_reset >= 1)
         {
-            deathTimer += Time.deltaTime;
-            if (deathTimer >= 2) Eye_HP.HP = 0;
+            GameManager.reset = true;
         }
-        else deathTimer = 0;
 
 
         // キーマウ操作（デバッグ用）
-        if (Debug)
+        if (_Debug)
         {
             if (Input.GetKey(KeyCode.D))
             {
@@ -244,20 +295,4 @@ public class PL_Controller : MonoBehaviour
             else attackFlag = false;
         }
     }
-
-    /* アイテム取る用
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        PrefabID prefabID = other.gameObject.GetComponent<PrefabID>();
-        if (prefabID != null)
-        {
-            if (prefabID.ID == "item_01")
-            {
-                itemAudio.Play();
-                haveItem = true;
-                Destroy(other.gameObject);
-            }
-        }
-    }
-    */
 }

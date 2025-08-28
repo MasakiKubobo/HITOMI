@@ -191,7 +191,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   plDistanceX: 20
   plDistanceY: 20
-  moveSpeed: 3
+  moveSpeed: 2.5
   HP: 2
   powor: 50
   damagePar: {fileID: 2993555582061678229, guid: af59e83b86b9c48b28caed79607bc260, type: 3}
@@ -207,7 +207,7 @@ CapsuleCollider2D:
   m_GameObject: {fileID: 5456890799959654660}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 9ba148047776a49bd8c90a14274d4add, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 9600

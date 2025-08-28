@@ -45,7 +45,12 @@ public class GoalZone : MonoBehaviour
         }
 
         yield return new WaitForSecondsRealtime(3);
-        if (SceneManager.GetActiveScene().name == "main1")
+        if (SceneManager.GetActiveScene().name == "main0")
+        {
+            GameManager.pointer = 0;
+            SceneManager.LoadScene("start");
+        }
+        else if (SceneManager.GetActiveScene().name == "main1")
         {
             GameManager.pointer = 0;
             SceneManager.LoadScene("start");

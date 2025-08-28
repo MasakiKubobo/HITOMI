@@ -222,8 +222,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 847881b7c42944b37a8c904f862d4449, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  plDistanceX: 10
+  plDistanceX: 15
   plDistanceY: 5
+  attackMode: 0
   targetIsPlayer: 0
 --- !u!114 &7709608400103964271
 MonoBehaviour:
@@ -237,10 +238,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f15b2924d31e4c46a24bf3b865a77ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 3
-  knockBackPowor: 100
-  damagePar: {fileID: 0}
-  destroyPar: {fileID: 0}
+  HP: 2
+  damagePar: {fileID: 2993555582061678229, guid: af59e83b86b9c48b28caed79607bc260, type: 3}
+  destroyPar: {fileID: 7226583673155636403, guid: 55beb137069d74698898caa4489e0957, type: 3}
   knockBack: 0
 --- !u!114 &7558839058443990096
 MonoBehaviour:
@@ -255,6 +255,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attack: 0
+  bullet: {fileID: 2944359373542722017, guid: 726aeb01e767945e4889ebc65e29722f, type: 3}
+  attackTime: 1.5
+  upPower: 10
 --- !u!70 &7939980378119474621
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -287,8 +290,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.67}
-  m_Size: {x: 0.76, y: 1.34}
+  m_Offset: {x: -0.0147204995, y: -0.08243495}
+  m_Size: {x: 1.013193, y: 1.5048699}
   m_Direction: 0
 --- !u!50 &7237089766626959393
 Rigidbody2D:
@@ -298,14 +301,14 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5456890799959654660}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 1
   m_AngularDrag: 0.05
-  m_GravityScale: 50
+  m_GravityScale: 5
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
