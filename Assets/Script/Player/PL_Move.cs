@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PL_Move : MonoBehaviour
 {
+    public bool canMove = true;//by山根陸
     public float moveSpeed = 7;
     public float airMoveSpeed = 5;
 
@@ -150,65 +151,73 @@ public class PL_Move : MonoBehaviour
 
     void FixedUpdate()
     {
-        float xSpeed = 0;
-        float ySpeed = 0;
-
-        if (dash) // ダッシュ入力中に
+        if (canMove)
         {
-            if (left) // 左向きに走る
+
+            float xSpeed = 0;
+            float ySpeed = 0;
+
+            if (dash) // ダッシュ入力中に
             {
-                xSpeed = dashPowor;
-            }
-            else // 右向きに走る
-            {
-                xSpeed = -dashPowor;
-            }
-        }
-
-
-        // 可変ジャンプの力の制御
-        if (isGrounded && jump) // 接地状態のみジャンプを受け付ける
-        {
-            if (!jumpFlag)
-            {
-                jumpTimer = 0;
-                _jumpPower = jumpPower;
-                ySpeed = _jumpPower;
-                isJumping = true;
-                jumpFlag = true;
-            }
-            else isJumping = false;
-        }
-        else if (isGrounded && !jump)
-        {
-            isJumping = false; // 接地状態でジャンプ入力なし
-            jumpFlag = false;
-        }
-        else if (!isGrounded && !jump)
-        {
-            jumpFlag = false;
-        }
-
-        if (isJumping) // ジャンプ長押し中
-        {
-            if (jump && jumpTimer <= maxJumpTime) ySpeed = _jumpPower; // ジャンプ入力中、かつ時間内の場合
-            else if (!jump || jumpTimer > maxJumpTime) // ジャンプ入力が途切れた、あるいは制限時間が来た場合
-            {
-                _jumpPower -= disJumpPower;
-                ySpeed = _jumpPower;
-
-                if (_jumpPower <= -jumpPower)
+                if (left) // 左向きに走る
                 {
-                    _jumpPower = -jumpPower;
+                    xSpeed = dashPowor;
+                }
+                else // 右向きに走る
+                {
+                    xSpeed = -dashPowor;
                 }
             }
-            jumpTimer += Time.deltaTime;
+
+
+            // 可変ジャンプの力の制御
+            if (isGrounded && jump) // 接地状態のみジャンプを受け付ける
+            {
+                if (!jumpFlag)
+                {
+                    jumpTimer = 0;
+                    _jumpPower = jumpPower;
+                    ySpeed = _jumpPower;
+                    isJumping = true;
+                    jumpFlag = true;
+                }
+                else isJumping = false;
+            }
+            else if (isGrounded && !jump)
+            {
+                isJumping = false; // 接地状態でジャンプ入力なし
+                jumpFlag = false;
+            }
+            else if (!isGrounded && !jump)
+            {
+                jumpFlag = false;
+            }
+
+            if (isJumping) // ジャンプ長押し中
+            {
+                if (jump && jumpTimer <= maxJumpTime) ySpeed = _jumpPower; // ジャンプ入力中、かつ時間内の場合
+                else if (!jump || jumpTimer > maxJumpTime) // ジャンプ入力が途切れた、あるいは制限時間が来た場合
+                {
+                    _jumpPower -= disJumpPower;
+                    ySpeed = _jumpPower;
+
+                    if (_jumpPower <= -jumpPower)
+                    {
+                        _jumpPower = -jumpPower;
+                    }
+                }
+                jumpTimer += Time.deltaTime;
+            }
+            else jumpTimer = 0;
+
+            if (!isGrounded && !isJumping) ySpeed = -jumpPower;
+
+            rb.velocity = new Vector2(xSpeed, ySpeed);
         }
-        else jumpTimer = 0;
-
-        if (!isGrounded && !isJumping) ySpeed = -jumpPower;
-
-        rb.velocity = new Vector2(xSpeed, ySpeed);
+        else
+        {
+            rb.velocity = Vector2.zero;
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)

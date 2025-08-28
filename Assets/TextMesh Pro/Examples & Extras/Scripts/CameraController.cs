@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace TMPro.Examples
 {
-    
+
     public class CameraController : MonoBehaviour
     {
         public enum CameraModes { Follow, Isometric, Free }
@@ -41,6 +41,8 @@ namespace TMPro.Examples
         private float mouseY;
         private Vector3 moveVector;
         private float mouseWheel;
+
+        private bool isInSequence = false;
 
         // Controls for Touches on Mobile devices
         //private float prev_ZoomDelta;
@@ -79,6 +81,11 @@ namespace TMPro.Examples
         // Update is called once per frame
         void LateUpdate()
         {
+            if (isInSequence == true)
+            {
+                return;
+            }
+
             GetPlayerInput();
 
 
@@ -285,8 +292,45 @@ namespace TMPro.Examples
                 // Limit FollowDistance between min & max values.
                 FollowDistance = Mathf.Clamp(FollowDistance, MinFollowDistance, MaxFollowDistance);
             }
-
-
         }
+
+        //追加したコードby山根陸
+        public void StartCameraSequence()
+        {
+            if (isInSequence) return;
+
+            StartCoroutine(CameraSequenceCoroutine());
+        }
+
+        private IEnumerator CameraSequenceCoroutine()
+        {
+            isInSequence = true;
+
+
+            //[0~5s]右に移動
+            float timer = 0f;
+            while (timer < 5f)
+            {
+                transform.position += new Vector3(1f * Time.deltaTime, 0, 0);
+                timer += Time.deltaTime;
+                yield return null;
+            }
+
+            //【5～10秒】ズームインする
+            Camera cam = this.GetComponent<Camera>();
+            float originalSize = cam.orthographicSize;
+            timer = 0f;
+            while (timer < 5f)
+            {
+                // 5秒かけて目標サイズ(3)に近づける
+                cam.orthographicSize = Mathf.Lerp(originalSize, 3f, timer / 5f);
+                timer += Time.deltaTime;
+                yield return null; // 次のフレームまで待つ
+            }
+
+            //カメラワーク終了
+            isInSequence = false;
+        }
+        //by山根陸
     }
 }

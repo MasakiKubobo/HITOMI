@@ -17,6 +17,9 @@ public class Camera_Move : MonoBehaviour
     public float eyeShakeTimer;
     public float eyeIntensity;
 
+    private bool isInSequence = false;//追加by山根陸
+
+
     private bool eyeShakeFlag = false, shakeFlag = false, cwFlag = false;
     private float eyeTimer = 0, shakeTimer = 0, cwTimer = 0, cwTimer2 = 1;
     float cwY, cwX;  // カメラワーク移動用
@@ -35,6 +38,12 @@ public class Camera_Move : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isInSequence)//追加by山根陸
+        {
+            return;
+        }
+
+
         X = player.transform.position.x;
         Y = player.transform.position.y;
 
@@ -172,6 +181,46 @@ public class Camera_Move : MonoBehaviour
             follow = true;
             center = false;
         }
+    }
+
+    //追加by山根陸ーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+    public void StartCameraSequence()
+    {
+        if (isInSequence) return; // 既に実行中なら何もしない
+        StartCoroutine(CameraSequenceCoroutine());
+    }
+
+    // 演出用カメラワークの本体
+    private IEnumerator CameraSequenceCoroutine()
+    {
+        isInSequence = true; // 演出モードに切り替え
+
+        // --- 実行したいカメラワークをここに記述 ---
+
+        //【0～5秒】右にゆっくり移動
+        float timer = 0f;
+        while (timer < 5f)
+        {
+            transform.position += new Vector3(1f * Time.deltaTime, 0, 0);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        //【5～10秒】ズームイン
+        // Cinemachineのズーム(Field of View)を5秒かけて変更する例
+        float startFov = vCam.m_Lens.FieldOfView;
+        float endFov = 30f; // ズームイン後の画角（値が小さいほどズーム）
+        timer = 0f;
+        while (timer < 5f)
+        {
+            vCam.m_Lens.FieldOfView = Mathf.Lerp(startFov, endFov, timer / 5f);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        // --- 演出終了 ---
+
+        isInSequence = false; // 通常モードに戻す
     }
 
 }
