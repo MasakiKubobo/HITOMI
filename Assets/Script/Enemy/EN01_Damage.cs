@@ -57,7 +57,7 @@ public class EN01_Damage : MonoBehaviour
             {
                 Vector3 vector = transform.position;
                 vector.y += 0.5f;
-                KnockBack(other.transform.position, other.bounds.ClosestPoint(vector), knockBackPowor, 0);
+                KnockBack(other.transform.position, other.bounds.ClosestPoint(vector), knockBackPowor, 1);
             }
             else if (prefabID.ID == "attack_03")
             {

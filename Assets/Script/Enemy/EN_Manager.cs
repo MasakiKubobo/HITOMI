@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class EN_Manager : MonoBehaviour
 {
+    public bool isPlayer;
     public float time;
     private float timer;
     public GameObject[] enemys;
@@ -138,7 +139,12 @@ public class EN_Manager : MonoBehaviour
     {
         if (other.CompareTag("eye"))
         {
-            enSwitch = true;
+            if (!isPlayer) enSwitch = true;
+        }
+
+        if (other.CompareTag("Player"))
+        {
+            if (isPlayer) enSwitch = true;
         }
     }
 }

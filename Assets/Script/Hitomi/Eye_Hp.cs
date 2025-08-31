@@ -52,7 +52,7 @@ public class Eye_HP : MonoBehaviour
 
     void BlackOut()
     {
-        HpLight.shapeLightFalloffSize = HP / 100 * 10000;
+        HpLight.shapeLightFalloffSize = HP / 100 * 7500 + 2500;
 
         if (HP <= 20)
         {

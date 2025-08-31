@@ -28,6 +28,8 @@ public class checkPoint : MonoBehaviour
             {
                 sprite.color = new Color(1, 1, 1, 1);
                 Instantiate(effect, transform.position, Quaternion.identity);
+                Eye_HP.HP = 100;
+                Eye_Move.attackTimer = 0;
                 checkFlag = true;
             }
         }

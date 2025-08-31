@@ -20,7 +20,7 @@ public class PL_Move : MonoBehaviour
     private bool isJumping = false; // ジャンプの飛翔中か否か
     private bool jumpFlag = false; // ジャンプボタン長押しで何回もジャンプしてしまうのを防ぐ
     private bool isGrounded = false;  // 空中に居るか否か
-    private bool isHanding = false; // アイテムを掴んでいるか
+    [HideInInspector] public bool isHanding = false; // アイテムを掴んでいるか
     private GameObject handObject;
     private bool isStart = true;
     private float jumpTimer, throwTimer;
@@ -36,6 +36,7 @@ public class PL_Move : MonoBehaviour
     [HideInInspector] public bool dash, left, jump, hand;
     [HideInInspector] public Vector2 throwPos;
     public GameObject scope;
+    private float mass;
     // Start is called before the first frame update
     void Start()
     {
@@ -85,17 +86,18 @@ public class PL_Move : MonoBehaviour
         {
             if (isHanding)
             {
+                Rigidbody2D handRb = handObject.GetComponent<Rigidbody2D>();
                 if (!hand && !handFlag)
                 {
                     handFlag = true;
+                    mass = handRb.mass;
+                    handRb.mass = 0.1f;
                 }
 
                 if (handFlag)
                 {
                     pL_Attack.attack = false;
 
-                    Rigidbody2D handRb = handObject.GetComponent<Rigidbody2D>();
-                    handRb.simulated = false;
                     handObject.transform.localPosition = new Vector2(0, 1);
 
                     if (hand)
@@ -115,7 +117,7 @@ public class PL_Move : MonoBehaviour
                     if (!hand && throwFlag)
                     {
                         handObject.transform.SetParent(null);
-                        handRb.simulated = true;
+                        handRb.mass = mass;
 
                         if (throwPos != Vector2.zero && throwTimer >= 0.3f)
                         {
@@ -144,6 +146,14 @@ public class PL_Move : MonoBehaviour
                     }
                 }
             }
+        }
+
+        if (!isHanding)
+        {
+            handFlag = false;
+            throwFlag = false;
+            throwTimer = 0;
+            scope.SetActive(false);
         }
 
     }
@@ -233,7 +243,7 @@ public class PL_Move : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Ground") || other.gameObject.CompareTag("Item"))
         {
-            isGrounded = true;
+            if (other.gameObject != handObject) isGrounded = true;
         }
 
     }

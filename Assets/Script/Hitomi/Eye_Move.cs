@@ -12,7 +12,7 @@ public class Eye_Move : MonoBehaviour
     public float speed = 1;
     private float _speed;
     public Light2D HpLight;
-    public GameObject player, hitomiZone, kurome, attention;
+    public GameObject player, kurome, attention;
     private Light2D eyeLight;
     public GameObject effect;
     public GameObject sparkBer;
@@ -126,20 +126,4 @@ public class Eye_Move : MonoBehaviour
         slider.value = (attackTime - attackTimer) / attackTime;
     }
 
-    void OnTriggerStay2D(Collider2D other)
-    {
-        if (other.gameObject == hitomiZone)
-        {
-            //follow = false;
-            //tutorial = false;
-        }
-    }
-
-    void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.gameObject == hitomiZone)
-        {
-            //follow = true;
-        }
-    }
 }

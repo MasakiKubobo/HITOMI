@@ -1101,7 +1101,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 15455a5ddcfcd43c3bea1b36929634e3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0a8244f002aba492e8a4a50960fe205b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1211,7 +1211,7 @@ MonoBehaviour:
     m_SingletonActionBindings:
     - m_Name: 
       m_Id: 837b3027-8f9c-4137-be7a-51afb32e6fe1
-      m_Path: <Gamepad>/buttonSouth
+      m_Path: <Gamepad>/buttonEast
       m_Interactions: 
       m_Processors: 
       m_Groups: 

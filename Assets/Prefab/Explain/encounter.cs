@@ -12,13 +12,14 @@ public class encounter : MonoBehaviour
 
     [Space(5)]
     public GameObject eye, eyeSprite, eyeExplain;
-    public ParticleSystem encount;
+    public GameObject encount;
     private bool encountFlag;
     // Start is called before the first frame update
     void Start()
     {
         HPLight.intensity = 2;
         eyeExplain.SetActive(false);
+        encount.SetActive(false);
     }
 
     // Update is called once per frame
@@ -47,7 +48,7 @@ public class encounter : MonoBehaviour
 
     IEnumerator Encount()
     {
-        encount.Play();
+        encount.SetActive(true);
         eyeSprite.SetActive(false);
 
         float timer = 0.2f;

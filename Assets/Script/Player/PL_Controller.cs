@@ -37,6 +37,8 @@ public class PL_Controller : MonoBehaviour
     bool attackFlag = false, PLcon = true, PLconFlag;
 
     public AudioSource itemAudio;
+
+    public GoalZone goalZone;
     // Start is called before the first frame update
     void Start()
     {
@@ -76,9 +78,10 @@ public class PL_Controller : MonoBehaviour
         var _Attack = Attack.ReadValue<float>();
 
         var _Rstick = Rstick.ReadValue<Vector2>();
+        var _reset = reset.ReadValue<float>();
         */
 
-        var change = pads[0].leftTrigger.ReadValue();
+        /*var change = pads[0].leftStickButton.ReadValue();
         if (change == 1)
         {
             if (!PLconFlag)
@@ -88,6 +91,7 @@ public class PL_Controller : MonoBehaviour
             }
         }
         else PLconFlag = false;
+        */
 
         var _Dash = pads[0].leftStick.x.ReadValue();
         var _Jump = pads[0].buttonSouth.ReadValue();
@@ -95,12 +99,22 @@ public class PL_Controller : MonoBehaviour
         var _Hand = pads[0].buttonNorth.ReadValue();
         var _Throw = pads[0].leftStick.ReadValue();
 
-        var EyeLstick = pads[0].leftStick.ReadValue();
-        var EyeRstick = pads[0].rightStick.ReadValue();
-        var EyeRtrigger = pads[0].rightTrigger.ReadValue();
-        var _back = back.ReadValue<float>();
-        var _reset = reset.ReadValue<float>();
+        var EyeLstick = pads[1].leftStick.ReadValue();
+        var EyeRstick = pads[1].rightStick.ReadValue();
+        var EyeRtrigger = pads[1].rightTrigger.ReadValue();
 
+        var plResetL1 = pads[0].leftShoulder.ReadValue();
+        var plResetL2 = pads[0].leftTrigger.ReadValue();
+        var eyeResetL1 = pads[1].leftShoulder.ReadValue(); // 2つ目用
+        var eyeResetL2 = pads[1].leftTrigger.ReadValue(); // 2つ目用
+
+        var plNext = pads[0].buttonEast.ReadValue();
+        var eyeNext = pads[1].buttonEast.ReadValue(); // 2つ目用
+
+        if (plNext >= 1 || eyeNext >= 1) goalZone.next = true;
+        else goalZone.next = false;
+
+        /*
         if (PLcon)
         {
             EyeLstick = Vector2.zero;
@@ -115,6 +129,7 @@ public class PL_Controller : MonoBehaviour
             _Hand = 0;
             _Throw = Vector2.zero;
         }
+        */
 
 
         PL_Move pL_Move = GetComponent<PL_Move>();
@@ -210,7 +225,6 @@ public class PL_Controller : MonoBehaviour
         // 能力使用と解除
         if (EyeRstick.magnitude > 0.8) // スティックの傾きが0.8以上で有効に
         {
-            Debug.Log(EyeRstick.magnitude);
             eye_Anim.eyeAbility = true;
             eye_Move.kuromePos = EyeRstick;
         }
@@ -239,15 +253,15 @@ public class PL_Controller : MonoBehaviour
         }
         */
 
-        if (_back >= 1)
+        if (plNext >= 1 && eyeNext >= 1)
         {
             backTimer += Time.deltaTime;
-            if (backTimer >= 2) { GameManager.pointer = 0; SceneManager.LoadScene("start"); }
+            if (backTimer >= 1) { GameManager.pointer = 0; SceneManager.LoadScene("start"); }
         }
         else backTimer = 0;
 
         // 積んだ時用のリセット処理
-        if (_reset >= 1)
+        if (plResetL1 >= 1 || plResetL2 >= 1 || eyeResetL1 >= 1 || eyeResetL2 >= 1)
         {
             GameManager.reset = true;
         }

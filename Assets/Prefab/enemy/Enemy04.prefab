@@ -115,7 +115,7 @@ GameObject:
   - component: {fileID: 6744130051755715233}
   m_Layer: 9
   m_Name: Enemy04
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -222,9 +222,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 847881b7c42944b37a8c904f862d4449, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  plDistanceX: 15
-  plDistanceY: 5
+  plDistanceX: 20
+  plDistanceY: 20
   attackMode: 0
+  isEnemy05: 0
   targetIsPlayer: 0
 --- !u!114 &7709608400103964271
 MonoBehaviour:
@@ -242,6 +243,9 @@ MonoBehaviour:
   damagePar: {fileID: 2993555582061678229, guid: af59e83b86b9c48b28caed79607bc260, type: 3}
   destroyPar: {fileID: 7226583673155636403, guid: 55beb137069d74698898caa4489e0957, type: 3}
   knockBack: 0
+  damageAnim: 0
+  isEnemy05: 0
+  weakIsEye: 0
 --- !u!114 &7558839058443990096
 MonoBehaviour:
   m_ObjectHideFlags: 0

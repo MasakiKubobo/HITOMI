@@ -130,7 +130,6 @@ MonoBehaviour:
   speed: 1.3
   HpLight: {fileID: 0}
   player: {fileID: 0}
-  hitomiZone: {fileID: 0}
   kurome: {fileID: 6684171835270473673}
   attention: {fileID: 3900999797097370921}
   effect: {fileID: 7136011862738216084}
@@ -177,7 +176,7 @@ MonoBehaviour:
   attackDamages:
   - 20
   - 20
-  - 20
+  - 10
   knockBackPowor:
   - 30
   - 30

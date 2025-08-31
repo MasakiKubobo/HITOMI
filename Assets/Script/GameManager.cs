@@ -39,6 +39,8 @@ public class GameManager : MonoBehaviour
             transform.position = startPoints[pointer].transform.position;
             if (!eye_Move.tutorial) eye.transform.position = startPoints[pointer].transform.position;
             cam.transform.position = startPoints[pointer].transform.position;
+            Eye_HP.HP = 100;
+            Eye_Move.attackTimer = 0;
         }
         else
         {
@@ -49,9 +51,6 @@ public class GameManager : MonoBehaviour
         }
 
         cam.transform.position = new Vector3(cam.transform.position.x, cam.transform.position.y, -10);
-
-        Eye_HP.HP = 100;
-        Eye_Move.attackTimer = 0;
     }
 
     // Update is called once per frame
